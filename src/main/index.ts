@@ -3450,14 +3450,16 @@ async function initializeMainProcess(): Promise<void> {
       ),
     io: {
       anonymousCookie: (() => {
-        const anonymous = new DouyinAnonymous()
+        const anonymous = new DouyinAnonymous(routing.domesticFetch)
         return (renew) => anonymous.get(renew)
       })(),
       resolve: async (url, headers) => {
         const platform = detectMedia(url)
         let current = url
         for (let hop = 0; hop < 6; hop++) {
-          const response = await routedFetch(current, {
+          const response = await (isDomesticPlatform(url)
+            ? routing.domesticFetch
+            : routedFetch)(current, {
             method: 'GET',
             headers,
             redirect: 'manual',
@@ -3475,7 +3477,9 @@ async function initializeMainProcess(): Promise<void> {
       request: async (url, headers, body) => {
         let current = url
         for (let hop = 0; hop < 6; hop++) {
-          const response = await routedFetch(current, {
+          const response = await (isDomesticPlatform(url)
+            ? routing.domesticFetch
+            : routedFetch)(current, {
             headers,
             method: body === undefined ? 'GET' : 'POST',
             body,
@@ -3525,7 +3529,8 @@ async function initializeMainProcess(): Promise<void> {
             routing.sessionConfig(true)
           )
         ),
-      probeMedia: (url, headers) => probeDouyinMedia(url, headers, routedFetch),
+      probeMedia: (url, headers) =>
+        probeDouyinMedia(url, headers, routing.domesticFetch),
       probe: async (url, headers) => {
         try {
           const r = await routedFetch(url, {
@@ -3570,7 +3575,7 @@ async function initializeMainProcess(): Promise<void> {
     },
   })
   const nexusCloud = new CloudRuntime({
-    fetch: routedFetch,
+    fetch: routing.domesticFetch,
     duplicateWarning: () => nexusWorkspace.getPreferences().duplicateWarning,
     profiles: mediaStorageReady ? nexusProfiles : undefined,
     enqueue: (ids) => nexusQueues.intent(ids, true),

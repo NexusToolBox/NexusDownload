@@ -40,6 +40,7 @@ const DOMESTIC_ROOTS = [
   'bytedance.com',
   'snssdk.com',
   'kuaishou.com',
+  'chenzhongtech.com',
   'gifshow.com',
   'kwimgs.com',
   'ksapisrv.com',
@@ -52,6 +53,8 @@ const DOMESTIC_ROOTS = [
   'weibo.cn',
   'sinaimg.cn',
   'weibocdn.com',
+  'acfun.cn',
+  'aixifan.com',
 ]
 export function isDomesticPlatform(address: string): boolean {
   try {

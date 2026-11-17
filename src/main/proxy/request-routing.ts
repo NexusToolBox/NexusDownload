@@ -15,61 +15,68 @@ export function createRequestRouting(settings: () => ProxySettings) {
       return system.resolveProxy(url)
     },
   })
-  const request: typeof fetch = async (input, init) => {
-    const original = new Request(input, init)
-    let current = original
-    for (let hop = 0; hop <= 10; hop++) {
-      const proxy = await router.resolve(current.url)
-      let dispatcher = agents.get(proxy)
-      if (!dispatcher) {
-        dispatcher = proxy ? new ProxyAgent(proxy) : new Agent()
-        agents.set(proxy, dispatcher)
-      }
-      const response = (await undiciFetch(current.url, {
-        method: current.method,
-        headers: [...current.headers],
-        body: ['GET', 'HEAD'].includes(current.method)
-          ? undefined
-          : new Uint8Array(await current.arrayBuffer()),
-        signal: current.signal,
-        redirect: 'manual',
-        dispatcher,
-      })) as unknown as Response
-      if (
-        ![301, 302, 303, 307, 308].includes(response.status) ||
-        original.redirect === 'manual'
-      )
-        return response
-      if (original.redirect === 'error') {
+  const createFetch =
+    (domestic?: boolean): typeof fetch =>
+    async (input, init) => {
+      const original = new Request(input, init)
+      let current = original
+      for (let hop = 0; hop <= 10; hop++) {
+        const proxy = await router.resolve(current.url, domestic)
+        let dispatcher = agents.get(proxy)
+        if (!dispatcher) {
+          dispatcher = proxy ? new ProxyAgent(proxy) : new Agent()
+          agents.set(proxy, dispatcher)
+        }
+        const response = (await undiciFetch(current.url, {
+          method: current.method,
+          headers: [...current.headers],
+          body: ['GET', 'HEAD'].includes(current.method)
+            ? undefined
+            : new Uint8Array(await current.arrayBuffer()),
+          signal: current.signal,
+          redirect: 'manual',
+          dispatcher,
+        })) as unknown as Response
+        if (
+          ![301, 302, 303, 307, 308].includes(response.status) ||
+          original.redirect === 'manual'
+        )
+          return response
+        if (original.redirect === 'error') {
+          await response.body?.cancel()
+          throw new Error('Redirect refused')
+        }
+        const location = response.headers.get('location')
+        if (!location) return response
         await response.body?.cancel()
-        throw new Error('Redirect refused')
+        const next = new URL(location, current.url)
+        const headers = new Headers(current.headers)
+        if (next.origin !== new URL(current.url).origin) {
+          headers.delete('authorization')
+          headers.delete('cookie')
+          headers.delete('proxy-authorization')
+        }
+        const method =
+          response.status === 303 ||
+          ([301, 302].includes(response.status) && current.method === 'POST')
+            ? 'GET'
+            : current.method
+        if (!['GET', 'HEAD'].includes(method))
+          throw new Error('Request body cannot be redirected')
+        headers.delete('content-length')
+        headers.delete('content-type')
+        current = new Request(next, {
+          method,
+          headers,
+          signal: original.signal,
+        })
       }
-      const location = response.headers.get('location')
-      if (!location) return response
-      await response.body?.cancel()
-      const next = new URL(location, current.url)
-      const headers = new Headers(current.headers)
-      if (next.origin !== new URL(current.url).origin) {
-        headers.delete('authorization')
-        headers.delete('cookie')
-        headers.delete('proxy-authorization')
-      }
-      const method =
-        response.status === 303 ||
-        ([301, 302].includes(response.status) && current.method === 'POST')
-          ? 'GET'
-          : current.method
-      if (!['GET', 'HEAD'].includes(method))
-        throw new Error('Request body cannot be redirected')
-      headers.delete('content-length')
-      headers.delete('content-type')
-      current = new Request(next, { method, headers, signal: original.signal })
+      throw new Error('Too many redirects')
     }
-    throw new Error('Too many redirects')
-  }
   return {
     router,
-    fetch: request,
+    fetch: createFetch(),
+    domesticFetch: createFetch(true),
     sessionConfig: (domestic: boolean): Electron.ProxyConfig => {
       const selected = settings()
       if (selected.mode === 'none' || (domestic && !selected.domestic))

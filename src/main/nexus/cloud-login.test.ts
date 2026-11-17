@@ -48,6 +48,7 @@ vi.mock('electron', async () => {
       fromPartition: (partition: string) => {
         state.partitions.push(partition)
         return Object.assign(new EventEmitter(), {
+          setProxy: vi.fn(async () => undefined),
           cookies: { get: async () => state.cookies },
           clearStorageData: state.clear,
           setPermissionRequestHandler: vi.fn(),
@@ -79,6 +80,7 @@ describe('isolated official login host', () => {
       secret
     )
     const preventDefault = vi.fn()
+    await Promise.resolve()
     const win = state.windows[0] as unknown as {
       webContents: { emit: (name: string, ...args: unknown[]) => void }
     }
@@ -98,6 +100,7 @@ describe('isolated official login host', () => {
       secret
     )
     const rejected = expect(result).rejects.toThrow('cloud.login')
+    await Promise.resolve()
     const win = state.windows[0] as unknown as {
       webContents: { emit: (name: string, ...args: unknown[]) => void }
     }
@@ -139,6 +142,7 @@ describe('isolated official login host', () => {
     vi.useFakeTimers()
     const result = loginCloud('baidu', async (value) => value)
     const rejected = expect(result).rejects.toThrow('cloud.login')
+    await Promise.resolve()
     state.windows[0].close()
     await rejected
     expect(state.clear).toHaveBeenCalledTimes(1)
@@ -189,6 +193,7 @@ describe('isolated official login host', () => {
       ]
       const validate = vi.fn(async (value: string) => value)
       const result = loginCloud(platform, validate)
+      await Promise.resolve()
       const win = state.windows[0] as unknown as {
         webContents: { emit(name: string, ...args: unknown[]): void }
       }

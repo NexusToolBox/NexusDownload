@@ -7,6 +7,7 @@ import {
 
 const enabledProxy = {
   ...DEFAULT_PROXY_SETTINGS,
+  mode: undefined,
   enabled: true,
   host: 'proxy.example.com',
   port: 1080,

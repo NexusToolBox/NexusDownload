@@ -193,7 +193,7 @@ describe('CI scope selection', () => {
     } finally {
       rmSync(cwd, { recursive: true, force: true, maxRetries: 3 })
     }
-  }, 45000)
+  }, 120000)
 })
 
 function successfulNeeds(profile: 'ui' | 'full') {

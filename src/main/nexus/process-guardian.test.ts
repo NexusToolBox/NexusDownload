@@ -42,7 +42,12 @@ it.skipIf(process.platform !== 'win32')(
         })
         .toBe('true')
     } finally {
-      await rm(directory, { recursive: true, force: true })
+      await rm(directory, {
+        recursive: true,
+        force: true,
+        maxRetries: 10,
+        retryDelay: 200,
+      })
     }
   },
   20000
@@ -123,7 +128,12 @@ it.skipIf(process.platform !== 'win32').each([
           process.kill(ownedPid)
         } catch {}
       }
-      await rm(directory, { recursive: true, force: true })
+      await rm(directory, {
+        recursive: true,
+        force: true,
+        maxRetries: 10,
+        retryDelay: 200,
+      })
     }
   },
   20000

@@ -3577,7 +3577,7 @@
       "active": "다운로드 중",
       "waiting": "대기",
       "completed": "완료",
-      "attention": "주의가 필요하다"
+      "attention": "확인 필요"
     },
     "pause": "일시정지",
     "resume": "계속",
@@ -3692,7 +3692,7 @@
     "cloud": {
       "search": "이 폴더 검색",
       "myFiles": "내 파일",
-      "openShare": "공개 공유",
+      "openShare": "공유 링크 열기",
       "notLoggedIn": "로그아웃됨",
       "notConnected": "파일을 보려면 로그인하세요.",
       "name": "이름",
@@ -3712,7 +3712,7 @@
     },
     "media": {
       "placeholder": "동영상, 재생목록, 갤러리 링크 붙여넣기",
-      "parse": "로드",
+      "parse": "분석",
       "later": "출시 예정",
       "laterDescription": "v0.1은 기존 온라인 플레이 버전 미디어 스트림 다운로드를 사용할 수 있습니다.",
       "emptyTitle": "미디어 링크 붙여넣기",
@@ -3931,7 +3931,7 @@
       "etaUnknown": "",
       "remainingSpace": "드라이브 공간: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "{{count}} 파일 다운로드",
+      "downloadFiles": "파일 {{count}}개 다운로드",
       "checking": "확인 중",
       "reportTitle": "계좌 확인",
       "reportHelp": "",
@@ -4439,7 +4439,7 @@
         "downloading": "업데이트 중",
         "ready": "재시작 준비 완료",
         "readyHelp": "",
-        "restart": "다시 시작",
+        "restart": "다시 시작하여 업데이트",
         "pauseTasks": "{{count}} 다운로드가 일시 중지됩니다",
         "completed": "{{version}}로 업데이트됨",
         "viewNotes": "릴리스 노트",
@@ -4519,13 +4519,34 @@
         "all": "모두 다운로드"
       },
       "shortcut": {
-        "setting": "단축키",
+        "setting": "전역 단축키",
         "capture": "새 조합을 누르세요",
         "clear": "지우기",
         "off": "꺼짐",
         "conflict": "다른 앱에서 사용 중입니다. 변경하세요.",
         "invalid": "키 조합을 사용하세요"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "시스템 설정 사용",
+        "none": "사용 안 함",
+        "manual": "수동",
+        "scope": "프록시 적용 범위",
+        "domestic": "클라우드 드라이브 및 중국 플랫폼에도 프록시 사용"
+      },
+      "connecting": "연결 중…",
+      "browserDownload": "브라우저에서 다운로드",
+      "background": "백그라운드에서 계속",
+      "later": "나중에",
+      "notNow": "지금 안 함",
+      "downloadComplete": "다운로드 완료",
+      "newVersion": "새 버전",
+      "licenseIntro": "NexusDownload는 AGPL-3.0으로 공개된 오픈 소스입니다",
+      "otherComponents": "기타 구성 요소 {{count}}개",
+      "sourceCode": "소스 코드",
+      "shortcutHelp": "모든 앱에서 추가 창 열기",
+      "ok": "확인"
     }
   }
 }

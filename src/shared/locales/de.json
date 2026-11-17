@@ -3548,10 +3548,10 @@
   },
   "nexus": {
     "nav": {
-      "downloads": "Herunterladen",
+      "downloads": "Downloads",
       "cloud": "Cloud-Laufwerke",
       "media": "Medien",
-      "services": "Dienstleistungen",
+      "services": "Dienste",
       "settings": "Einstellungen"
     },
     "window": {
@@ -3621,7 +3621,7 @@
     "localRoute": "Lokaler Download",
     "stage": {
       "identify": "Quelle identifizieren",
-      "download": "Herunterladen",
+      "download": "Download",
       "organize": "Organisieren und markieren"
     },
     "addPlaceholder": "Fügen Sie einen Link, einen Freigabecode oder einen Magneten ein",
@@ -3736,7 +3736,7 @@
     },
     "media": {
       "placeholder": "Fügen Sie einen Video-, Playlist- oder Galerie-Link ein",
-      "parse": "Laden",
+      "parse": "Analysieren",
       "later": "Demnächst verfügbar",
       "laterDescription": "v0.1 kann den vorhandenen Medienstream der Online-Play-Version herunterladen.",
       "emptyTitle": "Einen Medienlink einfügen",
@@ -3784,14 +3784,14 @@
       "exportDiagnostics": "Diagnose exportieren",
       "sections": {
         "general": "Allgemein",
-        "downloads": "Herunterladen",
+        "downloads": "Downloads",
         "queues": "Warteschlangen und Zeitpläne",
         "accounts": "Cloud-Konten",
         "browser": "Webbrowser",
         "appearance": "Aussehen",
         "tools": "Externe Werkzeuge",
         "diagnostics": "Diagnose",
-        "about": "Ungefähr",
+        "about": "Über NexusDownload",
         "phone": "Vom Telefon senden",
         "mcp": "KI-Assistent",
         "media": "Medien",
@@ -3955,7 +3955,7 @@
       "etaUnknown": "",
       "remainingSpace": "Speicherplatz auf dem Laufwerk: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "{{count}}-Dateien herunterladen",
+      "downloadFiles": "{{count}} Dateien herunterladen",
       "checking": "Überprüfung",
       "reportTitle": "Kontoprüfung",
       "reportHelp": "",
@@ -4133,7 +4133,7 @@
       "wake": "Computer aufwecken",
       "wakeHelp": "Wake-Timer müssen unterstützt werden",
       "completion": "Nachdem die Warteschlange abgeschlossen ist",
-      "openFile": "Datei zum Öffnen",
+      "openFile": "Zu öffnende Datei",
       "joinQueue": "Treten Sie {{name}} bei",
       "weekday": {
         "0": "So",
@@ -4452,7 +4452,7 @@
         "lastChecked": "",
         "latest": "Auf dem neuesten Stand",
         "available": "Neue Version {{version}}",
-        "update": "Aktualisierung",
+        "update": "Aktualisieren",
         "website": "Projektwebsite",
         "changelog": "Versionshinweise",
         "licenses": "Open-Source-Lizenzen",
@@ -4463,7 +4463,7 @@
         "downloading": "Aktualisierung",
         "ready": "Bereit zum Neustart",
         "readyHelp": "",
-        "restart": "Neustart",
+        "restart": "Neu starten und aktualisieren",
         "pauseTasks": "{{count}}-Downloads werden angehalten",
         "completed": "Aktualisiert auf {{version}}",
         "viewNotes": "Versionshinweise",
@@ -4543,13 +4543,34 @@
         "all": "Alle herunterladen"
       },
       "shortcut": {
-        "setting": "Tastenkürzel",
+        "setting": "Globales Tastenkürzel",
         "capture": "Neue Kombination drücken",
         "clear": "Löschen",
         "off": "Aus",
         "conflict": "Von anderer App belegt. Anderes Kürzel wählen.",
         "invalid": "Tastenkombination verwenden"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Systemeinstellung",
+        "none": "Aus",
+        "manual": "Manuell",
+        "scope": "Proxy-Nutzung",
+        "domestic": "Proxy auch für Cloud-Speicher und chinesische Dienste verwenden"
+      },
+      "connecting": "Verbindung wird hergestellt…",
+      "browserDownload": "Im Browser herunterladen",
+      "background": "Im Hintergrund fortsetzen",
+      "later": "Später",
+      "notNow": "Jetzt nicht",
+      "downloadComplete": "Download abgeschlossen",
+      "newVersion": "Neue Version",
+      "licenseIntro": "NexusDownload ist unter AGPL-3.0 quelloffen",
+      "otherComponents": "{{count}} weitere Komponenten",
+      "sourceCode": "Quellcode",
+      "shortcutHelp": "Das Hinzufügen-Fenster aus jeder App öffnen",
+      "ok": "OK"
     }
   }
 }

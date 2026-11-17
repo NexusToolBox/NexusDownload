@@ -3621,7 +3621,7 @@
     "localRoute": "Lokal nedlasting",
     "stage": {
       "identify": "Identifiser kilden",
-      "download": "Nedlastinger",
+      "download": "Nedlasting",
       "organize": "Organisere og merke"
     },
     "addPlaceholder": "Lim inn en lenke, delekode eller magnet",
@@ -3716,7 +3716,7 @@
     "cloud": {
       "search": "Søk i denne mappen",
       "myFiles": "Mine filer",
-      "openShare": "Åpen andel",
+      "openShare": "Åpne delt lenke",
       "notLoggedIn": "Utlogget",
       "notConnected": "Logg på for å se filer",
       "name": "Navn",
@@ -3736,7 +3736,7 @@
     },
     "media": {
       "placeholder": "Lim inn en video, spilleliste eller gallerikobling",
-      "parse": "Last",
+      "parse": "Analyser",
       "later": "Kommer snart",
       "laterDescription": "v0.1 kan bruke den eksisterende nettbaserte spillversjonen mediestrømnedlasting.",
       "emptyTitle": "Lim inn en medielenke",
@@ -3789,9 +3789,9 @@
         "accounts": "Skykontoer",
         "browser": "Nettleser",
         "appearance": "Utseende",
-        "tools": "Eksternt verktøy",
+        "tools": "Eksterne verktøy",
         "diagnostics": "Diagnostikk",
-        "about": "Omtrent",
+        "about": "Om",
         "phone": "Send fra telefon",
         "mcp": "AI-assistent",
         "media": "Mediefiler",
@@ -3955,7 +3955,7 @@
       "etaUnknown": "",
       "remainingSpace": "Drive plass: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Last ned {{count}}-filer",
+      "downloadFiles": "Last ned {{count}} filer",
       "checking": "Sjekker",
       "reportTitle": "Kontosjekk",
       "reportHelp": "",
@@ -4452,7 +4452,7 @@
         "lastChecked": "",
         "latest": "Oppdatert",
         "available": "Ny versjon {{version}}",
-        "update": "Oppdatering",
+        "update": "Oppdater",
         "website": "Prosjektnettsted",
         "changelog": "Utgivelsesnotater",
         "licenses": "Åpen kildekode-lisenser",
@@ -4463,7 +4463,7 @@
         "downloading": "Oppdatering",
         "ready": "Klar til å starte på nytt",
         "readyHelp": "",
-        "restart": "Start på nytt",
+        "restart": "Start på nytt og oppdater",
         "pauseTasks": "{{count}}-nedlastinger blir satt på pause",
         "completed": "Oppdatert til {{version}}",
         "viewNotes": "Utgivelsesnotater",
@@ -4543,13 +4543,34 @@
         "all": "Last ned alle"
       },
       "shortcut": {
-        "setting": "Hurtigtast",
+        "setting": "Global hurtigtast",
         "capture": "Trykk en ny kombinasjon",
         "clear": "Fjern",
         "off": "Av",
         "conflict": "Brukes av en annen app. Velg en annen.",
         "invalid": "Bruk en tastekombinasjon"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Følg systemet",
+        "none": "Av",
+        "manual": "Manuelt",
+        "scope": "Proxybruk",
+        "domestic": "Bruk proxy også for skylagring og kinesiske plattformer"
+      },
+      "connecting": "Kobler til…",
+      "browserDownload": "Last ned i nettleseren",
+      "background": "Fortsett i bakgrunnen",
+      "later": "Senere",
+      "notNow": "Ikke nå",
+      "downloadComplete": "Nedlasting fullført",
+      "newVersion": "Ny versjon",
+      "licenseIntro": "NexusDownload er åpen kildekode under AGPL-3.0",
+      "otherComponents": "{{count}} andre komponenter",
+      "sourceCode": "Kildekode",
+      "shortcutHelp": "Åpne legg til-vinduet fra alle apper",
+      "ok": "OK"
     }
   }
 }

@@ -3548,7 +3548,7 @@
   },
   "nexus": {
     "nav": {
-      "downloads": "downloads",
+      "downloads": "Downloads",
       "cloud": "Cloudschijven",
       "media": "Mediabestanden",
       "services": "Diensten",
@@ -3598,9 +3598,9 @@
     },
     "filter": {
       "all": "Alles",
-      "active": "downloaden",
+      "active": "Downloaden",
       "waiting": "Wachten",
-      "completed": "voltooid",
+      "completed": "Voltooid",
       "attention": "Heeft aandacht nodig"
     },
     "pause": "Pauze",
@@ -3621,7 +3621,7 @@
     "localRoute": "Lokaal downloaden",
     "stage": {
       "identify": "Identificeer de bron",
-      "download": "downloads",
+      "download": "Download",
       "organize": "Organiseren en markeren"
     },
     "addPlaceholder": "Plak een link, deel code of magneet",
@@ -3716,7 +3716,7 @@
     "cloud": {
       "search": "Zoek in deze map",
       "myFiles": "Mijn bestanden",
-      "openShare": "Open aandeel",
+      "openShare": "Gedeelde link openen",
       "notLoggedIn": "Afgemeld",
       "notConnected": "Meld u aan om bestanden te bekijken",
       "name": "Naam",
@@ -3736,7 +3736,7 @@
     },
     "media": {
       "placeholder": "Plak een video-, afspeellijst- of galerijlink",
-      "parse": "Laden",
+      "parse": "Analyseren",
       "later": "Binnenkort beschikbaar",
       "laterDescription": "v0.1 kan de bestaande online speelversie van de mediastream downloaden.",
       "emptyTitle": "Plak een medialink",
@@ -3784,7 +3784,7 @@
       "exportDiagnostics": "Diagnostische gegevens exporteren",
       "sections": {
         "general": "Algemeen",
-        "downloads": "downloads",
+        "downloads": "Downloads",
         "queues": "Wachtrijen en planningen",
         "accounts": "Cloud-accounts",
         "browser": "Webbrowser",
@@ -3955,7 +3955,7 @@
       "etaUnknown": "",
       "remainingSpace": "Schijfruimte: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "{{count}}-bestanden downloaden",
+      "downloadFiles": "{{count}} bestanden downloaden",
       "checking": "Controle",
       "reportTitle": "Accountcontrole",
       "reportHelp": "",
@@ -4463,7 +4463,7 @@
         "downloading": "Bijwerken",
         "ready": "Klaar om opnieuw op te starten",
         "readyHelp": "",
-        "restart": "opnieuw opstarten",
+        "restart": "Opnieuw starten en bijwerken",
         "pauseTasks": "{{count}}-downloads worden gepauzeerd",
         "completed": "bijgewerkt naar {{version}}",
         "viewNotes": "Release-opmerkingen",
@@ -4543,13 +4543,34 @@
         "all": "Alles downloaden"
       },
       "shortcut": {
-        "setting": "Sneltoets",
+        "setting": "Algemene sneltoets",
         "capture": "Druk op een nieuwe combinatie",
         "clear": "Wissen",
         "off": "Uit",
         "conflict": "In gebruik door een andere app. Kies een andere.",
         "invalid": "Gebruik een toetscombinatie"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Systeem volgen",
+        "none": "Uit",
+        "manual": "Handmatig",
+        "scope": "Proxygebruik",
+        "domestic": "Proxy ook voor cloudopslag en Chinese platforms gebruiken"
+      },
+      "connecting": "Verbinden…",
+      "browserDownload": "Downloaden in browser",
+      "background": "Doorgaan op achtergrond",
+      "later": "Later",
+      "notNow": "Niet nu",
+      "downloadComplete": "Download voltooid",
+      "newVersion": "Nieuwe versie",
+      "licenseIntro": "NexusDownload is opensource onder AGPL-3.0",
+      "otherComponents": "{{count}} andere onderdelen",
+      "sourceCode": "Broncode",
+      "shortcutHelp": "Het toevoegvenster vanuit elke app openen",
+      "ok": "OK"
     }
   }
 }

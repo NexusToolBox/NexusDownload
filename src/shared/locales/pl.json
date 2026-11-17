@@ -3647,7 +3647,7 @@
     "filter": {
       "all": "Wszystko",
       "active": "Pobieranie",
-      "waiting": "Czekam",
+      "waiting": "Oczekujące",
       "completed": "Zakończono",
       "attention": "Wymaga uwagi"
     },
@@ -3764,7 +3764,7 @@
     "cloud": {
       "search": "Przeszukaj ten folder",
       "myFiles": "Moje pliki",
-      "openShare": "Otwórz udział",
+      "openShare": "Otwórz udostępniony link",
       "notLoggedIn": "Wylogowano",
       "notConnected": "Zaloguj się, aby przeglądać pliki",
       "name": "Imię",
@@ -3784,7 +3784,7 @@
     },
     "media": {
       "placeholder": "Wklej link do filmu, playlisty lub galerii",
-      "parse": "Załaduj",
+      "parse": "Analizuj",
       "later": "Już wkrótce",
       "laterDescription": "v0.1 może korzystać z istniejącej wersji odtwarzania multimediów online do pobrania.",
       "emptyTitle": "Wklej link do multimediów",
@@ -3839,7 +3839,7 @@
         "appearance": "Wygląd",
         "tools": "Narzędzia zewnętrzne",
         "diagnostics": "Diagnostyka",
-        "about": "O",
+        "about": "O programie",
         "phone": "Wyślij z telefonu",
         "mcp": "Asystent AI",
         "media": "Multimedia",
@@ -4003,7 +4003,7 @@
       "etaUnknown": "",
       "remainingSpace": "Miejsce na dysku: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Pobierz pliki {{count}}",
+      "downloadFiles": "Pobierz {{count}} plików",
       "checking": "Sprawdzam",
       "reportTitle": "Kontrola konta",
       "reportHelp": "",
@@ -4500,7 +4500,7 @@
         "lastChecked": "",
         "latest": "Aktualne",
         "available": "Nowa wersja {{version}}",
-        "update": "Aktualizacja",
+        "update": "Aktualizuj",
         "website": "Strona internetowa projektu",
         "changelog": "Informacje o wydaniu",
         "licenses": "Licencje typu open source",
@@ -4511,7 +4511,7 @@
         "downloading": "Aktualizacja",
         "ready": "Gotowy do ponownego uruchomienia",
         "readyHelp": "",
-        "restart": "Uruchom ponownie",
+        "restart": "Uruchom ponownie i zaktualizuj",
         "pauseTasks": "Pobieranie {{count}} zostanie wstrzymane",
         "completed": "Zaktualizowano do {{version}}",
         "viewNotes": "Informacje o wydaniu",
@@ -4591,13 +4591,34 @@
         "all": "Pobierz wszystko"
       },
       "shortcut": {
-        "setting": "Skrót",
+        "setting": "Skrót globalny",
         "capture": "Naciśnij nową kombinację",
         "clear": "Wyczyść",
         "off": "Wyłączony",
         "conflict": "Używany przez inną aplikację. Wybierz inny.",
         "invalid": "Użyj kombinacji klawiszy"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Ustawienia systemowe",
+        "none": "Wyłączone",
+        "manual": "Ręcznie",
+        "scope": "Użycie proxy",
+        "domestic": "Używaj proxy także dla chmury i chińskich serwisów"
+      },
+      "connecting": "Łączenie…",
+      "browserDownload": "Pobierz w przeglądarce",
+      "background": "Kontynuuj w tle",
+      "later": "Później",
+      "notNow": "Nie teraz",
+      "downloadComplete": "Pobieranie zakończone",
+      "newVersion": "Nowa wersja",
+      "licenseIntro": "NexusDownload jest dostępny na licencji AGPL-3.0",
+      "otherComponents": "Inne składniki: {{count}}",
+      "sourceCode": "Kod źródłowy",
+      "shortcutHelp": "Otwórz okno dodawania z dowolnej aplikacji",
+      "ok": "OK"
     }
   }
 }

@@ -3573,9 +3573,9 @@
   "nexus": {
     "nav": {
       "downloads": "Téléchargements",
-      "cloud": "lecteurs cloud",
+      "cloud": "Stockage cloud",
       "media": "Médias",
-      "services": "Prestations",
+      "services": "Services",
       "settings": "Paramètres"
     },
     "window": {
@@ -3625,7 +3625,7 @@
       "active": "Téléchargement",
       "waiting": "En attente",
       "completed": "Terminé",
-      "attention": "A besoin d'attention"
+      "attention": "À vérifier"
     },
     "pause": "Suspendre",
     "resume": "Continuer",
@@ -3645,7 +3645,7 @@
     "localRoute": "Téléchargement local",
     "stage": {
       "identify": "Identifier la source",
-      "download": "Téléchargements",
+      "download": "Téléchargement",
       "organize": "Organiser et marquer"
     },
     "addPlaceholder": "Collez un lien, partagez un code ou un aimant",
@@ -3740,7 +3740,7 @@
     "cloud": {
       "search": "Rechercher ce dossier",
       "myFiles": "Mes fichiers",
-      "openShare": "Partage ouvert",
+      "openShare": "Ouvrir un lien partagé",
       "notLoggedIn": "Déconnecté",
       "notConnected": "Connectez-vous pour afficher les fichiers",
       "name": "Nom",
@@ -3760,7 +3760,7 @@
     },
     "media": {
       "placeholder": "Collez un lien vers une vidéo, une playlist ou une galerie",
-      "parse": "Charger",
+      "parse": "Analyser",
       "later": "À venir",
       "laterDescription": "v0.1 peut utiliser le téléchargement du flux multimédia de la version de lecture en ligne existante.",
       "emptyTitle": "Coller un lien média",
@@ -3948,7 +3948,7 @@
     },
     "cloudV2": {
       "loggedIn": "Connecté",
-      "login": "Connectez-vous",
+      "login": "Connexion",
       "logout": "Déconnexion",
       "chooseAccount": "Sélectionner un compte",
       "accountNumber": "Compte {{count}}",
@@ -3979,7 +3979,7 @@
       "etaUnknown": "",
       "remainingSpace": "Espace disque : {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Télécharger les fichiers {{count}}",
+      "downloadFiles": "Télécharger {{count}} fichiers",
       "checking": "Vérification",
       "reportTitle": "Vérification du compte",
       "reportHelp": "",
@@ -4476,7 +4476,7 @@
         "lastChecked": "",
         "latest": "À jour",
         "available": "Nouvelle version {{version}}",
-        "update": "Mise à jour",
+        "update": "Mettre à jour",
         "website": "Site Web du projet",
         "changelog": "Notes de version",
         "licenses": "Licences open source",
@@ -4487,7 +4487,7 @@
         "downloading": "Mise à jour",
         "ready": "Prêt à redémarrer",
         "readyHelp": "",
-        "restart": "Redémarrer",
+        "restart": "Redémarrer et mettre à jour",
         "pauseTasks": "les téléchargements de {{count}} seront suspendus",
         "completed": "mis à jour vers {{version}}",
         "viewNotes": "Notes de version",
@@ -4567,13 +4567,34 @@
         "all": "Tout télécharger"
       },
       "shortcut": {
-        "setting": "Raccourci",
+        "setting": "Raccourci global",
         "capture": "Appuyez sur une nouvelle combinaison",
         "clear": "Effacer",
         "off": "Désactivé",
         "conflict": "Utilisé par une autre application. Choisissez-en un autre.",
         "invalid": "Utilisez une combinaison de touches"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Suivre le système",
+        "none": "Désactivé",
+        "manual": "Manuel",
+        "scope": "Utilisation du proxy",
+        "domestic": "Utiliser aussi le proxy pour le cloud et les plateformes chinoises"
+      },
+      "connecting": "Connexion…",
+      "browserDownload": "Télécharger dans le navigateur",
+      "background": "Continuer en arrière-plan",
+      "later": "Plus tard",
+      "notNow": "Pas maintenant",
+      "downloadComplete": "Téléchargement terminé",
+      "newVersion": "Nouvelle version",
+      "licenseIntro": "NexusDownload est un logiciel libre sous AGPL-3.0",
+      "otherComponents": "{{count}} autres composants",
+      "sourceCode": "Code source",
+      "shortcutHelp": "Ouvrir la fenêtre d’ajout depuis toute application",
+      "ok": "OK"
     }
   }
 }

@@ -3759,10 +3759,10 @@
     "settings": {
       "exportDiagnostics": "匯出診斷記錄",
       "sections": {
-        "general": "常規",
+        "general": "一般",
         "downloads": "下載",
         "queues": "佇列與計劃",
-        "accounts": "網盤賬號",
+        "accounts": "雲端帳號",
         "browser": "瀏覽器",
         "appearance": "外觀",
         "tools": "外部工具",
@@ -3901,7 +3901,7 @@
     "cloudV2": {
       "loggedIn": "已登入",
       "login": "登入",
-      "logout": "退出這個賬號",
+      "logout": "登出",
       "chooseAccount": "選擇賬號",
       "accountNumber": "賬號 {{count}}",
       "requests": "今日請求",
@@ -4109,7 +4109,7 @@
       "wake": "允許喚醒電腦",
       "wakeHelp": "需要電腦支援定時喚醒",
       "completion": "佇列完成後",
-      "openFile": "要開啟的檔案絕對路徑",
+      "openFile": "要開啟的檔案",
       "joinQueue": "加入{{name}}",
       "weekday": {
         "0": "日",
@@ -4439,7 +4439,7 @@
         "downloading": "正在更新",
         "ready": "新版本已就緒",
         "readyHelp": "",
-        "restart": "重啟",
+        "restart": "重新啟動並更新",
         "pauseTasks": "會暫停 {{count}} 個下載",
         "completed": "已更新到 {{version}}",
         "viewNotes": "更新內容",
@@ -4497,7 +4497,7 @@
         "quit": "退出",
         "agree": "同意並繼續"
       },
-      "feedback": "反饋問題",
+      "feedback": "回報問題",
       "cleanup": {
         "title": "清除系統殘留",
         "button": "清除",
@@ -4519,13 +4519,34 @@
         "all": "全部下載"
       },
       "shortcut": {
-        "setting": "快速鍵",
+        "setting": "全域快捷鍵",
         "capture": "按下新組合",
         "clear": "清除",
         "off": "已關閉",
         "conflict": "已被其他軟體佔用，請換一個",
         "invalid": "請使用組合鍵"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "跟隨系統",
+        "none": "不使用",
+        "manual": "手動",
+        "scope": "代理範圍",
+        "domestic": "網路硬碟和國內平台也使用代理"
+      },
+      "connecting": "正在連線…",
+      "browserDownload": "在瀏覽器中下載",
+      "background": "在背景進行",
+      "later": "稍後",
+      "notNow": "以後再說",
+      "downloadComplete": "下載完成",
+      "newVersion": "新版本",
+      "licenseIntro": "NexusDownload 以 AGPL-3.0 授權開放原始碼",
+      "otherComponents": "其他 {{count}} 個元件",
+      "sourceCode": "原始碼",
+      "shortcutHelp": "在任何軟體中開啟新增視窗",
+      "ok": "好的"
     }
   }
 }

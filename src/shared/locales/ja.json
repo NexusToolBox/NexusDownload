@@ -3575,9 +3575,9 @@
     "filter": {
       "all": "すべて",
       "active": "ダウンロード中",
-      "waiting": "待っています",
+      "waiting": "待機中",
       "completed": "完了",
-      "attention": "注意が必要です"
+      "attention": "要確認"
     },
     "pause": "一時停止",
     "resume": "続行",
@@ -3692,7 +3692,7 @@
     "cloud": {
       "search": "このフォルダーを検索します",
       "myFiles": "私のファイル",
-      "openShare": "オープンシェア",
+      "openShare": "共有リンクを開く",
       "notLoggedIn": "サインアウトしました",
       "notConnected": "ファイルを表示するにはサインインしてください",
       "name": "名前",
@@ -3712,7 +3712,7 @@
     },
     "media": {
       "placeholder": "ビデオ、プレイリスト、またはギャラリーのリンクを貼り付けます",
-      "parse": "ロード",
+      "parse": "解析",
       "later": "近日公開予定",
       "laterDescription": "v0.1 は既存のオンライン プレイ バージョンのメディア ストリーム ダウンロードを使用できます。",
       "emptyTitle": "メディアリンクを貼り付けます",
@@ -3757,7 +3757,7 @@
     },
     "playbackStream": "プレイバックバージョン",
     "settings": {
-      "exportDiagnostics": "診断のエクスポート",
+      "exportDiagnostics": "診断情報をエクスポート",
       "sections": {
         "general": "一般",
         "downloads": "ダウンロード",
@@ -3767,7 +3767,7 @@
         "appearance": "外観",
         "tools": "外部ツール",
         "diagnostics": "診断",
-        "about": "について",
+        "about": "このアプリについて",
         "phone": "電話から送信",
         "mcp": "AIアシスタント",
         "media": "メディア",
@@ -3931,7 +3931,7 @@
       "etaUnknown": "",
       "remainingSpace": "ドライブスペース: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "{{count}} ファイルをダウンロードする",
+      "downloadFiles": "{{count}} 個のファイルをダウンロード",
       "checking": "チェック中",
       "reportTitle": "アカウントチェック",
       "reportHelp": "",
@@ -4422,7 +4422,7 @@
         "version": "バージョン {{version}}",
         "title": "ネクサスダウンロード {{version}}",
         "description": "",
-        "check": "アップデートをチェックする",
+        "check": "更新を確認",
         "checkButton": "チェック",
         "checkHelp": "",
         "lastChecked": "",
@@ -4439,7 +4439,7 @@
         "downloading": "更新中",
         "ready": "再起動の準備ができました",
         "readyHelp": "",
-        "restart": "再起動",
+        "restart": "再起動して更新",
         "pauseTasks": "{{count}} ダウンロードは一時停止されます",
         "completed": "{{version}} に更新されました",
         "viewNotes": "リリースノート",
@@ -4497,7 +4497,7 @@
         "quit": "終了",
         "agree": "同意して続行"
       },
-      "feedback": "問題を報告する",
+      "feedback": "問題を報告",
       "cleanup": {
         "title": "システムエントリをクリアします",
         "button": "クリア",
@@ -4519,13 +4519,34 @@
         "all": "すべてダウンロード"
       },
       "shortcut": {
-        "setting": "ショートカット",
+        "setting": "グローバルショートカット",
         "capture": "新しい組み合わせを入力",
         "clear": "クリア",
         "off": "無効",
         "conflict": "他のアプリが使用中です。変更してください。",
         "invalid": "キーを組み合わせてください"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "システムに従う",
+        "none": "使用しない",
+        "manual": "手動",
+        "scope": "プロキシの適用範囲",
+        "domestic": "クラウドストレージと中国国内サービスにも適用"
+      },
+      "connecting": "接続中…",
+      "browserDownload": "ブラウザーでダウンロード",
+      "background": "バックグラウンドで続行",
+      "later": "後で",
+      "notNow": "今はしない",
+      "downloadComplete": "ダウンロード完了",
+      "newVersion": "新しいバージョン",
+      "licenseIntro": "NexusDownload は AGPL-3.0 で公開されています",
+      "otherComponents": "その他 {{count}} 個のコンポーネント",
+      "sourceCode": "ソースコード",
+      "shortcutHelp": "他のアプリからも追加画面を開く",
+      "ok": "OK"
     }
   }
 }

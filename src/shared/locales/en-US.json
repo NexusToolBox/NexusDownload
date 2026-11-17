@@ -3621,7 +3621,7 @@
     "localRoute": "Local download",
     "stage": {
       "identify": "Identify source",
-      "download": "Downloads",
+      "download": "Download",
       "organize": "Organize and mark"
     },
     "addPlaceholder": "Paste a link, share code or magnet",
@@ -3716,7 +3716,7 @@
     "cloud": {
       "search": "Search this folder",
       "myFiles": "My files",
-      "openShare": "Open share",
+      "openShare": "Open shared link",
       "notLoggedIn": "Signed out",
       "notConnected": "Sign in to view files",
       "name": "Name",
@@ -3736,7 +3736,7 @@
     },
     "media": {
       "placeholder": "Paste a video, playlist or gallery link",
-      "parse": "Load",
+      "parse": "Analyze",
       "later": "Coming soon",
       "laterDescription": "v0.1 can use the existing online play version media stream download.",
       "emptyTitle": "Paste a media link",
@@ -4463,7 +4463,7 @@
         "downloading": "Updating",
         "ready": "Ready to restart",
         "readyHelp": "",
-        "restart": "Restart",
+        "restart": "Restart and update",
         "pauseTasks": "{{count}} downloads will be paused",
         "completed": "Updated to {{version}}",
         "viewNotes": "Release notes",
@@ -4543,13 +4543,34 @@
         "all": "Download all"
       },
       "shortcut": {
-        "setting": "Shortcut",
+        "setting": "Global shortcut",
         "capture": "Press a new shortcut",
         "clear": "Clear",
         "off": "Off",
         "conflict": "Used by another app. Choose another.",
         "invalid": "Use a key combination"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Follow system",
+        "none": "Off",
+        "manual": "Manual",
+        "scope": "Proxy scope",
+        "domestic": "Use proxy for cloud drives and domestic platforms"
+      },
+      "connecting": "Connecting…",
+      "browserDownload": "Download in browser",
+      "background": "Continue in background",
+      "later": "Later",
+      "notNow": "Not now",
+      "downloadComplete": "Download complete",
+      "newVersion": "New version",
+      "licenseIntro": "NexusDownload is open source under AGPL-3.0",
+      "otherComponents": "{{count}} other components",
+      "sourceCode": "Source code",
+      "shortcutHelp": "Open the add window from any app",
+      "ok": "OK"
     }
   }
 }

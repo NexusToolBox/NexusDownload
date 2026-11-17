@@ -3573,8 +3573,8 @@
   "nexus": {
     "nav": {
       "downloads": "Descàrregues",
-      "cloud": "unitats al núvol",
-      "media": "Mitjans de comunicació",
+      "cloud": "Discos al núvol",
+      "media": "Multimèdia",
       "services": "Serveis",
       "settings": "Configuració"
     },
@@ -3645,7 +3645,7 @@
     "localRoute": "Descàrrega local",
     "stage": {
       "identify": "Identificar la font",
-      "download": "Descàrregues",
+      "download": "Baixada",
       "organize": "Organitzar i marcar"
     },
     "addPlaceholder": "enganxeu un enllaç, compartiu codi o imant",
@@ -3740,7 +3740,7 @@
     "cloud": {
       "search": "cerqueu aquesta carpeta",
       "myFiles": "Els meus fitxers",
-      "openShare": "compartició oberta",
+      "openShare": "Obre un enllaç compartit",
       "notLoggedIn": "tancat",
       "notConnected": "inicieu la sessió per veure fitxers",
       "name": "Nom",
@@ -3760,7 +3760,7 @@
     },
     "media": {
       "placeholder": "enganxeu un enllaç de vídeo, llista de reproducció o galeria",
-      "parse": "càrrega",
+      "parse": "Analitza",
       "later": "Properament",
       "laterDescription": "v0.1 pot utilitzar la versió de reproducció en línia existent per descàrrega del flux multimèdia.",
       "emptyTitle": "enganxeu un enllaç multimèdia",
@@ -3807,18 +3807,18 @@
     "settings": {
       "exportDiagnostics": "Exporta diagnòstic",
       "sections": {
-        "general": "Preferències",
+        "general": "General",
         "downloads": "Descàrregues",
         "queues": "Cues i horaris",
-        "accounts": "comptes al núvol",
+        "accounts": "Comptes al núvol",
         "browser": "navegador",
         "appearance": "Aparició",
         "tools": "Eines externes",
         "diagnostics": "Diagnòstic",
-        "about": "Sobre",
+        "about": "Quant a",
         "phone": "Enviar des del telèfon",
         "mcp": "Assistent d’IA",
-        "media": "Mitjans de comunicació",
+        "media": "Multimèdia",
         "network": "Xarxa",
         "bittorrent": "BitTorrent",
         "connections": "Connexions"
@@ -3948,8 +3948,8 @@
     },
     "cloudV2": {
       "loggedIn": "Iniciat",
-      "login": "inicieu la sessió",
-      "logout": "tanca la sessió",
+      "login": "Inicia la sessió",
+      "logout": "Tanca la sessió",
       "chooseAccount": "Seleccioneu el compte",
       "accountNumber": "compte {{count}}",
       "requests": "Sol·licituds avui",
@@ -3979,7 +3979,7 @@
       "etaUnknown": "",
       "remainingSpace": "espai de la unitat: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Baixeu fitxers {{count}}",
+      "downloadFiles": "Baixa {{count}} fitxers",
       "checking": "Comprovació",
       "reportTitle": "Comprovació del compte",
       "reportHelp": "",
@@ -4476,7 +4476,7 @@
         "lastChecked": "",
         "latest": "Actualitzat",
         "available": "nova versió {{version}}",
-        "update": "Actualització",
+        "update": "Actualitza",
         "website": "Web del projecte",
         "changelog": "notes de la versió",
         "licenses": "Llicències de codi obert",
@@ -4487,10 +4487,10 @@
         "downloading": "Actualització",
         "ready": "llest per reiniciar",
         "readyHelp": "",
-        "restart": "Reiniciar",
+        "restart": "Reinicia i actualitza",
         "pauseTasks": "les baixades de {{count}} es posaran en pausa",
         "completed": "s'ha actualitzat a {{version}}",
-        "viewNotes": "notes de la versió",
+        "viewNotes": "Notes de la versió",
         "restoredTitle": "L'actualització ha fallat, s'ha restaurat",
         "restored": "ha fallat l'actualització. {{version}} restaurat",
         "error": {
@@ -4567,13 +4567,34 @@
         "all": "Baixa-ho tot"
       },
       "shortcut": {
-        "setting": "Drecera",
+        "setting": "Drecera global",
         "capture": "Prem una drecera nova",
         "clear": "Esborra",
         "off": "Desactivada",
         "conflict": "Una altra aplicació l’utilitza. Tria’n una altra.",
         "invalid": "Fes servir una combinació de tecles"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Segueix el sistema",
+        "none": "Desactivat",
+        "manual": "Manual",
+        "scope": "Ús del servidor intermediari",
+        "domestic": "Usa’l també per al núvol i les plataformes xineses"
+      },
+      "connecting": "S’està connectant…",
+      "browserDownload": "Baixa al navegador",
+      "background": "Continua en segon pla",
+      "later": "Més tard",
+      "notNow": "Ara no",
+      "downloadComplete": "Baixada completada",
+      "newVersion": "Versió nova",
+      "licenseIntro": "NexusDownload és de codi obert amb llicència AGPL-3.0",
+      "otherComponents": "{{count}} components més",
+      "sourceCode": "Codi font",
+      "shortcutHelp": "Obre la finestra d’addició des de qualsevol aplicació",
+      "ok": "D’acord"
     }
   }
 }

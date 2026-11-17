@@ -32,6 +32,7 @@ import { MigrationPage } from '@renderer/routes/migration/migration-page'
 import { AccountHealthNotice } from '@renderer/routes/nexus-cloud/account-health-notice'
 import { NexusAddHost } from '@renderer/routes/nexus-downloads/add-host'
 import { NexusTitlebar } from '@renderer/routes/nexus-downloads/window-titlebar'
+import { NexusUpdateDialog } from '@renderer/routes/nexus-settings/update-ui'
 import { WorkflowNotice } from '@renderer/routes/nexus-settings/workflow-notice'
 import { usePairRequestPrompts } from '@renderer/routes/settings/cards/integration/use-pair-request-prompts'
 import { LEGACY_MIGRATION_ROUTE } from '@shared/lib/legacy-import-navigation'
@@ -103,6 +104,7 @@ export function AppLayout() {
             <div className="main">
               <NexusTitlebar />
               <WorkflowNotice />
+              <NexusUpdateDialog />
               <SidebarInset className="panel">
                 <RendererSubmissionNotice
                   className="mx-4 mb-2 mt-12"

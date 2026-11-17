@@ -34,6 +34,40 @@ const english = catalog('en-US')
 const invariant =
   /^(?:platform\.(?:115|123|baidu|quark|uc|aliyun)|services\.debrid|settings\.sections\.bittorrent|settings\.typeDescription\.|v11\.quality\.(?:16|32|64|80|120|125|126|127)$|v12\.connector\.id$|v12\.completedBody$|v13\.update\.title$|v15\.notice\.feedbackSuffix$)/
 
+// These words are also idiomatic native UI labels; spelling equality is not fallback.
+const sharedSpellings: Record<string, string[]> = {
+  ca: ['settings.sections.general', 'v152.proxy.manual'],
+  de: [
+    'nav.downloads',
+    'stage.download',
+    'settings.sections.downloads',
+    'v152.ok',
+  ],
+  es: ['settings.sections.general', 'v152.proxy.manual'],
+  fr: ['nav.services', 'v152.ok'],
+  id: ['v152.proxy.manual', 'v152.ok'],
+  it: ['stage.download', 'v152.ok'],
+  ja: ['v152.ok'],
+  nb: ['v152.ok'],
+  nl: [
+    'nav.downloads',
+    'stage.download',
+    'settings.sections.downloads',
+    'v152.later',
+    'v152.ok',
+  ],
+  pl: ['v152.ok'],
+  'pt-BR': [
+    'nav.downloads',
+    'stage.download',
+    'settings.sections.downloads',
+    'v152.proxy.manual',
+    'v152.ok',
+  ],
+  ro: ['settings.sections.general', 'v152.proxy.manual', 'v152.ok'],
+  vi: ['v152.ok'],
+}
+
 describe('Nexus translations', () => {
   it.each(SUPPORTED_LOCALES.map((item) => item.code))(
     '%s has current keys and translated product copy',
@@ -43,7 +77,10 @@ describe('Nexus translations', () => {
       if (locale === 'en-US') return
       const copied = Object.keys(values).filter(
         (key) =>
-          values[key] && !invariant.test(key) && values[key] === english[key]
+          values[key] &&
+          !invariant.test(key) &&
+          !sharedSpellings[locale]?.includes(key) &&
+          values[key] === english[key]
       )
       expect(copied).toEqual([])
     }

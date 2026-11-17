@@ -3526,7 +3526,7 @@
     "nav": {
       "downloads": "Tải xuống",
       "cloud": "Ổ đĩa đám mây",
-      "media": "Truyền thông",
+      "media": "Đa phương tiện",
       "services": "Dịch vụ",
       "settings": "Cài đặt"
     },
@@ -3575,7 +3575,7 @@
     "filter": {
       "all": "Tất cả",
       "active": "Đang tải xuống",
-      "waiting": "Chờ đợi",
+      "waiting": "Đang chờ",
       "completed": "Đã hoàn thành",
       "attention": "Cần chú ý"
     },
@@ -3692,7 +3692,7 @@
     "cloud": {
       "search": "Tìm kiếm thư mục này",
       "myFiles": "Tập tin của tôi",
-      "openShare": "Mở chia sẻ",
+      "openShare": "Mở liên kết chia sẻ",
       "notLoggedIn": "Đã đăng xuất",
       "notConnected": "Đăng nhập để xem file",
       "name": "Tên",
@@ -3712,7 +3712,7 @@
     },
     "media": {
       "placeholder": "Dán liên kết video, danh sách phát hoặc thư viện",
-      "parse": "Tải",
+      "parse": "Phân tích",
       "later": "Sắp có",
       "laterDescription": "v0.1 có thể sử dụng tải xuống luồng phương tiện phiên bản phát trực tuyến hiện có.",
       "emptyTitle": "Dán liên kết phương tiện",
@@ -3759,18 +3759,18 @@
     "settings": {
       "exportDiagnostics": "Xuất chẩn đoán",
       "sections": {
-        "general": "Tổng hợp",
+        "general": "Chung",
         "downloads": "Tải xuống",
         "queues": "Hàng đợi và lịch trình",
         "accounts": "Tài khoản đám mây",
         "browser": "Trình duyệt",
         "appearance": "Ngoại hình",
-        "tools": "Dụng cụ ngoài",
+        "tools": "Công cụ bên ngoài",
         "diagnostics": "Chẩn đoán",
         "about": "Giới thiệu",
         "phone": "Gửi từ điện thoại",
         "mcp": "Trợ lý AI",
-        "media": "Truyền thông",
+        "media": "Đa phương tiện",
         "network": "Mạng",
         "bittorrent": "BitTorrent",
         "connections": "Kết nối"
@@ -3931,7 +3931,7 @@
       "etaUnknown": "",
       "remainingSpace": "Dung lượng ổ đĩa: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Tải file {{count}}",
+      "downloadFiles": "Tải {{count}} tệp",
       "checking": "Kiểm tra",
       "reportTitle": "Kiểm tra tài khoản",
       "reportHelp": "",
@@ -4439,7 +4439,7 @@
         "downloading": "Đang cập nhật",
         "ready": "Sẵn sàng khởi động lại",
         "readyHelp": "",
-        "restart": "Khởi động lại",
+        "restart": "Khởi động lại và cập nhật",
         "pauseTasks": "Quá trình tải xuống {{count}} sẽ bị tạm dừng",
         "completed": "Đã cập nhật lên {{version}}",
         "viewNotes": "Ghi chú phát hành",
@@ -4519,13 +4519,34 @@
         "all": "Tải tất cả"
       },
       "shortcut": {
-        "setting": "Phím tắt",
+        "setting": "Phím tắt toàn cục",
         "capture": "Nhấn tổ hợp mới",
         "clear": "Xóa",
         "off": "Đã tắt",
         "conflict": "Ứng dụng khác đang dùng. Chọn tổ hợp khác.",
         "invalid": "Hãy dùng tổ hợp phím"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Theo hệ thống",
+        "none": "Tắt",
+        "manual": "Thủ công",
+        "scope": "Phạm vi proxy",
+        "domestic": "Dùng proxy cho cả ổ đĩa đám mây và nền tảng Trung Quốc"
+      },
+      "connecting": "Đang kết nối…",
+      "browserDownload": "Tải trong trình duyệt",
+      "background": "Tiếp tục trong nền",
+      "later": "Để sau",
+      "notNow": "Không phải bây giờ",
+      "downloadComplete": "Tải xuống hoàn tất",
+      "newVersion": "Phiên bản mới",
+      "licenseIntro": "NexusDownload là mã nguồn mở theo AGPL-3.0",
+      "otherComponents": "{{count}} thành phần khác",
+      "sourceCode": "Mã nguồn",
+      "shortcutHelp": "Mở cửa sổ thêm từ mọi ứng dụng",
+      "ok": "OK"
     }
   }
 }

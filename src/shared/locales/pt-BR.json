@@ -3572,7 +3572,7 @@
   },
   "nexus": {
     "nav": {
-      "downloads": "Transferências",
+      "downloads": "Downloads",
       "cloud": "Unidades de nuvem",
       "media": "Mídia",
       "services": "Serviços",
@@ -3623,7 +3623,7 @@
     "filter": {
       "all": "Todos",
       "active": "Baixando",
-      "waiting": "Esperando",
+      "waiting": "Aguardando",
       "completed": "Concluído",
       "attention": "Precisa de atenção"
     },
@@ -3645,7 +3645,7 @@
     "localRoute": "download local",
     "stage": {
       "identify": "Identificar fonte",
-      "download": "Transferências",
+      "download": "Download",
       "organize": "Organizar e marcar"
     },
     "addPlaceholder": "Cole um link, compartilhe código ou ímã",
@@ -3740,7 +3740,7 @@
     "cloud": {
       "search": "Pesquise esta pasta",
       "myFiles": "Meus arquivos",
-      "openShare": "Abrir compartilhamento",
+      "openShare": "Abrir link compartilhado",
       "notLoggedIn": "Desconectado",
       "notConnected": "Faça login para visualizar arquivos",
       "name": "Nome",
@@ -3760,7 +3760,7 @@
     },
     "media": {
       "placeholder": "Cole um link de vídeo, playlist ou galeria",
-      "parse": "Carregar",
+      "parse": "Analisar",
       "later": "Em breve",
       "laterDescription": "v0.1 pode usar o download de fluxo de mídia da versão de jogo online existente.",
       "emptyTitle": "Cole um link de mídia",
@@ -3808,7 +3808,7 @@
       "exportDiagnostics": "Exportar diagnóstico",
       "sections": {
         "general": "Geral",
-        "downloads": "Transferências",
+        "downloads": "Downloads",
         "queues": "Filas e horários",
         "accounts": "Contas na nuvem",
         "browser": "Navegador",
@@ -3979,7 +3979,7 @@
       "etaUnknown": "",
       "remainingSpace": "Espaço na unidade: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Baixe arquivos {{count}}",
+      "downloadFiles": "Baixar {{count}} arquivos",
       "checking": "Verificação",
       "reportTitle": "Verificação de conta",
       "reportHelp": "",
@@ -4470,13 +4470,13 @@
         "version": "Versão {{version}}",
         "title": "NexusBaixar {{version}}",
         "description": "",
-        "check": "Verifique se há atualizações",
+        "check": "Verificar atualizações",
         "checkButton": "Verifique",
         "checkHelp": "",
         "lastChecked": "",
         "latest": "Atualizado",
         "available": "Nova versão {{version}}",
-        "update": "Atualização",
+        "update": "Atualizar",
         "website": "Site do projeto",
         "changelog": "Notas de versão",
         "licenses": "Licenças de código aberto",
@@ -4487,7 +4487,7 @@
         "downloading": "Atualizando",
         "ready": "Pronto para reiniciar",
         "readyHelp": "",
-        "restart": "Reiniciar",
+        "restart": "Reiniciar e atualizar",
         "pauseTasks": "Os downloads do {{count}} serão pausados",
         "completed": "Atualizado para {{version}}",
         "viewNotes": "Notas de versão",
@@ -4567,13 +4567,34 @@
         "all": "Baixar tudo"
       },
       "shortcut": {
-        "setting": "Atalho",
+        "setting": "Atalho global",
         "capture": "Pressione uma nova combinação",
         "clear": "Limpar",
         "off": "Desativado",
         "conflict": "Usado por outro aplicativo. Escolha outro.",
         "invalid": "Use uma combinação de teclas"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Seguir o sistema",
+        "none": "Desativado",
+        "manual": "Manual",
+        "scope": "Uso do proxy",
+        "domestic": "Usar proxy também para a nuvem e plataformas chinesas"
+      },
+      "connecting": "Conectando…",
+      "browserDownload": "Baixar no navegador",
+      "background": "Continuar em segundo plano",
+      "later": "Mais tarde",
+      "notNow": "Agora não",
+      "downloadComplete": "Download concluído",
+      "newVersion": "Nova versão",
+      "licenseIntro": "NexusDownload é código aberto sob AGPL-3.0",
+      "otherComponents": "Outros {{count}} componentes",
+      "sourceCode": "Código-fonte",
+      "shortcutHelp": "Abrir a janela de adição em qualquer aplicativo",
+      "ok": "OK"
     }
   }
 }

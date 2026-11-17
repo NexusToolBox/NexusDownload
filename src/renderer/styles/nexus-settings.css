@@ -420,9 +420,13 @@
 .nx-advanced {
   margin-top: 24px;
 }
-.nx-advanced-trigger {
-  width: 100%;
-  justify-content: space-between;
+.nexus-shell .nx-advanced-trigger {
+  width: auto;
+  justify-content: flex-start;
+  gap: 8px;
+  padding-inline: 0;
+  background: transparent;
+  color: var(--muted-foreground);
 }
 .nx-advanced-trigger svg {
   width: 16px;
@@ -495,4 +499,192 @@
 .nx-update-inline-progress progress::-webkit-progress-value {
   background: var(--live);
   border-radius: 10px;
+}
+
+.nx-advanced-content {
+  display: grid;
+  gap: 28px;
+  padding-top: 16px;
+}
+.nx-advanced-content > .nx-section {
+  margin: 0;
+}
+.nexus-shell .nx-structured-settings fieldset {
+  display: block;
+  border: 0;
+  padding: 0;
+}
+.nexus-shell .nx-structured-settings [data-slot="form-item"] {
+  border: 0;
+  padding: 0;
+}
+.nexus-shell .nx-structured-settings .nx-item {
+  padding: 10px 12px 10px 16px;
+}
+.nexus-shell .nx-structured-settings .nx-item .nx-input {
+  width: 200px;
+}
+.nexus-shell .nx-inline-settings .nx-form-row {
+  padding: 10px 12px 10px 16px;
+}
+.nexus-shell .nx-rpc-secret-control {
+  display: flex;
+  gap: 8px;
+  width: 200px;
+}
+.nexus-shell .nx-rpc-secret-control > :first-child {
+  min-width: 0;
+  width: 164px;
+}
+.nexus-shell .nx-completed-summary {
+  margin-top: 20px;
+  font-size: 13.5px;
+}
+.nexus-shell .nx-completed-summary time {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+.nx-advanced-content .nx-inline-settings h3 {
+  margin: 28px 0 10px;
+}
+.nx-advanced-content fieldset > h3:first-child {
+  margin-top: 0;
+}
+.nx-advanced-content .nx-section-head h3 {
+  margin: 0;
+}
+
+.nexus-shell .nx-structured-settings .nx-group > [data-slot="form-item"] {
+  display: block;
+  min-height: 0;
+}
+.nexus-shell
+  .nx-structured-settings
+  .nx-group
+  > [data-slot="form-item"]
+  + [data-slot="form-item"] {
+  border-top: 1px solid var(--border);
+}
+.nx-dialog.nx-update-dialog {
+  width: min(460px, calc(100vw - 48px));
+  max-width: 460px;
+  padding: 24px;
+  gap: 20px;
+}
+.nx-update-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-right: 20px;
+}
+.nx-update-head img {
+  width: 44px;
+  height: 44px;
+  flex: none;
+}
+.nx-update-head [data-slot="dialog-title"] {
+  font-size: 20px;
+  line-height: 1.3;
+}
+.nx-update-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  min-height: 20px;
+  margin-top: 4px;
+}
+.nx-update-meta .nx-chip {
+  height: 20px;
+}
+.nx-update-dialog .nx-release-notes {
+  background: var(--muted);
+  padding: 16px 18px;
+  border-radius: 9px;
+  max-height: 210px;
+  overflow-y: auto;
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.nx-update-dialog .nx-release-notes h3 {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin: 12px 0 4px;
+  font-weight: 500;
+}
+.nx-update-dialog .nx-release-notes h3:first-child {
+  margin-top: 0;
+}
+.nx-update-dialog .nx-release-notes ul {
+  list-style: disc;
+  padding-inline-start: 18px;
+}
+.nx-update-dialog .nx-release-notes ol {
+  list-style: decimal;
+  padding-inline-start: 18px;
+}
+.nx-update-dialog .nx-release-notes li {
+  padding-inline-start: 2px;
+  margin: 4px 0;
+}
+.nx-update-dialog .nx-release-notes li p {
+  margin: 0;
+}
+.nx-update-dialog [data-slot="dialog-footer"] {
+  margin-top: 0;
+  padding: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.nx-update-progress {
+  margin-inline-end: auto;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 92px;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+.nx-update-progress progress {
+  width: 100%;
+  min-width: 40px;
+  height: 4px;
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.nx-update-progress progress::-webkit-progress-bar {
+  background: var(--border);
+}
+.nx-update-progress progress::-webkit-progress-value {
+  background: var(--live);
+}
+.nx-update-confirm {
+  font-size: 13px;
+  text-align: end;
+  color: var(--muted-foreground);
+  margin-bottom: -8px;
+}
+.nx-license-page > h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+}
+.nx-license-page > p {
+  font-size: 13.5px;
+  color: var(--muted-foreground);
+  margin-bottom: 20px;
+}
+.nx-license-page .nx-license-text {
+  max-height: none;
+  padding-top: 16px;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

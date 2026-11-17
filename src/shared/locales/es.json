@@ -3573,10 +3573,10 @@
   "nexus": {
     "nav": {
       "downloads": "Descargas",
-      "cloud": "unidades en la nube",
+      "cloud": "Unidades en la nube",
       "media": "Medios",
       "services": "Servicios",
-      "settings": "Configuraciones"
+      "settings": "Configuración"
     },
     "window": {
       "minimize": "minimizar",
@@ -3621,17 +3621,17 @@
       "removed": "eliminado"
     },
     "filter": {
-      "all": "todos",
+      "all": "Todos",
       "active": "Descargando",
-      "waiting": "esperando",
+      "waiting": "En espera",
       "completed": "Completado",
       "attention": "Necesita atención"
     },
-    "pause": "pausa",
-    "resume": "continuar",
+    "pause": "Pausar",
+    "resume": "Continuar",
     "retry": "Reintentar",
     "reveal": "Mostrar en carpeta",
-    "pauseAll": "pausar todo",
+    "pauseAll": "Pausar todo",
     "toggleInspector": "Mostrar u ocultar la barra de detalles",
     "originalFile": "archivo original",
     "fact": {
@@ -3645,7 +3645,7 @@
     "localRoute": "descarga local",
     "stage": {
       "identify": "Identificar fuente",
-      "download": "Descargas",
+      "download": "Descarga",
       "organize": "Organizar y marcar"
     },
     "addPlaceholder": "Pega un enlace, comparte código o imán",
@@ -3740,7 +3740,7 @@
     "cloud": {
       "search": "buscar en esta carpeta",
       "myFiles": "Mis archivos",
-      "openShare": "compartir abierto",
+      "openShare": "Abrir enlace compartido",
       "notLoggedIn": "Cerrado",
       "notConnected": "Inicia sesión para ver archivos",
       "name": "nombre",
@@ -3760,7 +3760,7 @@
     },
     "media": {
       "placeholder": "Pega un vídeo, lista de reproducción o enlace de galería",
-      "parse": "Carga",
+      "parse": "Analizar",
       "later": "Próximamente",
       "laterDescription": "v0.1 puede utilizar la descarga de transmisión de medios de la versión de reproducción en línea existente.",
       "emptyTitle": "pegar un enlace multimedia",
@@ -3807,13 +3807,13 @@
     "settings": {
       "exportDiagnostics": "Exportar diagnóstico",
       "sections": {
-        "general": "generales",
+        "general": "General",
         "downloads": "Descargas",
         "queues": "Colas y horarios",
-        "accounts": "cuentas en la nube",
+        "accounts": "Cuentas en la nube",
         "browser": "navegador",
         "appearance": "Aparición",
-        "tools": "herramientas externas",
+        "tools": "Herramientas externas",
         "diagnostics": "Diagnóstico",
         "about": "Acerca de",
         "phone": "Enviar desde teléfono",
@@ -3949,7 +3949,7 @@
     "cloudV2": {
       "loggedIn": "Iniciado sesión",
       "login": "Iniciar sesión",
-      "logout": "cerrar sesión",
+      "logout": "Cerrar sesión",
       "chooseAccount": "Seleccionar cuenta",
       "accountNumber": "Cuenta {{count}}",
       "requests": "Solicitudes hoy",
@@ -3979,7 +3979,7 @@
       "etaUnknown": "",
       "remainingSpace": "Espacio en disco: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Descargar archivos {{count}}",
+      "downloadFiles": "Descargar {{count}} archivos",
       "checking": "Comprobando",
       "reportTitle": "verificación de cuenta",
       "reportHelp": "",
@@ -4470,16 +4470,16 @@
         "version": "Versión {{version}}",
         "title": "NexusDescargar {{version}}",
         "description": "",
-        "check": "buscar actualizaciones",
+        "check": "Buscar actualizaciones",
         "checkButton": "comprobar",
         "checkHelp": "",
         "lastChecked": "",
         "latest": "actualizado",
         "available": "Nueva versión {{version}}",
-        "update": "Actualización",
+        "update": "Actualizar",
         "website": "sitio web del proyecto",
         "changelog": "notas de la versión",
-        "licenses": "licencias de código abierto",
+        "licenses": "Licencias de código abierto",
         "noNotes": "Sin notas de versión",
         "now": "Actualizar ahora",
         "later": "Más tarde",
@@ -4487,10 +4487,10 @@
         "downloading": "Actualizando",
         "ready": "Listo para reiniciar",
         "readyHelp": "",
-        "restart": "reiniciar",
+        "restart": "Reiniciar y actualizar",
         "pauseTasks": "Las descargas de {{count}} se pausarán",
         "completed": "Actualizado a {{version}}",
-        "viewNotes": "notas de la versión",
+        "viewNotes": "Notas de la versión",
         "restoredTitle": "Actualización fallida, restaurada",
         "restored": "Error en la actualización. Restaurado {{version}}",
         "error": {
@@ -4567,13 +4567,34 @@
         "all": "Descargar todo"
       },
       "shortcut": {
-        "setting": "Atajo",
+        "setting": "Atajo global",
         "capture": "Pulsa una nueva combinación",
         "clear": "Borrar",
         "off": "Desactivado",
         "conflict": "Lo usa otra aplicación. Elige otro.",
         "invalid": "Usa una combinación de teclas"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Usar el del sistema",
+        "none": "Desactivado",
+        "manual": "Manual",
+        "scope": "Uso del proxy",
+        "domestic": "Usar también el proxy para la nube y plataformas chinas"
+      },
+      "connecting": "Conectando…",
+      "browserDownload": "Descargar en el navegador",
+      "background": "Continuar en segundo plano",
+      "later": "Más tarde",
+      "notNow": "Ahora no",
+      "downloadComplete": "Descarga completada",
+      "newVersion": "Nueva versión",
+      "licenseIntro": "NexusDownload es de código abierto bajo AGPL-3.0",
+      "otherComponents": "Otros {{count}} componentes",
+      "sourceCode": "Código fuente",
+      "shortcutHelp": "Abrir la ventana para añadir desde cualquier aplicación",
+      "ok": "Aceptar"
     }
   }
 }

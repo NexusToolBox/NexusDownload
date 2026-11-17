@@ -3572,9 +3572,9 @@
   },
   "nexus": {
     "nav": {
-      "downloads": "download",
+      "downloads": "Download",
       "cloud": "Unità cloud",
-      "media": "mezzi di comunicazione",
+      "media": "Multimedia",
       "services": "Servizi",
       "settings": "Impostazioni"
     },
@@ -3645,7 +3645,7 @@
     "localRoute": "download locale",
     "stage": {
       "identify": "Identificare la fonte",
-      "download": "download",
+      "download": "Download",
       "organize": "Organizza e segna"
     },
     "addPlaceholder": "Incolla un collegamento, condividi un codice o un magnete",
@@ -3654,7 +3654,7 @@
     "emptyDescription": "",
     "unavailable": "Impossibile caricare i download",
     "loadingTasks": "Caricamento download…",
-    "addDownload": "aggiungi download",
+    "addDownload": "Aggiungi download",
     "taskList": "download",
     "completedGroup": "Completato oggi",
     "waitingGroup": "Coda di attesa",
@@ -3740,7 +3740,7 @@
     "cloud": {
       "search": "Cerca in questa cartella",
       "myFiles": "I miei file",
-      "openShare": "Condivisione aperta",
+      "openShare": "Apri link condiviso",
       "notLoggedIn": "Disconnesso",
       "notConnected": "accedi per visualizzare i file",
       "name": "Nome",
@@ -3760,7 +3760,7 @@
     },
     "media": {
       "placeholder": "Incolla un collegamento a un video, una playlist o una galleria",
-      "parse": "Carica",
+      "parse": "Analizza",
       "later": "Prossimamente",
       "laterDescription": "la v0.1 può utilizzare il download del flusso multimediale della versione di riproduzione online esistente.",
       "emptyTitle": "incolla un collegamento multimediale",
@@ -3808,9 +3808,9 @@
       "exportDiagnostics": "Esporta diagnostica",
       "sections": {
         "general": "Generale",
-        "downloads": "download",
+        "downloads": "Download",
         "queues": "Code e orari",
-        "accounts": "Conti cloud",
+        "accounts": "Account cloud",
         "browser": "navigatore",
         "appearance": "Aspetto",
         "tools": "Strumenti esterni",
@@ -3818,7 +3818,7 @@
         "about": "Informazioni",
         "phone": "Invio dal telefono",
         "mcp": "Assistente IA",
-        "media": "mezzi di comunicazione",
+        "media": "Multimedia",
         "network": "Rete",
         "bittorrent": "BitTorrent",
         "connections": "Connessioni"
@@ -3979,7 +3979,7 @@
       "etaUnknown": "",
       "remainingSpace": "Spazio su disco: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "scarica i file {{count}}",
+      "downloadFiles": "Scarica {{count}} file",
       "checking": "Controllo",
       "reportTitle": "Controllo del conto",
       "reportHelp": "",
@@ -4476,7 +4476,7 @@
         "lastChecked": "",
         "latest": "aggiornato",
         "available": "Nuova versione {{version}}",
-        "update": "Aggiornamento",
+        "update": "Aggiorna",
         "website": "Sito web del progetto",
         "changelog": "Note sulla versione",
         "licenses": "Licenze open source",
@@ -4487,7 +4487,7 @@
         "downloading": "aggiornamento",
         "ready": "Pronto per il riavvio",
         "readyHelp": "",
-        "restart": "Riavvio",
+        "restart": "Riavvia e aggiorna",
         "pauseTasks": "i download {{count}} verranno messi in pausa",
         "completed": "aggiornato a {{version}}",
         "viewNotes": "Note sulla versione",
@@ -4567,13 +4567,34 @@
         "all": "Scarica tutto"
       },
       "shortcut": {
-        "setting": "Scorciatoia",
+        "setting": "Scorciatoia globale",
         "capture": "Premi una nuova combinazione",
         "clear": "Cancella",
         "off": "Disattivata",
         "conflict": "Usata da un’altra app. Scegline un’altra.",
         "invalid": "Usa una combinazione di tasti"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Segui il sistema",
+        "none": "Disattivato",
+        "manual": "Manuale",
+        "scope": "Utilizzo del proxy",
+        "domestic": "Usa il proxy anche per il cloud e le piattaforme cinesi"
+      },
+      "connecting": "Connessione…",
+      "browserDownload": "Scarica nel browser",
+      "background": "Continua in background",
+      "later": "Più tardi",
+      "notNow": "Non ora",
+      "downloadComplete": "Download completato",
+      "newVersion": "Nuova versione",
+      "licenseIntro": "NexusDownload è open source con licenza AGPL-3.0",
+      "otherComponents": "Altri {{count}} componenti",
+      "sourceCode": "Codice sorgente",
+      "shortcutHelp": "Apri la finestra di aggiunta da qualsiasi app",
+      "ok": "OK"
     }
   }
 }

@@ -4109,7 +4109,7 @@
       "wake": "允许唤醒电脑",
       "wakeHelp": "需要电脑支持定时唤醒",
       "completion": "队列完成后",
-      "openFile": "要打开的文件绝对路径",
+      "openFile": "要打开的文件",
       "joinQueue": "加入{{name}}",
       "weekday": {
         "0": "日",
@@ -4439,7 +4439,7 @@
         "downloading": "正在更新",
         "ready": "新版本已就绪",
         "readyHelp": "",
-        "restart": "重启",
+        "restart": "重启并更新",
         "pauseTasks": "会暂停 {{count}} 个下载",
         "completed": "已更新到 {{version}}",
         "viewNotes": "更新内容",
@@ -4519,13 +4519,34 @@
         "all": "全部下载"
       },
       "shortcut": {
-        "setting": "快捷键",
+        "setting": "全局快捷键",
         "capture": "按下新组合",
         "clear": "清除",
         "off": "已关闭",
         "conflict": "已被其他软件占用，请换一个",
         "invalid": "请使用组合键"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "跟随系统",
+        "none": "不使用",
+        "manual": "手动",
+        "scope": "代理范围",
+        "domestic": "网盘和国内平台也使用代理"
+      },
+      "connecting": "正在连接…",
+      "browserDownload": "在浏览器中下载",
+      "background": "后台进行",
+      "later": "稍后",
+      "notNow": "以后再说",
+      "downloadComplete": "下载完成",
+      "newVersion": "新版本",
+      "licenseIntro": "NexusDownload 以 AGPL-3.0 协议开源",
+      "otherComponents": "其他 {{count}} 个组件",
+      "sourceCode": "源代码",
+      "shortcutHelp": "在任何软件里打开添加窗口",
+      "ok": "好的"
     }
   }
 }

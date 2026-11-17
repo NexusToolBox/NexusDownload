@@ -9,13 +9,111 @@ import { Aria2Adapter } from '@core/engine/aria2/aria2-adapter'
 import { Aria2RpcClient } from '@core/engine/aria2/aria2-rpc-client'
 import { JsonRpcProtocol } from '@core/engine/aria2/json-rpc-protocol'
 import { WebSocketTransport } from '@core/engine/aria2/web-socket-transport'
+import type { EngineAdapter } from '@core/engine/engine-adapter'
 import { EventBus } from '@core/events/event-bus'
+import { TaskStatus } from '@shared/types/task'
 import { afterEach, expect, it, vi } from 'vitest'
 import { PortableUpdateService } from './portable-update-service'
 
 const cleanup: (() => Promise<unknown>)[] = []
 afterEach(async () => {
+  vi.useRealTimers()
   for (const fn of cleanup.splice(0).reverse()) await fn()
+})
+
+it('persists prompted versions and preserves completed notes across checks', async () => {
+  const f = await fixture()
+  f.service.setStartupResult({
+    completedVersion: '1.3.0',
+    releaseNotes: 'Installed release notes',
+  })
+  await f.service.check(false)
+  expect(f.service.getState()).toMatchObject({
+    automatic: true,
+    prompted: false,
+    completedReleaseNotes: 'Installed release notes',
+  })
+  await f.service.action({ action: 'mark-prompted' })
+  const restored = new PortableUpdateService(f.options)
+  await restored.initialize()
+  await restored.check()
+  expect(restored.getState()).toMatchObject({
+    automatic: false,
+    prompted: true,
+  })
+})
+
+it('offers a browser after thirty slow seconds, resets on fast traffic and retains partial bytes', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'nexus-slow-update-'))
+  cleanup.push(() => rm(directory, { recursive: true, force: true }))
+  let speed = 0
+  const partial = Buffer.from('partial release')
+  const archive = path.join(directory, 'NexusDownload-v1.3.1-win-x64.zip')
+  const engine = {
+    createDownload: vi.fn(async () => 'update-gid'),
+    getTaskStatus: vi.fn(async () => ({
+      status: TaskStatus.Downloading,
+      downloadedBytes: speed ? 500 : 0,
+      downloadSpeed: speed,
+      totalBytes: 10000,
+      progress: 0.05,
+    })),
+    pauseTask: vi.fn(async () => undefined),
+    removeTask: vi.fn(),
+  } as unknown as EngineAdapter
+  const fetcher = vi.fn(
+    async (url: unknown) =>
+      new Response(
+        String(url).endsWith('.sha256')
+          ? 'a'.repeat(64)
+          : JSON.stringify({
+              tag_name: 'v1.3.1',
+              body: '## Improvements\n- Faster updates',
+              published_at: '2026-11-17T00:00:00Z',
+              html_url: 'https://example.com/release',
+              draft: false,
+              prerelease: false,
+              assets: ['', '.sha256'].map((suffix) => ({
+                name: `NexusDownload-v1.3.1-win-x64.zip${suffix}`,
+                browser_download_url: `https://example.com/archive.zip${suffix}`,
+                size: 10000,
+              })),
+            })
+      )
+  ) as unknown as typeof fetch
+  const service = new PortableUpdateService({
+    version: '1.3.0',
+    directory,
+    latestUrl: 'https://example.com/latest',
+    engine,
+    events: new EventBus(),
+    prefix: () => '',
+    activeTasks: () => [],
+    install: vi.fn(),
+    fetcher,
+  })
+  await service.initialize()
+  await service.check(false)
+  expect(service.getState().publishedAt).toBe('2026-11-17T00:00:00Z')
+  await writeFile(archive, partial)
+  vi.useFakeTimers()
+  await service.download()
+  await vi.waitFor(() => expect(engine.getTaskStatus).toHaveBeenCalled())
+  await vi.advanceTimersByTimeAsync(29000)
+  expect(service.getState().browserFallback).toBe(false)
+  speed = 100 * 1024
+  await vi.advanceTimersByTimeAsync(1000)
+  speed = 10 * 1024
+  await vi.advanceTimersByTimeAsync(29000)
+  expect(service.getState().browserFallback).toBe(false)
+  await vi.advanceTimersByTimeAsync(1500)
+  expect(service.getState().browserFallback).toBe(true)
+  expect(await readFile(archive)).toEqual(partial)
+  expect(engine.pauseTask).not.toHaveBeenCalled()
+  expect(engine.removeTask).not.toHaveBeenCalled()
+  const cancel = service.action({ action: 'cancel' })
+  await vi.advanceTimersByTimeAsync(500)
+  await cancel
 })
 
 async function fixture() {

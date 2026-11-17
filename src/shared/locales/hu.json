@@ -3599,7 +3599,7 @@
     "filter": {
       "all": "Mind",
       "active": "Letöltés",
-      "waiting": "Várok",
+      "waiting": "Várakozás",
       "completed": "Kész",
       "attention": "Figyelmet igényel"
     },
@@ -3621,7 +3621,7 @@
     "localRoute": "Helyi letöltés",
     "stage": {
       "identify": "Forrás azonosítása",
-      "download": "Letöltések",
+      "download": "Letöltés",
       "organize": "Rendszerezés és jelölés"
     },
     "addPlaceholder": "Illesszen be egy linket, osszon meg kódot vagy mágnest",
@@ -3716,7 +3716,7 @@
     "cloud": {
       "search": "Keresés ebben a mappában",
       "myFiles": "Saját fájlok",
-      "openShare": "Nyitott megosztás",
+      "openShare": "Megosztott hivatkozás megnyitása",
       "notLoggedIn": "Kijelentkezve",
       "notConnected": "Jelentkezzen be a fájlok megtekintéséhez",
       "name": "Név",
@@ -3783,7 +3783,7 @@
     "settings": {
       "exportDiagnostics": "Diagnosztika exportálása",
       "sections": {
-        "general": "tábornok",
+        "general": "Általános",
         "downloads": "Letöltések",
         "queues": "Várólisták és menetrendek",
         "accounts": "Felhőfiókok",
@@ -3791,7 +3791,7 @@
         "appearance": "Megjelenés",
         "tools": "Külső eszközök",
         "diagnostics": "Diagnosztika",
-        "about": "kb",
+        "about": "Névjegy",
         "phone": "Küldés telefonról",
         "mcp": "AI-asszisztens",
         "media": "Média",
@@ -4463,7 +4463,7 @@
         "downloading": "Frissítés",
         "ready": "Újraindításra kész",
         "readyHelp": "",
-        "restart": "Indítsa újra",
+        "restart": "Újraindítás és frissítés",
         "pauseTasks": "A {{count}} letöltései szünetelnek",
         "completed": "Frissítve {{version}}-re",
         "viewNotes": "Kiadási megjegyzések",
@@ -4543,13 +4543,34 @@
         "all": "Összes letöltése"
       },
       "shortcut": {
-        "setting": "Gyorsbillentyű",
+        "setting": "Globális gyorsbillentyű",
         "capture": "Nyomjon meg új kombinációt",
         "clear": "Törlés",
         "off": "Kikapcsolva",
         "conflict": "Más alkalmazás használja. Válasszon másikat.",
         "invalid": "Használjon billentyűkombinációt"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Rendszerbeállítás",
+        "none": "Kikapcsolva",
+        "manual": "Kézi",
+        "scope": "Proxyhasználat",
+        "domestic": "Proxy használata a felhőtárhelyekhez és kínai platformokhoz is"
+      },
+      "connecting": "Kapcsolódás…",
+      "browserDownload": "Letöltés böngészőben",
+      "background": "Folytatás a háttérben",
+      "later": "Később",
+      "notNow": "Most nem",
+      "downloadComplete": "Letöltés kész",
+      "newVersion": "Új verzió",
+      "licenseIntro": "A NexusDownload nyílt forráskódú, AGPL-3.0 licenc alatt",
+      "otherComponents": "További {{count}} összetevő",
+      "sourceCode": "Forráskód",
+      "shortcutHelp": "Hozzáadási ablak megnyitása bármely alkalmazásból",
+      "ok": "Rendben"
     }
   }
 }

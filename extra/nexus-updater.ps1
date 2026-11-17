@@ -110,7 +110,8 @@ try {
       $receipt=Get-Content -LiteralPath $ack -Raw | ConvertFrom-Json
       if ($receipt.token -eq $job.token -and $receipt.version -eq $job.version) { $healthy=$true; break }
     }
-    if ($next.HasExited) { break }
+    # The acknowledgement can arrive between the file check and process exit.
+    if ($next.HasExited -and !(Test-Path -LiteralPath $ack)) { break }
     Start-Sleep -Milliseconds 250
   }
   if (!$healthy) {

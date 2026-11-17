@@ -3645,7 +3645,7 @@
     "localRoute": "Descărcare locală",
     "stage": {
       "identify": "Identificați sursa",
-      "download": "Descărcări",
+      "download": "Descărcare",
       "organize": "Organizați și marcați"
     },
     "addPlaceholder": "inserați un link, partajați cod sau magnet",
@@ -3740,7 +3740,7 @@
     "cloud": {
       "search": "Căutați acest folder",
       "myFiles": "Fișierele mele",
-      "openShare": "Cotare deschisă",
+      "openShare": "Deschide un link partajat",
       "notLoggedIn": "Deconectat",
       "notConnected": "Conectați-vă pentru a vedea fișierele",
       "name": "Nume",
@@ -3760,7 +3760,7 @@
     },
     "media": {
       "placeholder": "inserați un videoclip, o listă de redare sau un link la galerie",
-      "parse": "Încărcare",
+      "parse": "Analizează",
       "later": "În curând",
       "laterDescription": "v0.1 poate folosi versiunea de redare online existentă pentru descărcarea fluxului media.",
       "emptyTitle": "inserați un link media",
@@ -3807,7 +3807,7 @@
     "settings": {
       "exportDiagnostics": "Export de diagnosticare",
       "sections": {
-        "general": "Generale",
+        "general": "General",
         "downloads": "Descărcări",
         "queues": "Cozi și programe",
         "accounts": "Conturi cloud",
@@ -4487,7 +4487,7 @@
         "downloading": "Actualizare",
         "ready": "Gata de repornire",
         "readyHelp": "",
-        "restart": "Reporniți",
+        "restart": "Repornește și actualizează",
         "pauseTasks": "Descărcările {{count}} vor fi întrerupte",
         "completed": "Actualizat la {{version}}",
         "viewNotes": "Note de lansare",
@@ -4567,13 +4567,34 @@
         "all": "Descarcă tot"
       },
       "shortcut": {
-        "setting": "Scurtătură",
+        "setting": "Scurtătură globală",
         "capture": "Apasă o combinație nouă",
         "clear": "Șterge",
         "off": "Dezactivată",
         "conflict": "Folosită de altă aplicație. Alege alta.",
         "invalid": "Folosește o combinație de taste"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Urmează sistemul",
+        "none": "Dezactivat",
+        "manual": "Manual",
+        "scope": "Utilizare proxy",
+        "domestic": "Folosește proxy și pentru stocarea cloud și platformele chinezești"
+      },
+      "connecting": "Se conectează…",
+      "browserDownload": "Descarcă în browser",
+      "background": "Continuă în fundal",
+      "later": "Mai târziu",
+      "notNow": "Nu acum",
+      "downloadComplete": "Descărcare finalizată",
+      "newVersion": "Versiune nouă",
+      "licenseIntro": "NexusDownload este cu sursă deschisă sub AGPL-3.0",
+      "otherComponents": "Alte {{count}} componente",
+      "sourceCode": "Cod sursă",
+      "shortcutHelp": "Deschide fereastra de adăugare din orice aplicație",
+      "ok": "OK"
     }
   }
 }

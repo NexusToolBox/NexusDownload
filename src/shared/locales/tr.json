@@ -3621,7 +3621,7 @@
     "localRoute": "Yerel indirme",
     "stage": {
       "identify": "Kaynağı tanımlayın",
-      "download": "İndirmeler",
+      "download": "İndirme",
       "organize": "Düzenleyin ve işaretleyin"
     },
     "addPlaceholder": "Bir bağlantı, paylaşım kodu veya mıknatıs yapıştırın",
@@ -3716,7 +3716,7 @@
     "cloud": {
       "search": "Bu klasörü arayın",
       "myFiles": "Dosyalarım",
-      "openShare": "Paylaşımı aç",
+      "openShare": "Paylaşım bağlantısını aç",
       "notLoggedIn": "Oturum kapatıldı",
       "notConnected": "Dosyaları görüntülemek için oturum açın",
       "name": "İsim",
@@ -3736,7 +3736,7 @@
     },
     "media": {
       "placeholder": "Bir video, oynatma listesi veya galeri bağlantısını yapıştırın",
-      "parse": "Yük",
+      "parse": "Çözümle",
       "later": "Çok yakında",
       "laterDescription": "v0.1, mevcut çevrimiçi oynatma sürümü medya akışı indirmesini kullanabilir.",
       "emptyTitle": "Medya bağlantısını yapıştırın",
@@ -3781,7 +3781,7 @@
     },
     "playbackStream": "Oynatma sürümü",
     "settings": {
-      "exportDiagnostics": "Dışa aktarma tanılamaları",
+      "exportDiagnostics": "Tanılama verilerini dışa aktar",
       "sections": {
         "general": "Genel",
         "downloads": "İndirmeler",
@@ -3955,7 +3955,7 @@
       "etaUnknown": "",
       "remainingSpace": "Sürücü alanı: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "{{count}} dosyalarını indir",
+      "downloadFiles": "{{count}} dosya indir",
       "checking": "Kontrol ediliyor",
       "reportTitle": "Hesap kontrolü",
       "reportHelp": "",
@@ -4452,7 +4452,7 @@
         "lastChecked": "",
         "latest": "Güncel",
         "available": "Yeni sürüm {{version}}",
-        "update": "Güncelleme",
+        "update": "Güncelle",
         "website": "Proje web sitesi",
         "changelog": "Sürüm notları",
         "licenses": "Açık kaynak lisansları",
@@ -4463,7 +4463,7 @@
         "downloading": "Güncelleniyor",
         "ready": "Yeniden başlatmaya hazır",
         "readyHelp": "",
-        "restart": "Yeniden başlat",
+        "restart": "Yeniden başlat ve güncelle",
         "pauseTasks": "{{count}} indirmeleri duraklatılacak",
         "completed": "{{version}}'ye güncellendi",
         "viewNotes": "Sürüm notları",
@@ -4543,13 +4543,34 @@
         "all": "Tümünü indir"
       },
       "shortcut": {
-        "setting": "Kısayol",
+        "setting": "Genel kısayol",
         "capture": "Yeni tuş birleşimine basın",
         "clear": "Temizle",
         "off": "Kapalı",
         "conflict": "Başka bir uygulama kullanıyor. Değiştirin.",
         "invalid": "Bir tuş birleşimi kullanın"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Sistemi izle",
+        "none": "Kapalı",
+        "manual": "Elle",
+        "scope": "Proxy kullanımı",
+        "domestic": "Bulut depoları ve Çin platformları için de proxy kullan"
+      },
+      "connecting": "Bağlanıyor…",
+      "browserDownload": "Tarayıcıda indir",
+      "background": "Arka planda devam et",
+      "later": "Daha sonra",
+      "notNow": "Şimdi değil",
+      "downloadComplete": "İndirme tamamlandı",
+      "newVersion": "Yeni sürüm",
+      "licenseIntro": "NexusDownload, AGPL-3.0 lisanslı açık kaynak yazılımdır",
+      "otherComponents": "Diğer {{count}} bileşen",
+      "sourceCode": "Kaynak kodu",
+      "shortcutHelp": "Herhangi bir uygulamadan ekleme penceresini aç",
+      "ok": "Tamam"
     }
   }
 }

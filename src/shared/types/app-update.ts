@@ -24,8 +24,13 @@ export interface AppUpdateError {
 
 /** Stable renderer-facing snapshot shared by the desktop and Server hosts. */
 export interface AppUpdateState {
+  publishedAt?: string
+  automatic?: boolean
+  prompted?: boolean
+  browserFallback?: boolean
   releaseNotes?: string
   releaseUrl?: string
+  completedReleaseNotes?: string
   completedVersion?: string
   restoredVersion?: string
   activeTasks?: string[]

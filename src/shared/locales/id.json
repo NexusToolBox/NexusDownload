@@ -3597,7 +3597,7 @@
     "localRoute": "Unduhan lokal",
     "stage": {
       "identify": "Identifikasi sumber",
-      "download": "Unduhan",
+      "download": "Unduh",
       "organize": "Atur dan tandai"
     },
     "addPlaceholder": "Tempel tautan, bagikan kode, atau magnet",
@@ -3692,7 +3692,7 @@
     "cloud": {
       "search": "Cari folder ini",
       "myFiles": "File saya",
-      "openShare": "Buka berbagi",
+      "openShare": "Buka tautan berbagi",
       "notLoggedIn": "Keluar",
       "notConnected": "Masuk untuk melihat file",
       "name": "Nama",
@@ -3712,7 +3712,7 @@
     },
     "media": {
       "placeholder": "Tempelkan tautan video, daftar putar, atau galeri",
-      "parse": "Memuat",
+      "parse": "Analisis",
       "later": "Segera hadir",
       "laterDescription": "v0.1 dapat menggunakan unduhan aliran media versi putar online yang ada.",
       "emptyTitle": "Tempel tautan media",
@@ -3931,7 +3931,7 @@
       "etaUnknown": "",
       "remainingSpace": "Ruang berkendara: {{size}}",
       "originalGuard": "",
-      "downloadFiles": "Unduh file {{count}}",
+      "downloadFiles": "Unduh {{count}} file",
       "checking": "Memeriksa",
       "reportTitle": "Pemeriksaan akun",
       "reportHelp": "",
@@ -4428,7 +4428,7 @@
         "lastChecked": "",
         "latest": "Terkini",
         "available": "Versi baru {{version}}",
-        "update": "Pembaruan",
+        "update": "Perbarui",
         "website": "Situs web proyek",
         "changelog": "Catatan rilis",
         "licenses": "Lisensi sumber terbuka",
@@ -4439,7 +4439,7 @@
         "downloading": "Memperbarui",
         "ready": "Siap untuk memulai kembali",
         "readyHelp": "",
-        "restart": "Mulai ulang",
+        "restart": "Mulai ulang dan perbarui",
         "pauseTasks": "Unduhan {{count}} akan dijeda",
         "completed": "Diperbarui ke {{version}}",
         "viewNotes": "Catatan rilis",
@@ -4519,13 +4519,34 @@
         "all": "Unduh semua"
       },
       "shortcut": {
-        "setting": "Pintasan",
+        "setting": "Pintasan global",
         "capture": "Tekan kombinasi baru",
         "clear": "Hapus",
         "off": "Nonaktif",
         "conflict": "Dipakai aplikasi lain. Pilih yang lain.",
         "invalid": "Gunakan kombinasi tombol"
       }
+    },
+    "v152": {
+      "proxy": {
+        "system": "Ikuti sistem",
+        "none": "Nonaktif",
+        "manual": "Manual",
+        "scope": "Penggunaan proxy",
+        "domestic": "Gunakan proxy juga untuk penyimpanan cloud dan platform Tiongkok"
+      },
+      "connecting": "Menghubungkan…",
+      "browserDownload": "Unduh di browser",
+      "background": "Lanjutkan di latar belakang",
+      "later": "Nanti",
+      "notNow": "Tidak sekarang",
+      "downloadComplete": "Unduhan selesai",
+      "newVersion": "Versi baru",
+      "licenseIntro": "NexusDownload bersumber terbuka dengan lisensi AGPL-3.0",
+      "otherComponents": "{{count}} komponen lain",
+      "sourceCode": "Kode sumber",
+      "shortcutHelp": "Buka jendela tambah dari aplikasi apa pun",
+      "ok": "OK"
     }
   }
 }

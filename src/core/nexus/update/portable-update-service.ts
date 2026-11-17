@@ -13,6 +13,7 @@ import { fileSha256 } from '../tools/file-sha256'
 const releaseSchema = z.object({
   tag_name: z.string(),
   body: z.string().nullish(),
+  published_at: z.string().nullish(),
   html_url: z.url(),
   draft: z.boolean(),
   prerelease: z.boolean(),
@@ -29,8 +30,9 @@ const preferencesSchema = z
     lastCheck: z.number().default(0),
     gid: z.string().optional(),
     version: z.string().optional(),
+    prompted: z.array(z.string()).default([]),
   })
-  .catch({ lastCheck: 0 })
+  .catch({ lastCheck: 0, prompted: [] })
 export interface PortableInstallRequest {
   zip: string
   sha256: string
@@ -194,6 +196,9 @@ export class PortableUpdateService {
           availableVersion: available ? version : undefined,
           releaseNotes: release.body ?? '',
           releaseUrl: release.html_url,
+          publishedAt: release.published_at ?? undefined,
+          automatic: !manual,
+          prompted: this.preferences.prompted.includes(version),
           checkedAt: new Date().toISOString(),
           error: undefined,
         })
@@ -218,8 +223,19 @@ export class PortableUpdateService {
     this.emit({
       phase: 'downloading',
       error: undefined,
+      browserFallback: false,
       progress: { percent: 0, transferred: 0, total: 0, bytesPerSecond: 0 },
     })
+    let slowSince = Date.now()
+    const monitor = setInterval(() => {
+      if (
+        (this.state.progress?.bytesPerSecond ?? 0) >= 50 * 1024 &&
+        (this.state.progress?.transferred ?? 0) > 0
+      )
+        slowSince = Date.now()
+      if (!this.state.browserFallback && Date.now() - slowSince >= 30000)
+        this.emit({ browserFallback: true })
+    }, 500)
     this.downloading = this.runDownload()
       .catch(async (error) => {
         if (this.cancelled) return
@@ -235,6 +251,7 @@ export class PortableUpdateService {
         })
       })
       .finally(() => {
+        clearInterval(monitor)
         this.downloading = undefined
       })
   }
@@ -371,9 +388,21 @@ export class PortableUpdateService {
   }
   async action(raw: unknown) {
     const { action } = z
-      .object({ action: z.enum(['cancel', 'dismiss-completed']) })
+      .object({
+        action: z.enum(['cancel', 'dismiss-completed', 'mark-prompted']),
+      })
       .parse(raw)
-    if (action === 'cancel') {
+    if (action === 'mark-prompted') {
+      const version = this.state.availableVersion
+      if (version && !this.preferences.prompted.includes(version)) {
+        this.preferences.prompted = [
+          ...this.preferences.prompted.slice(-19),
+          version,
+        ]
+        await this.save()
+      }
+      this.emit({ prompted: true })
+    } else if (action === 'cancel') {
       this.cancelled = true
       await this.downloading
       if (this.preferences.gid)
@@ -389,7 +418,7 @@ export class PortableUpdateService {
     restoredVersion?: string
     releaseNotes?: string
   }) {
-    this.emit(result)
+    this.emit({ ...result, completedReleaseNotes: result.releaseNotes })
   }
   async waitForDownload() {
     await this.downloading

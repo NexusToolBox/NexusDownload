@@ -119,6 +119,13 @@ export const nexusPreferencesSchema = z
     classificationEnabled: z.boolean().default(true),
     clipboardEnabled: z.boolean().default(true),
     duplicateWarning: z.boolean().default(true),
+    globalShortcut: z
+      .string()
+      .max(80)
+      .regex(
+        /^$|^(?:(?:Ctrl|Alt|Shift|Super)\+)+(?:[A-Z0-9]|F(?:[1-9]|1[0-9]|2[0-4])|Space|Enter|Home|End|PageUp|PageDown|Insert|Delete|Up|Down|Left|Right)$/
+      )
+      .default('Alt+D'),
     notificationShortcut: z.boolean().default(true),
     diagnosticsEnabled: z.boolean().default(false),
     mediaQuality: z
@@ -209,6 +216,7 @@ export const nexusStateSchema = z
   })
   .strict()
 export const nexusSnapshotSchema = nexusStateSchema.extend({
+  shortcutRegistered: z.boolean().nullable().optional(),
   availableInputIds: z.array(reference),
   diagnostics: z.object({ files: z.number(), bytes: z.number() }).optional(),
 })

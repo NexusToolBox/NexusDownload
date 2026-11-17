@@ -47,6 +47,7 @@ export class NexusWorkspace {
   private probes = new Map<string, HttpPreflightResult>()
   private writes: Promise<unknown> = Promise.resolve()
   private creating = new Map<string, Promise<TaskCreateCommandResult>>()
+  private shortcutRegistered: boolean | null = null
   constructor(
     private options: {
       file: string
@@ -81,7 +82,13 @@ export class NexusWorkspace {
     return {
       ...structuredClone(this.state),
       availableInputIds: [...this.inputs.keys()],
+      shortcutRegistered: this.shortcutRegistered,
     }
+  }
+  setShortcutRegistered(value: boolean | null) {
+    if (value === this.shortcutRegistered) return
+    this.shortcutRegistered = value
+    this.options.changed()
   }
   private async persist(): Promise<void> {
     const data = JSON.stringify(this.state, null, 2)

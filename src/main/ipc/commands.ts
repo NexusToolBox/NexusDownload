@@ -208,6 +208,7 @@ export interface CommandContext {
   exportNexusDiagnostics?: () => Promise<boolean>
   nexusFeedback?: () => Promise<void>
   nexusSystemCleanup?: () => Promise<void>
+  nexusShortcutCapture?: (active: boolean) => void
   retryNexusNetworkMark?: (taskId: string) => Promise<boolean>
   btStorageRuntime?: Pick<
     DurableFinalizeRuntime,
@@ -2234,6 +2235,8 @@ export function registerCommandHandlers(ctx: CommandContext): () => void {
     Object.assign(handlers, {
       [Commands.NexusFeedback]: () => ctx.nexusFeedback?.(),
       [Commands.NexusSystemCleanup]: () => ctx.nexusSystemCleanup?.(),
+      [Commands.NexusShortcutCapture]: (raw: unknown) =>
+        ctx.nexusShortcutCapture?.(z.boolean().parse(raw)),
       [Commands.NexusExportDiagnostics]: () =>
         ctx.exportNexusDiagnostics?.() ?? false,
       [Commands.NexusRetryNetworkMark]: (raw: unknown) =>

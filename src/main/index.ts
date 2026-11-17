@@ -215,6 +215,7 @@ import {
   app,
   type BrowserWindow,
   dialog,
+  globalShortcut,
   ipcMain,
   autoUpdater as nativeAutoUpdater,
   powerMonitor,
@@ -262,6 +263,7 @@ import { MenuManager } from './menu/menu-manager'
 import { MenuRegistry } from './menu/menu-registry'
 import { createNatManager } from './nat/nat-manager-factory'
 import { scanAttachments } from './nexus/attachment-scanner'
+import { NexusGlobalShortcut } from './nexus/global-shortcut'
 import { configureNexusNotifications } from './nexus/notification-identity'
 import {
   acknowledgePortableUpdate,
@@ -3849,6 +3851,19 @@ async function initializeMainProcess(): Promise<void> {
         `/downloads/all?nexusAdd=${ids?.join(',') || 'new'}`
       )
   }
+  const nexusShortcut = new NexusGlobalShortcut({
+    host: globalShortcut,
+    open: () => openNexusAddFromShell(),
+    changed: (registered) => nexusWorkspace.setShortcutRegistered(registered),
+  })
+  const syncNexusShortcut = () =>
+    nexusShortcut.apply(nexusWorkspace.getPreferences().globalShortcut)
+  eventBus.on(Events.NexusWorkspaceChanged, syncNexusShortcut)
+  syncNexusShortcut()
+  app.once('will-quit', () => {
+    eventBus.off(Events.NexusWorkspaceChanged, syncNexusShortcut)
+    nexusShortcut.dispose()
+  })
   const nexusControl = new ControlRuntime({
     broker: mediaBroker,
     webRoot: path.join(__dirname, '../renderer'),
@@ -3906,6 +3921,7 @@ async function initializeMainProcess(): Promise<void> {
     mediaControl: productMedia,
     cloud: nexusCloud,
     nexus: nexusWorkspace,
+    nexusShortcutCapture: (active) => nexusShortcut.capture(active),
     exportNexusDiagnostics: () => exportNexusDiagnostics(nexusDiagnostics),
     nexusFeedback: async () => {
       const url = new URL(

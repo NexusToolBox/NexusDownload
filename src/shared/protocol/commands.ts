@@ -27,6 +27,7 @@ export const Commands = {
   NexusDownload: 'command:nexusDownload',
   NexusDiscard: 'command:nexusDiscard',
   NexusUpdatePreferences: 'command:nexusUpdatePreferences',
+  NexusShortcutCapture: 'command:nexusShortcutCapture',
   SaveNasSettings: 'command:saveNasSettings',
   AcknowledgeGraphicsRecoveryNotice:
     'command:acknowledgeGraphicsRecoveryNotice',

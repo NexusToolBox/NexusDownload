@@ -38,6 +38,7 @@ import { ControlSettings } from './control-settings'
 import { ExternalTools } from './external-tools'
 import { QueueSettings } from './queue-settings'
 import { NexusRuleDialog } from './rule-dialog'
+import { ShortcutSetting } from './shortcut-setting'
 import { SystemCleanup } from './system-cleanup'
 
 const sections = [
@@ -309,6 +310,10 @@ export function NexusSettingsPage() {
                         (value) => preference({ clipboardEnabled: value })
                       )}
                     </SettingRow>
+                    <ShortcutSetting
+                      workspace={workspace}
+                      disabled={disabled}
+                    />
                     <SettingRow title={t('nexus.v13.autoUpdate')}>
                       {toggle(
                         t('nexus.v13.autoUpdate'),

@@ -15,6 +15,7 @@ import {
 import {
   type CloudErrorKind,
   type CloudPlatform,
+  type CloudPreflight,
   cloudAccountSchema,
   cloudAccountUpdateSchema,
   cloudBrowseRequestSchema,
@@ -31,6 +32,7 @@ import { type DownloadTask, TaskStatus } from '@shared/types/task'
 import writeFileAtomic from 'write-file-atomic'
 import { z } from 'zod'
 import { getNexusDiskSpace } from '../disk-space'
+import { duplicateTask } from '../duplicate-download'
 import { AccountGovernor } from './account-governor'
 import { inspectAccountHealth } from './account-health'
 import { cacheAvatar, readAvatar, removeAvatar } from './account-profile'
@@ -186,6 +188,7 @@ export class CloudRuntime {
     private options: {
       enqueue?(ids: string[]): Promise<void>
       profiles?: import('../speed-profiles').SpeedProfiles
+      duplicateWarning?: () => boolean
       group?: (
         name: string,
         ids: string[],
@@ -1042,14 +1045,16 @@ export class CloudRuntime {
     }
     return { req, ctx, files }
   }
-  async preflight(raw: unknown) {
+  async preflight(raw: unknown): Promise<CloudPreflight> {
     const { req, ctx, files } = await this.selection(raw)
     const duplicates = []
     const tasks = this.options.tasks.getAll()
     for (const { file, parents } of files) {
+      if (this.options.duplicateWarning?.() === false) continue
       // Reuse the existing path admission gate before examining any local target.
       await prepareCloudDirectory(req.directory, parents)
-      const match = await this.existingFiles.find(
+      const match = await this.findDuplicate(
+        ctx.platform,
         file,
         parents,
         req.directory,
@@ -1149,6 +1154,26 @@ export class CloudRuntime {
   isSubmitting() {
     return this.downloading
   }
+  private async findDuplicate(
+    platform: CloudPlatform,
+    file: AdapterFile,
+    parents: string[],
+    directory: string,
+    tasks: DownloadTask[]
+  ) {
+    const bindings = this.state.bindings.filter(
+      (binding) => binding.platform === platform && binding.file.id === file.id
+    )
+    for (const binding of bindings) {
+      const duplicate = await duplicateTask(
+        tasks.find((task) => task.id === binding.taskId)
+      )
+      if (duplicate) return { path: '', basis: 'source', ...duplicate }
+    }
+    // A deleted output must be downloadable again even if a similarly named file exists elsewhere.
+    if (bindings.length) return null
+    return this.existingFiles.find(file, parents, directory, tasks)
+  }
   async download(raw: unknown) {
     if (this.downloading) throw new CloudError('rate')
     this.downloading = true
@@ -1181,7 +1206,9 @@ export class CloudRuntime {
       if (
         preflightSkipped.has(file.id) ||
         (req.skipExisting &&
-          (await this.existingFiles.find(
+          this.options.duplicateWarning?.() !== false &&
+          (await this.findDuplicate(
+            ctx.platform,
             file,
             parents,
             req.directory,
@@ -1194,8 +1221,8 @@ export class CloudRuntime {
       const key = `${req.contextId}:${req.method}:${file.id}:${path.resolve(req.directory)}`
       const submitted = this.submitted.get(key)
       if (submitted) {
-        ids.push(submitted)
-        continue
+        this.submitted.delete(key)
+        this.transfers.delete(key)
       }
       const saveDir = await prepareCloudDirectory(req.directory, parents)
       let tempDir: string | undefined

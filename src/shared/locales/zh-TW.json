@@ -4505,6 +4505,27 @@
         "done": "已清除，可以直接刪除這個資料夾",
         "failed": "清除未完成，請重試"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "重複下載提醒",
+        "active": "正在下載",
+        "completed": "已經下載過",
+        "batch": "其中 {{count}} 個已經下載過",
+        "view": "檢視工作",
+        "open": "開啟檔案",
+        "again": "仍然下載",
+        "skip": "略過這些",
+        "all": "全部下載"
+      },
+      "shortcut": {
+        "setting": "快速鍵",
+        "capture": "按下新組合",
+        "clear": "清除",
+        "off": "已關閉",
+        "conflict": "已被其他軟體佔用，請換一個",
+        "invalid": "請使用組合鍵"
+      }
     }
   }
 }

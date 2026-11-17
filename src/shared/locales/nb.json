@@ -4529,6 +4529,27 @@
         "done": "Rydd. Du kan slette denne mappen",
         "failed": "Ufullstendig opprydding. Prøv på nytt"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Varsle om duplikate nedlastinger",
+        "active": "Lastes ned",
+        "completed": "Allerede lastet ned",
+        "batch": "{{count}} er allerede lastet ned",
+        "view": "Vis oppgave",
+        "open": "Åpne fil",
+        "again": "Last ned på nytt",
+        "skip": "Hopp over disse",
+        "all": "Last ned alle"
+      },
+      "shortcut": {
+        "setting": "Hurtigtast",
+        "capture": "Trykk en ny kombinasjon",
+        "clear": "Fjern",
+        "off": "Av",
+        "conflict": "Brukes av en annen app. Velg en annen.",
+        "invalid": "Bruk en tastekombinasjon"
+      }
     }
   }
 }

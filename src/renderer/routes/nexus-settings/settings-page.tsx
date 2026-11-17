@@ -168,6 +168,13 @@ export function NexusSettingsPage() {
               <>
                 {inline('downloads')}
                 <Group>
+                  <SettingRow title={t('nexus.v151.duplicate.setting')}>
+                    {toggle(
+                      t('nexus.v151.duplicate.setting'),
+                      workspace?.preferences.duplicateWarning ?? true,
+                      (checked) => preference({ duplicateWarning: checked })
+                    )}
+                  </SettingRow>
                   <SettingRow label={t('nexus.v4.diskReserve')}>
                     <Input
                       type="number"

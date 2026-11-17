@@ -4553,6 +4553,27 @@
         "done": "esborrat. Podeu esborrar aquesta carpeta",
         "failed": "neteja incompleta. Torna-ho a provar"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Avís de baixada duplicada",
+        "active": "S’està baixant",
+        "completed": "Ja s’ha baixat",
+        "batch": "{{count}} ja s’han baixat",
+        "view": "Mostra la tasca",
+        "open": "Obre el fitxer",
+        "again": "Torna a baixar",
+        "skip": "Omet-les",
+        "all": "Baixa-ho tot"
+      },
+      "shortcut": {
+        "setting": "Drecera",
+        "capture": "Prem una drecera nova",
+        "clear": "Esborra",
+        "off": "Desactivada",
+        "conflict": "Una altra aplicació l’utilitza. Tria’n una altra.",
+        "invalid": "Fes servir una combinació de tecles"
+      }
     }
   }
 }

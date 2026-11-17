@@ -14,9 +14,11 @@ import {
   nexusPreflightRequestSchema,
   nexusStateSchema,
 } from '@shared/schemas/nexus-workspace'
+import type { DownloadTask } from '@shared/types/task'
 import writeFileAtomic from 'write-file-atomic'
 import { classifiedDirectory } from './classification'
 import { getNexusDiskSpace } from './disk-space'
+import { duplicateTask, normalizedSourceIdentity } from './duplicate-download'
 import { type HttpPreflightResult, probeHttp } from './http-preflight'
 import { recognizeSources } from './source-recognizer'
 
@@ -51,6 +53,7 @@ export class NexusWorkspace {
       defaultDirectory: () => string
       changed: () => void
       fetch?: typeof fetch
+      tasks?: () => DownloadTask[]
     }
   ) {}
   async load(): Promise<void> {
@@ -155,7 +158,8 @@ export class NexusWorkspace {
     return this.preflight({ ids })
   }
   async preflight(raw: unknown): Promise<NexusPreflight> {
-    const { ids, directory } = nexusPreflightRequestSchema.parse(raw)
+    const { ids, directory, skipDuplicates } =
+      nexusPreflightRequestSchema.parse(raw)
     const items = await Promise.all(
       ids
         .flatMap((id) => {
@@ -166,6 +170,7 @@ export class NexusWorkspace {
           ...structuredClone(entry),
           available: this.inputs.has(entry.id),
           probe: this.probes.get(entry.id)?.probe,
+          duplicate: await this.findDuplicate(entry.source.identity),
           saveDir:
             directory ||
             (await classifiedDirectory(
@@ -175,12 +180,13 @@ export class NexusWorkspace {
             )),
         }))
     )
+    const pending = items.filter((item) => !(skipDuplicates && item.duplicate))
     const directories = [...new Set(items.map((item) => item.saveDir))]
     const disks = directories.map(getNexusDiskSpace)
     const blocked =
-      items.some((item) => !!item.probe?.error) ||
+      pending.some((item) => !!item.probe?.error) ||
       disks.some((disk) => {
-        const needed = items
+        const needed = pending
           .filter((item) => item.saveDir === disk.directory)
           .reduce((sum, item) => sum + (item.source.expectedBytes ?? 0), 0)
         return (
@@ -193,12 +199,37 @@ export class NexusWorkspace {
       items,
       disks,
       blocked,
-      knownBytes: items.reduce(
+      knownBytes: pending.reduce(
         (sum, item) => sum + (item.source.expectedBytes ?? 0),
         0
       ),
-      unknownCount: items.filter((item) => item.source.expectedBytes === null)
+      unknownCount: pending.filter((item) => item.source.expectedBytes === null)
         .length,
+    }
+  }
+  private async findDuplicate(identity: string) {
+    if (!this.state.preferences.duplicateWarning) return
+    for (const task of this.options.tasks?.() ?? []) {
+      const binding = this.state.bindings.find(
+        (item) => item.taskId === task.id
+      )
+      const matches =
+        binding?.source.identity === identity ||
+        (!!task.infoHash &&
+          /^(?:[a-f0-9]{40}|[a-z2-7]{32})$/i.test(task.infoHash) &&
+          normalizedSourceIdentity(`magnet:?xt=urn:btih:${task.infoHash}`) ===
+            identity) ||
+        task.uris.some((uri) => {
+          try {
+            return normalizedSourceIdentity(uri) === identity
+          } catch {
+            return false
+          }
+        })
+      if (matches) {
+        const duplicate = await duplicateTask(task)
+        if (duplicate) return duplicate
+      }
     }
   }
   cloudInput(raw: unknown): string {
@@ -236,6 +267,7 @@ export class NexusWorkspace {
     const taskIds: string[] = []
     let failed = 0
     for (const item of checked.items) {
+      if (request.skipDuplicates && item.duplicate) continue
       const input = this.inputs.get(item.id)
       if (!input || !['http', 'magnet'].includes(item.source.platform)) {
         failed++
@@ -250,6 +282,7 @@ export class NexusWorkspace {
                 payload: { kind: 'magnet', uri: input },
                 saveDir: item.saveDir,
                 selectedFiles: [],
+                duplicatePolicy: 'create-copy',
               }
             : {
                 type: 'http',

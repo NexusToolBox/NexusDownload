@@ -44,7 +44,7 @@ import {
   TaskType,
 } from '@shared/types/task'
 import { formatBytes } from '@shared/utils/format-bytes'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router'
 import { DownloadsPage } from '../downloads/downloads-page'
@@ -638,6 +638,10 @@ export function NexusDownloadsPage() {
   const [params] = useSearchParams()
   const [filter, setFilter] = useState('all')
   const [selected, setSelected] = useState<string | null>(null)
+  useEffect(() => {
+    const task = params.get('task')
+    if (task) setSelected(task)
+  }, [params])
   const [inspector, setInspector] = useState(true)
   const [sort, setSort] = useState('added')
   const [expandedPackages, setExpandedPackages] = useState<Set<string>>(

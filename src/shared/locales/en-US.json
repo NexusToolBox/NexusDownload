@@ -4529,6 +4529,27 @@
         "done": "Cleared. You can delete this folder",
         "failed": "Cleanup incomplete. Retry"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Duplicate download warning",
+        "active": "Downloading",
+        "completed": "Already downloaded",
+        "batch": "{{count}} already downloaded",
+        "view": "View task",
+        "open": "Open file",
+        "again": "Download again",
+        "skip": "Skip these",
+        "all": "Download all"
+      },
+      "shortcut": {
+        "setting": "Shortcut",
+        "capture": "Press a new shortcut",
+        "clear": "Clear",
+        "off": "Off",
+        "conflict": "Used by another app. Choose another.",
+        "invalid": "Use a key combination"
+      }
     }
   }
 }

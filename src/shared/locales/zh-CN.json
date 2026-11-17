@@ -4505,6 +4505,27 @@
         "done": "已清除，可以直接删除这个文件夹",
         "failed": "清除未完成，请重试"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "重复下载提醒",
+        "active": "正在下载",
+        "completed": "已经下载过",
+        "batch": "其中 {{count}} 个已经下载过",
+        "view": "查看任务",
+        "open": "打开文件",
+        "again": "仍然下载",
+        "skip": "跳过这些",
+        "all": "全部下载"
+      },
+      "shortcut": {
+        "setting": "快捷键",
+        "capture": "按下新组合",
+        "clear": "清除",
+        "off": "已关闭",
+        "conflict": "已被其他软件占用，请换一个",
+        "invalid": "请使用组合键"
+      }
     }
   }
 }

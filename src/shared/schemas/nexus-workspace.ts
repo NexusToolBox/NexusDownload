@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { nexusDiskSpaceSchema } from './nexus-disk'
+import { nexusDuplicateSchema } from './nexus-duplicate'
 
 export const nexusPlatformSchema = z.enum([
   'http',
@@ -117,6 +118,7 @@ export const nexusPreferencesSchema = z
     diskReserveGiB: z.number().min(0.1).max(1024).default(5),
     classificationEnabled: z.boolean().default(true),
     clipboardEnabled: z.boolean().default(true),
+    duplicateWarning: z.boolean().default(true),
     notificationShortcut: z.boolean().default(true),
     diagnosticsEnabled: z.boolean().default(false),
     mediaQuality: z
@@ -217,6 +219,7 @@ export const nexusPreflightRequestSchema = z
   .object({
     ids: z.array(reference).min(1).max(50),
     directory: z.string().max(1024).optional(),
+    skipDuplicates: z.boolean().default(true),
   })
   .strict()
 export const httpProbeSchema = z.object({
@@ -241,6 +244,7 @@ export const nexusPreflightSchema = z.object({
       available: z.boolean(),
       saveDir: z.string(),
       probe: httpProbeSchema.optional(),
+      duplicate: nexusDuplicateSchema.optional(),
     })
   ),
   disks: z.array(nexusDiskSpaceSchema),

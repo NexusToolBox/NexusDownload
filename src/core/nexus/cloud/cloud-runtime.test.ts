@@ -462,8 +462,41 @@ describe('cloud runtime safety boundaries', () => {
     const test = await fixture()
     const first = await test.runtime.download(test.selection)
     const second = await test.runtime.download(test.selection)
-    expect(first.taskIds).toEqual(second.taskIds)
+    expect(first.taskIds).toHaveLength(2)
+    expect(second.taskIds).toEqual([])
+    expect(second.skipped).toBe(2)
     expect(test.tasks.getAll().length).toBe(2)
+  })
+  it('matches cloud file IDs across contexts, allows another copy, and ignores deleted outputs', async () => {
+    const test = await fixture()
+    await test.runtime.download(test.selection)
+    const context = await test.runtime.browse({
+      platform: 'quark',
+      accountId: test.account.id,
+    })
+    const selection = { ...test.selection, contextId: context.contextId }
+    expect((await test.runtime.preflight(selection)).duplicates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'f1', taskId: 't1', status: 'active' }),
+      ])
+    )
+    const task = test.tasks.getAll()[0]
+    task.status = TaskStatus.Completed
+    await writeFile(task.diskPath, 'hello')
+    expect((await test.runtime.preflight(selection)).duplicates[0].status).toBe(
+      'completed'
+    )
+    await test.runtime.download({
+      ...selection,
+      ids: ['f1'],
+      skipExisting: false,
+    })
+    expect(test.tasks.getAll()).toHaveLength(3)
+    for (const task of test.tasks.getAll()) task.status = TaskStatus.Completed
+    await rm(task.diskPath)
+    expect((await test.runtime.preflight(selection)).duplicates).toEqual([])
+    const result = await test.runtime.download({ ...selection, ids: ['f1'] })
+    expect(result.taskIds).toHaveLength(1)
   })
   it('keeps user-paused tasks paused across restart without inventing a checkpoint failure', async () => {
     const test = await fixture()

@@ -4505,6 +4505,27 @@
         "done": "Đã xóa. Bạn có thể xóa thư mục này",
         "failed": "Dọn dẹp chưa hoàn tất. Thử lại"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Cảnh báo tải trùng",
+        "active": "Đang tải",
+        "completed": "Đã tải xuống",
+        "batch": "{{count}} mục đã tải xuống",
+        "view": "Xem tác vụ",
+        "open": "Mở tệp",
+        "again": "Tải lại",
+        "skip": "Bỏ qua các mục này",
+        "all": "Tải tất cả"
+      },
+      "shortcut": {
+        "setting": "Phím tắt",
+        "capture": "Nhấn tổ hợp mới",
+        "clear": "Xóa",
+        "off": "Đã tắt",
+        "conflict": "Ứng dụng khác đang dùng. Chọn tổ hợp khác.",
+        "invalid": "Hãy dùng tổ hợp phím"
+      }
     }
   }
 }

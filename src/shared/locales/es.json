@@ -4553,6 +4553,27 @@
         "done": "Borrado. Puedes eliminar esta carpeta.",
         "failed": "Limpieza incompleta. Rever"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Aviso de descarga duplicada",
+        "active": "Descargando",
+        "completed": "Ya descargado",
+        "batch": "{{count}} ya descargados",
+        "view": "Ver tarea",
+        "open": "Abrir archivo",
+        "again": "Descargar de nuevo",
+        "skip": "Omitir estos",
+        "all": "Descargar todo"
+      },
+      "shortcut": {
+        "setting": "Atajo",
+        "capture": "Pulsa una nueva combinación",
+        "clear": "Borrar",
+        "off": "Desactivado",
+        "conflict": "Lo usa otra aplicación. Elige otro.",
+        "invalid": "Usa una combinación de teclas"
+      }
     }
   }
 }

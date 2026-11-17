@@ -4529,6 +4529,27 @@
         "done": "Törölve. Ezt a mappát törölheti",
         "failed": "A tisztítás nem fejeződött be. Próbálja újra"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Ismételt letöltés jelzése",
+        "active": "Letöltés folyamatban",
+        "completed": "Már letöltve",
+        "batch": "{{count}} már le lett töltve",
+        "view": "Feladat megtekintése",
+        "open": "Fájl megnyitása",
+        "again": "Letöltés újra",
+        "skip": "Ezek kihagyása",
+        "all": "Összes letöltése"
+      },
+      "shortcut": {
+        "setting": "Gyorsbillentyű",
+        "capture": "Nyomjon meg új kombinációt",
+        "clear": "Törlés",
+        "off": "Kikapcsolva",
+        "conflict": "Más alkalmazás használja. Válasszon másikat.",
+        "invalid": "Használjon billentyűkombinációt"
+      }
     }
   }
 }

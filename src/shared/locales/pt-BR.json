@@ -4553,6 +4553,27 @@
         "done": "Desmarcado. Você pode excluir esta pasta",
         "failed": "Limpeza incompleta. Tentar novamente"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Aviso de download duplicado",
+        "active": "Baixando",
+        "completed": "Já baixado",
+        "batch": "{{count}} já baixados",
+        "view": "Ver tarefa",
+        "open": "Abrir arquivo",
+        "again": "Baixar novamente",
+        "skip": "Ignorar estes",
+        "all": "Baixar tudo"
+      },
+      "shortcut": {
+        "setting": "Atalho",
+        "capture": "Pressione uma nova combinação",
+        "clear": "Limpar",
+        "off": "Desativado",
+        "conflict": "Usado por outro aplicativo. Escolha outro.",
+        "invalid": "Use uma combinação de teclas"
+      }
     }
   }
 }

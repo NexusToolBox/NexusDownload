@@ -39,6 +39,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 import { z } from 'zod'
+import { DuplicateNotice } from '../nexus-downloads/duplicate-notice'
+import { useNexusWorkspace } from '../nexus-downloads/use-workspace'
 import { AccountMenu } from './account-menu'
 import { AccountPanel } from './account-panel'
 import { cloudCall, cloudError, takeCloudInput, useCloud } from './cloud-client'
@@ -47,6 +49,7 @@ import { CloudLoginButton } from './cloud-login-button'
 export function NexusCloudPage() {
   const { t } = useTranslation()
   const state = useCloud()
+  const workspace = useNexusWorkspace()
   const [params] = useSearchParams()
   const [platform, setPlatform] = useState<CloudPlatform>(
     NEXUS_PLATFORMS.find((p) => p.key === params.get('platform'))?.key ??
@@ -169,7 +172,8 @@ export function NexusCloudPage() {
     method,
     directory,
     allowPlayback,
-    skipExisting,
+    skipExisting:
+      workspace?.preferences.duplicateWarning === false ? false : skipExisting,
   })
   const reset = () => {
     generation.current++
@@ -646,49 +650,39 @@ export function NexusCloudPage() {
                   })}
                 </p>
               )}
-              {check.duplicates.length > 0 && (
-                <div className="space-y-3">
-                  <label
-                    htmlFor="nexus-skip-existing"
-                    className="flex items-center gap-2"
-                  >
-                    <Checkbox
-                      id="nexus-skip-existing"
-                      checked={skipExisting}
-                      disabled={busy}
-                      onCheckedChange={(value) => {
-                        const skip = value === true
-                        setSkipExisting(skip)
-                        void run(async () =>
-                          setCheck(
-                            cloudPreflightSchema.parse(
-                              await cloudCall(Commands.NexusCloudPreflight, {
-                                ...selection(),
-                                skipExisting: skip,
-                              })
-                            )
-                          )
-                        )
-                      }}
-                    />
-                    {t('nexus.cloudV3.skipExisting')}
-                  </label>
-                  <p>
-                    {t('nexus.cloudV3.duplicateCount', {
-                      count: check.skipped,
-                    })}
-                  </p>
-                  <div className="max-h-40 overflow-auto">
-                    {check.duplicates.map((d) => (
-                      <p key={d.id}>
-                        {d.name} ·{' '}
-                        {t('nexus.cloudV3.existsAt', { path: d.path })} ·{' '}
-                        {t(`nexus.cloudV3.basis_${d.basis}`)}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <DuplicateNotice
+                duplicates={check.duplicates.map((item) => ({
+                  taskId: item.taskId,
+                  status: item.status ?? ('completed' as const),
+                }))}
+                total={check.count}
+                busy={busy}
+                skip={skipExisting}
+                onSkip={(skip) => {
+                  setSkipExisting(skip)
+                  void run(async () =>
+                    setCheck(
+                      cloudPreflightSchema.parse(
+                        await cloudCall(Commands.NexusCloudPreflight, {
+                          ...selection(),
+                          skipExisting: skip,
+                        })
+                      )
+                    )
+                  )
+                }}
+                onDownload={() =>
+                  void run(async () => {
+                    await cloudCall(Commands.NexusCloudDownload, {
+                      ...selection(),
+                      skipExisting: false,
+                    })
+                    setCheck(null)
+                    setSelected([])
+                  })
+                }
+                onClose={() => setCheck(null)}
+              />
               <p>{t('nexus.cloudV2.originalGuard')}</p>
               {error === 'playback' && (
                 <label
@@ -723,6 +717,7 @@ export function NexusCloudPage() {
               </Group>
               <Button
                 size="sm"
+                hidden={check.count === 1 && check.duplicates.length > 0}
                 disabled={busy || check.blocked}
                 onClick={() =>
                   void run(async () => {

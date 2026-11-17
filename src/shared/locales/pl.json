@@ -4577,6 +4577,27 @@
         "done": "Wyczyszczono. Możesz usunąć ten folder",
         "failed": "Czyszczenie nie zostało zakończone. Spróbować ponownie"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Ostrzeżenie o duplikacie",
+        "active": "Pobieranie",
+        "completed": "Już pobrano",
+        "batch": "Już pobrano: {{count}}",
+        "view": "Pokaż zadanie",
+        "open": "Otwórz plik",
+        "again": "Pobierz ponownie",
+        "skip": "Pomiń te pliki",
+        "all": "Pobierz wszystko"
+      },
+      "shortcut": {
+        "setting": "Skrót",
+        "capture": "Naciśnij nową kombinację",
+        "clear": "Wyczyść",
+        "off": "Wyłączony",
+        "conflict": "Używany przez inną aplikację. Wybierz inny.",
+        "invalid": "Użyj kombinacji klawiszy"
+      }
     }
   }
 }

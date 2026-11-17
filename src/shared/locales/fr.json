@@ -4553,6 +4553,27 @@
         "done": "Effacé. Vous pouvez supprimer ce dossier",
         "failed": "Nettoyage incomplet. Réessayer"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Alerte de téléchargement en double",
+        "active": "Téléchargement en cours",
+        "completed": "Déjà téléchargé",
+        "batch": "{{count}} déjà téléchargés",
+        "view": "Voir la tâche",
+        "open": "Ouvrir le fichier",
+        "again": "Télécharger à nouveau",
+        "skip": "Les ignorer",
+        "all": "Tout télécharger"
+      },
+      "shortcut": {
+        "setting": "Raccourci",
+        "capture": "Appuyez sur une nouvelle combinaison",
+        "clear": "Effacer",
+        "off": "Désactivé",
+        "conflict": "Utilisé par une autre application. Choisissez-en un autre.",
+        "invalid": "Utilisez une combinaison de touches"
+      }
     }
   }
 }

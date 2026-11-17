@@ -4505,6 +4505,27 @@
         "done": "Dihapus. Anda dapat menghapus folder ini",
         "failed": "Pembersihan tidak selesai. Mencoba kembali"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Peringatan unduhan duplikat",
+        "active": "Sedang diunduh",
+        "completed": "Sudah diunduh",
+        "batch": "{{count}} sudah diunduh",
+        "view": "Lihat tugas",
+        "open": "Buka berkas",
+        "again": "Unduh lagi",
+        "skip": "Lewati ini",
+        "all": "Unduh semua"
+      },
+      "shortcut": {
+        "setting": "Pintasan",
+        "capture": "Tekan kombinasi baru",
+        "clear": "Hapus",
+        "off": "Nonaktif",
+        "conflict": "Dipakai aplikasi lain. Pilih yang lain.",
+        "invalid": "Gunakan kombinasi tombol"
+      }
     }
   }
 }

@@ -3268,6 +3268,7 @@ async function initializeMainProcess(): Promise<void> {
     enabled: () => nexusWorkspace.getPreferences().diagnosticsEnabled,
   })
   const nexusWorkspace = new NexusWorkspace({
+    tasks: () => taskManager.getAll(),
     file: path.join(platform.userDataDir, 'nexus-workspace.json'),
     defaultDirectory: () => settingsManager.getApp().defaultSaveDir,
     changed: () => {
@@ -3521,6 +3522,7 @@ async function initializeMainProcess(): Promise<void> {
     },
   })
   const nexusCloud = new CloudRuntime({
+    duplicateWarning: () => nexusWorkspace.getPreferences().duplicateWarning,
     profiles: mediaStorageReady ? nexusProfiles : undefined,
     enqueue: (ids) => nexusQueues.intent(ids, true),
     group: async (name, ids, directory, description) =>

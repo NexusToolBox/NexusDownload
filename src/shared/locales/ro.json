@@ -4553,6 +4553,27 @@
         "done": "Eliberat. Puteți șterge acest dosar",
         "failed": "Curățare incompletă. Reîncercați"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Avertizare descărcare duplicată",
+        "active": "Se descarcă",
+        "completed": "Deja descărcat",
+        "batch": "{{count}} deja descărcate",
+        "view": "Vezi sarcina",
+        "open": "Deschide fișierul",
+        "again": "Descarcă din nou",
+        "skip": "Omite acestea",
+        "all": "Descarcă tot"
+      },
+      "shortcut": {
+        "setting": "Scurtătură",
+        "capture": "Apasă o combinație nouă",
+        "clear": "Șterge",
+        "off": "Dezactivată",
+        "conflict": "Folosită de altă aplicație. Alege alta.",
+        "invalid": "Folosește o combinație de taste"
+      }
     }
   }
 }

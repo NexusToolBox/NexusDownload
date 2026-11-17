@@ -4553,6 +4553,27 @@
         "done": "cancellato. Puoi eliminare questa cartella",
         "failed": "pulizia incompleta. Riprova"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Avviso download duplicato",
+        "active": "Download in corso",
+        "completed": "Già scaricato",
+        "batch": "{{count}} già scaricati",
+        "view": "Mostra attività",
+        "open": "Apri file",
+        "again": "Scarica di nuovo",
+        "skip": "Ignora questi",
+        "all": "Scarica tutto"
+      },
+      "shortcut": {
+        "setting": "Scorciatoia",
+        "capture": "Premi una nuova combinazione",
+        "clear": "Cancella",
+        "off": "Disattivata",
+        "conflict": "Usata da un’altra app. Scegline un’altra.",
+        "invalid": "Usa una combinazione di tasti"
+      }
     }
   }
 }

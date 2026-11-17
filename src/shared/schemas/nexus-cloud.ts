@@ -188,6 +188,8 @@ export const cloudPreflightSchema = z.object({
       name: z.string(),
       path: z.string(),
       basis: z.string(),
+      taskId: z.string().optional(),
+      status: z.enum(['active', 'completed']).optional(),
     })
   ),
   skipped: z.number(),

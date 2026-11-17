@@ -1614,6 +1614,24 @@
 }
 
 /* Mirror structural borders and keep translated labels readable. */
+.nx-duplicate {
+  padding: 12px;
+  margin-block: 12px;
+  border-radius: 10px;
+  background: var(--amber-soft);
+  color: var(--foreground);
+}
+.nx-duplicate > p:first-child {
+  color: var(--amber);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.nx-duplicate svg {
+  width: 16px;
+  height: 16px;
+}
 html[dir="rtl"] .nexus-shell .snav {
   border-right: 0;
   border-left: 1px solid var(--border);

@@ -4529,6 +4529,27 @@
         "done": "Gelöscht. Sie können diesen Ordner löschen",
         "failed": "Bereinigung unvollständig. Wiederholen"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Doppelte Downloads melden",
+        "active": "Wird heruntergeladen",
+        "completed": "Bereits heruntergeladen",
+        "batch": "{{count}} bereits heruntergeladen",
+        "view": "Aufgabe anzeigen",
+        "open": "Datei öffnen",
+        "again": "Erneut herunterladen",
+        "skip": "Diese überspringen",
+        "all": "Alle herunterladen"
+      },
+      "shortcut": {
+        "setting": "Tastenkürzel",
+        "capture": "Neue Kombination drücken",
+        "clear": "Löschen",
+        "off": "Aus",
+        "conflict": "Von anderer App belegt. Anderes Kürzel wählen.",
+        "invalid": "Tastenkombination verwenden"
+      }
     }
   }
 }

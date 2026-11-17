@@ -1,9 +1,10 @@
-import { createHash, randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import type {
   NexusFileType,
   NexusInboxEntry,
   NexusPlatform,
 } from '@shared/schemas/nexus-workspace'
+import { normalizedSourceIdentity } from './duplicate-download'
 
 const platforms: [RegExp, NexusPlatform][] = [
   [/^(?:pan|yun)\.baidu\.com$/, 'baidu'],
@@ -43,7 +44,6 @@ export function recognizeSources(
       const url = new URL(raw)
       if (url.username || url.password) continue
       let platform: NexusPlatform = 'http'
-      let identityInput = raw
       let title = url.hostname
       let shareId: string | undefined
       if (url.protocol === 'magnet:') {
@@ -52,7 +52,6 @@ export function recognizeSources(
           ?.match(/^urn:btih:([a-f0-9]{40}|[a-z2-7]{32})$/i)?.[1]
         if (!hash) continue
         platform = 'magnet'
-        identityInput = hash.toLowerCase()
         title = url.searchParams.get('dn')?.slice(0, 200) || 'BitTorrent'
       } else {
         platform =
@@ -71,7 +70,7 @@ export function recognizeSources(
               : url.hostname
         }
       }
-      const identity = createHash('sha256').update(identityInput).digest('hex')
+      const identity = normalizedSourceIdentity(raw)
       if (seen.has(identity)) continue
       seen.add(identity)
       const id = randomUUID()

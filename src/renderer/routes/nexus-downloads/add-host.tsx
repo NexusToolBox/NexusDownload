@@ -39,6 +39,7 @@ import { useLocation, useNavigate } from 'react-router'
 import { cloudCall, cloudError, useCloud } from '../nexus-cloud/cloud-client'
 import { CloudLoginButton } from '../nexus-cloud/cloud-login-button'
 import { OfflineDownload } from '../nexus-services/offline-download'
+import { DuplicateNotice } from './duplicate-notice'
 import { NEXUS_ADD_EVENT } from './nexus-events'
 import { useNexusWorkspace } from './use-workspace'
 
@@ -51,6 +52,7 @@ export function NexusAddHost() {
   const location = useLocation()
 
   const [open, setOpen] = useState(false)
+  const [skipDuplicates, setSkipDuplicates] = useState(true)
   const [input, setInput] = useState('')
   const [preflight, setPreflight] = useState<NexusPreflight | null>(null)
   const [busy, setBusy] = useState(false)
@@ -87,6 +89,7 @@ export function NexusAddHost() {
   const show = useCallback(
     (value?: string) => {
       setInput(value ?? '')
+      setSkipDuplicates(true)
       setConsent(false)
       setPreflight(null)
       setCloudData(null)
@@ -147,6 +150,11 @@ export function NexusAddHost() {
       }
     }
     const keyboard = (event: KeyboardEvent) => {
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.closest('[data-shortcut-capture]')
+      )
+        return
       if (event.ctrlKey && event.key.toLowerCase() === 'k') {
         event.preventDefault()
         event.stopPropagation()
@@ -332,7 +340,7 @@ export function NexusAddHost() {
     const parsed = nexusPreflightSchema.safeParse(checked)
     if (parsed.success) setPreflight(parsed.data)
   }
-  const download = async () => {
+  const download = async (skip = skipDuplicates) => {
     if (cloudData && cloudCheck) {
       await run(async () => {
         await cloudCall(Commands.NexusCloudDownload, {
@@ -340,6 +348,7 @@ export function NexusAddHost() {
           ids: cloudData.files.map((file) => file.id),
           method: cloudMethod,
           directory: directory ?? preflight?.items[0]?.saveDir,
+          skipExisting: skip,
         })
         setOpen(false)
         navigate('/downloads/all')
@@ -350,6 +359,7 @@ export function NexusAddHost() {
       transport.invoke(Commands.NexusDownload, {
         ids: downloadable.map((item) => item.id),
         directory,
+        skipDuplicates: skip,
       })
     )
     if (
@@ -361,7 +371,10 @@ export function NexusAddHost() {
       return
     if ('failed' in raw && raw.failed)
       toast.add({ type: 'warning', title: t('nexus.preflight.partial') })
-    if (raw.taskIds.length) {
+    if (
+      raw.taskIds.length ||
+      (skip && duplicates.length === downloadable.length)
+    ) {
       setOpen(false)
       setInput('')
       setPreflight(null)
@@ -376,6 +389,15 @@ export function NexusAddHost() {
   const cloud = preflight?.items.some(
     (item) => !['http', 'magnet'].includes(item.source.platform)
   )
+  const duplicates =
+    cloudData && cloudCheck
+      ? cloudCheck.duplicates.map((item) => ({
+          taskId: item.taskId,
+          status: item.status ?? ('completed' as const),
+        }))
+      : downloadable.flatMap((item) => (item.duplicate ? [item.duplicate] : []))
+  const total = cloudCheck?.count ?? downloadable.length
+  const singleDuplicate = total === 1 && duplicates.length === 1
   const disk = preflight?.disks[0]
   const httpFailure = preflight?.items.find((item) => item.probe?.error)
   const noRange = preflight?.items.some((item) => item.probe?.range === false)
@@ -562,6 +584,45 @@ export function NexusAddHost() {
               workspace?.preferences.offline115 && (
                 <OfflineDownload source={offlineSource} />
               )}
+            {!recognizing && (
+              <DuplicateNotice
+                duplicates={duplicates}
+                total={total}
+                busy={busy || recognizing}
+                skip={skipDuplicates}
+                onSkip={(skip) => {
+                  setSkipDuplicates(skip)
+                  void run(async () => {
+                    if (cloudData) {
+                      setCloudCheck(
+                        cloudPreflightSchema.parse(
+                          await cloudCall(Commands.NexusCloudPreflight, {
+                            contextId: cloudData.contextId,
+                            ids: cloudData.files.map((file) => file.id),
+                            method: cloudMethod,
+                            directory:
+                              directory ?? preflight?.items[0]?.saveDir,
+                            skipExisting: skip,
+                          })
+                        )
+                      )
+                    } else {
+                      setPreflight(
+                        nexusPreflightSchema.parse(
+                          await transport.invoke(Queries.GetNexusPreflight, {
+                            ids: preflight?.items.map((item) => item.id),
+                            directory,
+                            skipDuplicates: skip,
+                          })
+                        )
+                      )
+                    }
+                  })
+                }}
+                onDownload={() => void download(false)}
+                onClose={() => setOpen(false)}
+              />
+            )}
             {feedback && (
               <p className="nexus-add-feedback" role="alert">
                 {feedback}
@@ -608,7 +669,7 @@ export function NexusAddHost() {
                       : t('nexus.preflight.localOnly')}
                 </span>
               </Button>
-              {httpFailure ? (
+              {singleDuplicate ? null : httpFailure ? (
                 <Button onClick={() => void run(openSource)}>
                   {t('nexus.v12.http.browser')}
                 </Button>
@@ -629,7 +690,9 @@ export function NexusAddHost() {
                     busy
                       ? 'nexus.preflight.working'
                       : 'nexus.preflight.download',
-                    { count: cloudCheck?.downloadCount ?? downloadable.length }
+                    {
+                      count: skipDuplicates ? total - duplicates.length : total,
+                    }
                   )}
                 </Button>
               )}

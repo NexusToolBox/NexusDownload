@@ -4529,6 +4529,27 @@
         "done": "Temizlendi. Bu klasörü silebilirsiniz",
         "failed": "Temizleme tamamlanmadı. Yeniden dene"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Yinelenen indirme uyarısı",
+        "active": "İndiriliyor",
+        "completed": "Zaten indirildi",
+        "batch": "{{count}} dosya zaten indirildi",
+        "view": "Görevi görüntüle",
+        "open": "Dosyayı aç",
+        "again": "Yeniden indir",
+        "skip": "Bunları atla",
+        "all": "Tümünü indir"
+      },
+      "shortcut": {
+        "setting": "Kısayol",
+        "capture": "Yeni tuş birleşimine basın",
+        "clear": "Temizle",
+        "off": "Kapalı",
+        "conflict": "Başka bir uygulama kullanıyor. Değiştirin.",
+        "invalid": "Bir tuş birleşimi kullanın"
+      }
     }
   }
 }

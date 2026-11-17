@@ -4529,6 +4529,27 @@
         "done": "gewist. U kunt deze map verwijderen",
         "failed": "Opschonen onvolledig. Opnieuw proberen"
       }
+    },
+    "v151": {
+      "duplicate": {
+        "setting": "Waarschuwing dubbele download",
+        "active": "Wordt gedownload",
+        "completed": "Al gedownload",
+        "batch": "{{count}} al gedownload",
+        "view": "Taak bekijken",
+        "open": "Bestand openen",
+        "again": "Opnieuw downloaden",
+        "skip": "Deze overslaan",
+        "all": "Alles downloaden"
+      },
+      "shortcut": {
+        "setting": "Sneltoets",
+        "capture": "Druk op een nieuwe combinatie",
+        "clear": "Wissen",
+        "off": "Uit",
+        "conflict": "In gebruik door een andere app. Kies een andere.",
+        "invalid": "Gebruik een toetscombinatie"
+      }
     }
   }
 }

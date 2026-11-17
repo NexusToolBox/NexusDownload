@@ -29,6 +29,8 @@ jobs:
           if ('${{ github.ref_type }}' -eq 'tag' -and '${{ github.ref_name }}' -ne "v$version") { throw 'Tag and package versions differ.' }
           if (!(Test-Path "docs/release-notes/$version.md")) { throw 'Release notes are missing.' }
           "NEXUS_VERSION=$version" >> $env:GITHUB_ENV
+      - name: Install boundary checker dependency
+        run: choco install ripgrep --yes --no-progress
       - run: pnpm install --frozen-lockfile
         env:
           MOTRIX_SKIP_ELECTRON_REBUILD: '1'

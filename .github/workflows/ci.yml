@@ -20,6 +20,8 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
+      - name: Install boundary checker dependency
+        run: choco install ripgrep --yes --no-progress
       - run: pnpm install --frozen-lockfile
         env:
           MOTRIX_SKIP_ELECTRON_REBUILD: '1'

@@ -1,4 +1,5 @@
 export const Queries = {
+  GetNexusLicenses: 'query:getNexusLicenses',
   GetNexusSpeed: 'query:getNexusSpeed',
   GetNexusControl: 'query:getNexusControl',
   GetNexusServices: 'query:getNexusServices',

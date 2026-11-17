@@ -132,7 +132,12 @@ describe('Settings form schemas', () => {
     (host) => {
       const values = {
         ...forms.network.values,
-        proxy: { ...DEFAULT_PROXY_SETTINGS, enabled: true, host },
+        proxy: {
+          ...DEFAULT_PROXY_SETTINGS,
+          mode: 'manual',
+          enabled: true,
+          host,
+        },
       }
       expect(networkFormSchema.safeParse(values).success).toBe(false)
     }
@@ -143,7 +148,12 @@ describe('Settings form schemas', () => {
     (host) => {
       const values = {
         ...forms.network.values,
-        proxy: { ...DEFAULT_PROXY_SETTINGS, enabled: true, host },
+        proxy: {
+          ...DEFAULT_PROXY_SETTINGS,
+          mode: 'manual',
+          enabled: true,
+          host,
+        },
       }
       expect(networkFormSchema.safeParse(values).success).toBe(true)
     }

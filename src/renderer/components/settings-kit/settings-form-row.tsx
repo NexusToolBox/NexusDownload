@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 /** Keep errors below the row without changing its label/control layout. */
 export function SettingsFormRow({
   children,
-  className = 'flex items-start justify-between gap-4',
+  className = '',
 }: {
   children: ReactNode
   className?: string

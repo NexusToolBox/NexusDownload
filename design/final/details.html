@@ -217,6 +217,24 @@ kbd{font-family:var(--font-ui);font-size:11px;color:var(--text-3);border:1px sol
 .about-head img{width:64px;height:64px;border-radius:15px}
 .about-head h3{font-size:20px;font-weight:700;letter-spacing:-.01em}
 .about-head .v{font-size:13px;color:var(--text-3);margin-top:4px}
+
+/* ---------- v1.5.2：更新对话框 ---------- */
+.upd{width:460px}
+.upd .dialog-head{align-items:center;padding:22px 22px 6px}
+.upd .dialog-head img{width:44px;height:44px;border-radius:11px}
+.upd .dialog-head .t{flex:1}
+.upd .dialog-head h4{font-size:16px;font-weight:650}
+.upd .dialog-head .m{font-size:12.5px;color:var(--text-3);margin-top:3px;display:flex;gap:6px;align-items:center}
+.notes{margin:10px 22px 0;padding:14px 16px;border-radius:12px;background:var(--panel-2);max-height:220px;overflow:auto}
+.notes h5{font-size:12px;font-weight:600;color:var(--text-3);margin:2px 0 6px}
+.notes h5:not(:first-child){margin-top:12px}
+.notes ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.notes li{position:relative;padding-left:14px;font-size:13.5px;line-height:1.6}
+.notes li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--text-3)}
+.upd .dialog-foot{align-items:center;padding:16px 22px 20px}
+.upd .prog{flex:1;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--text-2)}
+.upd .prog .meter{flex:1;margin:0}
+.upd .prog .meter i{background:var(--live)}
 </style>
 </head>
 <body>
@@ -580,6 +598,92 @@ kbd{font-family:var(--font-ui);font-size:11px;color:var(--text-3);border:1px sol
   </div>
 </section>
 
+
+<!-- 10 高级与开源许可 -->
+<section class="spec">
+  <h2>10. “高级”分组、代理、开源许可（v1.5.2）</h2>
+  <p>“高级”不是一条横贯整页的灰色长条，而是最后一个分组下面、左对齐的一个安静文字按钮。展开后，里面每一块都和页面上其他分组完全一样：分组标题 + 分组，块与块之间 28px，标题和分组之间 10px。同一主题的几个开关放进同一个分组，不要一个开关一张卡片。输入框放在行的右侧（宽 200px），不要另起一行铺满。</p>
+  <div class="row2">
+    <div>
+      <div class="surface" style="width:560px;padding:24px 28px">
+        <div class="section">
+          <div class="section-head"><div><h3>代理</h3></div></div>
+          <div class="group">
+            <div class="item"><div class="body"><div class="title">代理</div></div><div class="trail"><span class="seg"><span class="on">跟随系统</span><span>不使用</span><span>手动</span></span></div></div>
+          </div>
+        </div>
+        <button class="btn quiet" style="padding-left:2px;color:var(--text-2)">高级<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></button>
+      </div>
+      <div class="cap">收起状态（网络页）</div>
+    </div>
+    <div>
+      <div class="surface" style="width:560px;padding:24px 28px">
+        <button class="btn quiet" style="padding-left:2px;color:var(--text-2);margin-bottom:14px">高级<svg class="i sm" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5"/></svg></button>
+        <div class="section">
+          <div class="section-head"><div><h3>DNS 与端口映射</h3></div></div>
+          <div class="group">
+            <div class="item"><div class="body"><div class="title">DNS 解析</div></div><div class="trail"><span class="select">自动<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span></div></div>
+            <div class="item"><div class="body"><div class="title">端口映射</div></div><div class="trail"><span class="toggle on"></span></div></div>
+            <div class="item"><div class="body"><div class="title">映射有效期（秒）</div></div><div class="trail"><input class="input" style="width:200px" value="7200"></div></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-head"><div><h3>网络诊断</h3></div></div>
+          <div class="group">
+            <div class="item"><div class="body"><div class="title">检测 NAT 类型</div></div><div class="trail"><span class="toggle"></span></div></div>
+            <div class="item"><div class="body"><div class="title">检查入站端口</div></div><div class="trail"><span class="toggle"></span></div></div>
+            <div class="item"><div class="body"><div class="title">定期检查</div></div><div class="trail"><span class="toggle"></span></div></div>
+          </div>
+        </div>
+        <div class="section" style="margin-bottom:0">
+          <div class="section-head"><div><h3>下载加速地址</h3></div></div>
+          <div class="group">
+            <div class="item"><div class="body"><div class="title">加速地址</div><div class="desc">访问 GitHub 慢时填写</div></div><div class="trail"><input class="input" style="width:200px" placeholder="留空"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cap">展开状态：块与块间距一致，同类开关合并</div>
+    </div>
+  </div>
+  <div class="row2" style="margin-top:28px">
+    <div>
+      <div class="surface" style="width:560px;padding:24px 28px">
+        <div class="section" style="margin-bottom:0">
+          <div class="section-head"><div><h3>开源许可</h3><div class="sub">NexusDownload 以 AGPL-3.0 协议开源</div></div></div>
+          <div class="group">
+            <div class="item"><div class="body"><div class="title">Motrix</div><div class="desc">MIT</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+            <div class="item"><div class="body"><div class="title">YunX Desktop</div><div class="desc">AGPL-3.0</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+            <div class="item"><div class="body"><div class="title">OpenList</div><div class="desc">AGPL-3.0</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+            <div class="item"><div class="body"><div class="title">aria2</div><div class="desc">GPL-2.0</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+            <div class="item"><div class="body"><div class="title">其他 214 个组件</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+            <div class="item"><div class="body"><div class="title">源代码</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cap">开源许可是 设置 → 关于 里的一个子页面（带返回），不是弹窗里的一大段原始文本；点某一行再显示该组件的许可证全文</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 更新对话框 -->
+<section class="spec">
+  <h2>11. 更新对话框（v1.5.2）</h2>
+  <p>更新内容不再在关于页里就地展开，统一用这个对话框。同一个对话框有三种状态，点“更新”后不关闭，直接在底部变成进度；可以点“后台进行”关掉它，进度继续显示在关于页和状态栏。更新说明只显示当前语言那一半，用浅底色块包住，最多显示约 8 行，超出滚动。</p>
+  <div class="row2">
+    <div><div class="dialog upd"><div class="dialog-head"><img src="icons/app-icon.svg" alt=""><div class="t"><h4>NexusDownload 1.5.2</h4><div class="m"><span class="chip" style="height:20px;background:var(--live-soft);color:var(--live-strong)">新版本</span>11 月 18 日</div></div><button class="icon-btn" title="关闭"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="notes"><h5>改进</h5><ul><li>软件内更新会跟随系统代理，速度更快</li><li>高级设置和开源许可页重新排版</li></ul><h5>修复</h5><ul><li>重复下载提醒默认改为打开已有文件</li></ul></div>
+      <div class="dialog-foot"><button class="btn quiet">以后再说</button><button class="btn primary">更新</button></div></div>
+      <div class="cap">发现新版本：自动检查发现时弹出一次（每个版本只弹一次）；也可从关于页“更新内容”打开</div></div>
+    <div><div class="dialog upd"><div class="dialog-head"><img src="icons/app-icon.svg" alt=""><div class="t"><h4>NexusDownload 1.5.2</h4><div class="m"><span class="chip" style="height:20px;background:var(--live-soft);color:var(--live-strong)">新版本</span>11 月 18 日</div></div><button class="icon-btn" title="关闭"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="notes"><h5>改进</h5><ul><li>软件内更新会跟随系统代理，速度更快</li><li>高级设置和开源许可页重新排版</li></ul><h5>修复</h5><ul><li>重复下载提醒默认改为打开已有文件</li></ul></div>
+      <div class="dialog-foot"><div class="prog"><span class="meter"><i style="width:46%"></i></span><span style="min-width:30px;text-align:right">46%</span></div><button class="btn quiet">后台进行</button></div></div>
+      <div class="cap">下载中：收到第一个字节前显示“正在连接…”；30 秒没进展时，“后台进行”左边多一个安静按钮“在浏览器中下载”</div></div>
+    <div><div class="dialog upd"><div class="dialog-head"><img src="icons/app-icon.svg" alt=""><div class="t"><h4>NexusDownload 1.5.2</h4><div class="m">下载完成</div></div><button class="icon-btn" title="关闭"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="notes"><h5>改进</h5><ul><li>软件内更新会跟随系统代理，速度更快</li><li>高级设置和开源许可页重新排版</li></ul><h5>修复</h5><ul><li>重复下载提醒默认改为打开已有文件</li></ul></div>
+      <div class="dialog-foot"><button class="btn quiet">稍后</button><button class="btn primary">重启并更新</button></div></div>
+      <div class="cap">已就绪；有任务在下载时，点“重启并更新”后在按钮上方补一行“会暂停 2 个下载”，再点一次确认</div></div>
+    <div><div class="dialog upd"><div class="dialog-head"><img src="icons/app-icon.svg" alt=""><div class="t"><h4>已更新到 1.5.2</h4><div class="m"></div></div><button class="icon-btn" title="关闭"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="notes"><h5>改进</h5><ul><li>软件内更新会跟随系统代理，速度更快</li><li>高级设置和开源许可页重新排版</li></ul><h5>修复</h5><ul><li>重复下载提醒默认改为打开已有文件</li></ul></div>
+      <div class="dialog-foot"><button class="btn primary">好的</button></div></div>
+      <div class="cap">更新后：不自动弹出。状态栏出现中性胶囊“已更新到 1.5.2”，点了打开这个；本次运行结束后消失。删除顶部琥珀色横幅</div></div>
+  </div>
+</section>
 </div>
 <script>
 document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{document.documentElement.dataset.theme=b.dataset.t;document.querySelectorAll('[data-t]').forEach(x=>x.setAttribute('aria-pressed',x===b))});

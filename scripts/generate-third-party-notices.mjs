@@ -772,6 +772,39 @@ export async function buildThirdPartyBundle({
     distribution,
     packageCount: graph.packages.length,
     files: {
+      'license-catalog.json': JSON.stringify([
+        ...(await Promise.all(
+          [
+            ['Motrix', 'MIT', 'Motrix-MIT.txt'],
+            ['YunX Desktop', 'AGPL-3.0', 'YunX-AGPL-3.0.txt'],
+            ['OpenList', 'AGPL-3.0', 'OpenList-AGPL-3.0.txt'],
+            ['aria2', 'GPL-2.0', 'aria2-COPYING'],
+          ].map(async ([name, license, file]) => ({
+            name,
+            license,
+            text: (
+              await readFile(
+                path.join(resolvedProjectDir, 'THIRD_PARTY_LICENSES', file),
+                'utf8'
+              )
+            )
+              .split(/^---\s*$/m)[0]
+              .trim(),
+          }))
+        )),
+        ...[
+          ...graph.packages,
+          ...externalComponents.filter(
+            (component) => component.name !== 'aria2'
+          ),
+        ].map((component) => ({
+          name: `${component.name} ${component.version}`,
+          license: component.licenseConcluded,
+          text:
+            component.licenseFiles.map((file) => file.text).join('\n\n') ||
+            'The upstream project has not provided a standalone license for this component.',
+        })),
+      ]),
       'THIRD_PARTY_DEPENDENCIES.md': renderDependencyInventory({
         packages: graph.packages,
         externalComponents,

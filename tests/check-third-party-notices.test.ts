@@ -546,7 +546,11 @@ describe('third-party graph dependency notices', () => {
     ).toEqual({
       from: './build/legal',
       to: './legal',
-      filter: [...LEGAL_ARTIFACTS],
+      filter: [
+        ...LEGAL_ARTIFACTS.slice(0, 2),
+        'license-catalog.json',
+        ...LEGAL_ARTIFACTS.slice(2),
+      ],
     })
 
     const macResources = JSON.parse(

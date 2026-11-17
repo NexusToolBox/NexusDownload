@@ -177,6 +177,21 @@ describe('third-party notice generator', () => {
     const bundle = await buildThirdPartyBundle()
     const inventory = bundle.files['THIRD_PARTY_DEPENDENCIES.md']
     const licenses = bundle.files['THIRD_PARTY_LICENSES.txt']
+    const catalog = JSON.parse(bundle.files['license-catalog.json']) as Array<{
+      name: string
+      license: string
+      text: string
+    }>
+    expect(catalog.slice(0, 4).map((row) => row.name)).toEqual([
+      'Motrix',
+      'YunX Desktop',
+      'OpenList',
+      'aria2',
+    ])
+    expect(new Set(catalog.map((row) => row.name)).size).toBe(catalog.length)
+    expect(catalog.every((row) => row.text.trim().length > 0)).toBe(true)
+    expect(catalog[0].text).toContain('THE SOFTWARE IS PROVIDED')
+    expect(catalog[0].text).not.toContain('THIRD_PARTY_NOTICES.md')
     const sbom = JSON.parse(bundle.files['sbom.spdx.json']) as {
       spdxVersion: string
       packages: Array<{

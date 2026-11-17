@@ -18,7 +18,9 @@ export function AdvancedGroup({ children }: { children: ReactNode }) {
         {t('nexus.v13.advanced')}
         <ChevronDownIcon />
       </CollapsibleTrigger>
-      <CollapsibleContent>{children}</CollapsibleContent>
+      <CollapsibleContent className="nx-advanced-content">
+        {children}
+      </CollapsibleContent>
     </Collapsible>
   )
 }

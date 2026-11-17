@@ -53,7 +53,7 @@ export function ShortcutSetting({
           ? t('nexus.v151.shortcut.invalid')
           : workspace?.shortcutRegistered === false
             ? t('nexus.v151.shortcut.conflict')
-            : undefined
+            : t('nexus.v152.shortcutHelp')
       }
     >
       <div className="flex gap-2 items-center" data-shortcut-capture>

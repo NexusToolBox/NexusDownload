@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { TaskActivityService } from '@core/activity'
 import type { EngineAdapter } from '@core/engine/engine-adapter'
@@ -55,7 +56,7 @@ import { parseTaskInspectorActivitySnapshot } from '@shared/schemas/task-inspect
 import { taskTrackerRequestSchema } from '@shared/schemas/task-tracker'
 import type { GetTransferStatsParams } from '@shared/types/stats'
 import type { GetTaskActivityParams } from '@shared/types/task-activity'
-import { ipcMain, session } from 'electron'
+import { app, ipcMain, session } from 'electron'
 import { getAppImageNativeHost } from '../bridge/appimage-native-host-electron'
 import type { CliToolService } from '../cli/cli-tool-service'
 import type { AppUpdateService } from '../core/app-update-service'
@@ -149,6 +150,17 @@ export function buildQueryHandlers(ctx: QueryContext): QueryHandlerMap {
   })
 
   return {
+    [Queries.GetNexusLicenses]: async () =>
+      JSON.parse(
+        await readFile(
+          path.join(
+            app.isPackaged ? process.resourcesPath : app.getAppPath(),
+            app.isPackaged ? 'legal' : 'build/legal',
+            'license-catalog.json'
+          ),
+          'utf8'
+        )
+      ),
     [Queries.GetNexusDiskSpace]: async (raw: unknown) => {
       const request = nexusDiskRequestSchema.parse(raw)
       return getNexusDiskSpace(

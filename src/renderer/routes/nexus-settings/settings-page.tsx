@@ -28,7 +28,7 @@ import type { NexusPreferences } from '@shared/schemas/nexus-workspace'
 import type { AppSettings } from '@shared/types/settings'
 import { type ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useParams, useSearchParams } from 'react-router'
+import { useLocation, useSearchParams } from 'react-router'
 import { AccountCheck } from '../nexus-cloud/account-check'
 import { cloudCall, cloudError, useCloud } from '../nexus-cloud/cloud-client'
 import { PasswordBook } from '../nexus-downloads/processing-steps'
@@ -36,6 +36,7 @@ import { NexusAbout } from './about-page'
 import { AdvancedGroup } from './advanced-group'
 import { ControlSettings } from './control-settings'
 import { ExternalTools } from './external-tools'
+import { LicensePage } from './license-page'
 import { QueueSettings } from './queue-settings'
 import { NexusRuleDialog } from './rule-dialog'
 import { ShortcutSetting } from './shortcut-setting'
@@ -57,7 +58,7 @@ export function NexusSettingsPage() {
   const cloud = useCloud()
   const [cloudFailure, setCloudFailure] = useState('')
   const location = useLocation()
-  const { cardId } = useParams<{ cardId: string }>()
+  const cardId = location.pathname.match(/^\/settings\/([^/]+)/)?.[1]
   const [params, setParams] = useSearchParams()
   const requested =
     params.get('section') ??
@@ -333,22 +334,26 @@ export function NexusSettingsPage() {
                 'network',
                 <>
                   {' '}
-                  <Group>
-                    <SettingRow
-                      title={t('nexus.v13.githubPrefix')}
-                      description={t('nexus.v13.githubPrefixHelp')}
-                    >
-                      <Input
-                        aria-label={t('nexus.v13.githubPrefix')}
-                        defaultValue={settings?.app.githubDownloadPrefix ?? ''}
-                        onBlur={(event) =>
-                          appPreference({
-                            githubDownloadPrefix: event.target.value.trim(),
-                          })
-                        }
-                      />
-                    </SettingRow>
-                  </Group>
+                  <Section title={t('nexus.v13.githubPrefix')}>
+                    <Group>
+                      <SettingRow
+                        title={t('nexus.v13.githubPrefix')}
+                        description={t('nexus.v13.githubPrefixHelp')}
+                      >
+                        <Input
+                          aria-label={t('nexus.v13.githubPrefix')}
+                          defaultValue={
+                            settings?.app.githubDownloadPrefix ?? ''
+                          }
+                          onBlur={(event) =>
+                            appPreference({
+                              githubDownloadPrefix: event.target.value.trim(),
+                            })
+                          }
+                        />
+                      </SettingRow>
+                    </Group>
+                  </Section>
                   {inline('bittorrent')}
                 </>
               )}
@@ -443,26 +448,30 @@ export function NexusSettingsPage() {
               </>
             )}
             {active === 'tools' && <ExternalTools />}
-            {active === 'about' && (
+            {active === 'about' && params.has('licenses') && <LicensePage />}
+            {active === 'about' && !params.has('licenses') && (
               <>
                 <NexusAbout />
                 <AdvancedGroup>
-                  <Group className="">
-                    <SystemCleanup />
-                    <SettingRow
-                      label={t('nexus.settings.diagnosticsMode')}
-                      description={t(
-                        'nexus.settings.diagnosticsModeDescription'
-                      )}
-                    >
-                      {toggle(
-                        t('nexus.settings.diagnosticsMode'),
-                        workspace?.preferences.diagnosticsEnabled ?? false,
-                        (checked) => preference({ diagnosticsEnabled: checked })
-                      )}
-                    </SettingRow>
-                  </Group>
                   {inline('advanced')}
+                  <Section title={t('nexus.settings.sections.diagnostics')}>
+                    <Group>
+                      <SettingRow
+                        label={t('nexus.settings.diagnosticsMode')}
+                        description={t(
+                          'nexus.settings.diagnosticsModeDescription'
+                        )}
+                      >
+                        {toggle(
+                          t('nexus.settings.diagnosticsMode'),
+                          workspace?.preferences.diagnosticsEnabled ?? false,
+                          (checked) =>
+                            preference({ diagnosticsEnabled: checked })
+                        )}
+                      </SettingRow>
+                      <SystemCleanup />
+                    </Group>
+                  </Section>
                 </AdvancedGroup>
               </>
             )}

@@ -9,8 +9,10 @@ import { Queries } from '@shared/protocol/queries'
 import type { AppUpdateState } from '@shared/types/app-update'
 import { act, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router'
 import { beforeEach, expect, it, vi } from 'vitest'
 import { NexusAbout } from '../../nexus-settings/about-page'
+import { NexusUpdateDialog } from '../../nexus-settings/update-ui'
 
 vi.mock('@renderer/lib/transport', () => ({
   transport: { invoke: vi.fn(), on: vi.fn(), off: vi.fn(), platform: 'win32' },
@@ -33,8 +35,16 @@ function emit(state: AppUpdateState) {
   for (const [channel, listener] of vi.mocked(transport.on).mock.calls)
     if (channel === Events.UpdateStateChanged) listener(state)
 }
+function renderAbout() {
+  return render(
+    <MemoryRouter>
+      <NexusAbout />
+      <NexusUpdateDialog />
+    </MemoryRouter>
+  )
+}
 it('checks in the about page and opens release notes without a browser', async () => {
-  render(<NexusAbout />)
+  renderAbout()
   const user = userEvent.setup()
   await user.click(await screen.findByRole('button', { name: '检查' }))
   expect(transport.invoke).toHaveBeenCalledWith(Commands.CheckForUpdates)
@@ -47,8 +57,7 @@ it('checks in the about page and opens release notes without a browser', async (
     })
   )
   await user.click(screen.getByRole('button', { name: '更新' }))
-  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  await user.click(screen.getByRole('button', { name: '更新内容' }))
+  expect(screen.getByRole('dialog')).toBeVisible()
   expect(screen.getByText(/Better updates/)).toBeVisible()
   expect(transport.invoke).toHaveBeenCalledWith(Commands.DownloadUpdate)
   expect(transport.invoke).not.toHaveBeenCalledWith(
@@ -63,13 +72,22 @@ it('explains active tasks before handing off a restart', async () => {
     availableVersion: '1.3.1',
     activeTasks: ['movie.mp4'],
   })
-  render(<NexusAbout />)
+  renderAbout()
   const user = userEvent.setup()
-  await user.click((await screen.findAllByRole('button', { name: '重启' }))[0])
-  expect(screen.getByRole('dialog')).toHaveTextContent('会暂停 1 个下载')
+  await user.click(
+    (await screen.findAllByRole('button', { name: '重启并更新' }))[0]
+  )
+  expect(screen.getByRole('dialog')).not.toHaveTextContent('会暂停 1 个下载')
   await user.click(
     within(screen.getByRole('dialog')).getByRole('button', {
-      name: '重启',
+      name: '重启并更新',
+    })
+  )
+  expect(screen.getByRole('dialog')).toHaveTextContent('会暂停 1 个下载')
+  expect(transport.invoke).not.toHaveBeenCalledWith(Commands.InstallUpdate)
+  await user.click(
+    within(screen.getByRole('dialog')).getByRole('button', {
+      name: '重启并更新',
     })
   )
   expect(transport.invoke).toHaveBeenCalledWith(Commands.InstallUpdate)
@@ -82,7 +100,7 @@ it('does not overwrite a newer event with a late initial snapshot and unsubscrib
         resolve = done
       })
   )
-  const view = render(<NexusAbout />)
+  const view = renderAbout()
   act(() => emit({ ...idle, phase: 'available', availableVersion: '1.3.1' }))
   await act(async () => resolve({ ...idle, phase: 'up-to-date' }))
   expect(screen.getByRole('button', { name: '更新' })).toBeVisible()
@@ -93,7 +111,7 @@ it('does not overwrite a newer event with a late initial snapshot and unsubscrib
   )
 })
 it('renders a manual connection failure inline', async () => {
-  render(<NexusAbout />)
+  renderAbout()
   await waitFor(() => expect(transport.on).toHaveBeenCalled())
   act(() =>
     emit({ ...idle, phase: 'error', error: { message: 'update.github' } })

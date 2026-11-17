@@ -223,13 +223,13 @@ export function AdvancedDialog({
                       control={form.control}
                       name="rpcSecret"
                       render={({ field }) => (
-                        <FormItem className="space-y-2">
+                        <SettingsFormRow>
                           <div className="space-y-1">
                             <FormLabel>
                               {t('settings.advanced.rpc.secret')}
                             </FormLabel>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="nx-rpc-secret-control">
                             <FormControl>
                               <PasswordInput
                                 {...field}
@@ -257,8 +257,7 @@ export function AdvancedDialog({
                               <RandomizeIcon className="h-3 w-3" />
                             </Button>
                           </div>
-                          <FormMessage className="basis-full text-xs" />
-                        </FormItem>
+                        </SettingsFormRow>
                       )}
                     />
 

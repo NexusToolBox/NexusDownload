@@ -1,0 +1,83 @@
+import type {
+  LanguagePreference,
+  SupportedLocale,
+} from '@shared/constants/locales'
+import { NEXUS_RELEASE_CONFIG } from '@shared/nexus-release-config'
+import { Commands } from '@shared/protocol/commands'
+import { Queries } from '@shared/protocol/queries'
+import { languagePreferenceSchema } from '@shared/schemas/locale'
+import type { AppSettings } from '@shared/types/settings'
+import { ipcMain, shell } from 'electron'
+import type { DisclaimerGate } from '../onboarding/disclaimer-gate'
+import type { WindowManager } from '../window/window-manager'
+import { registerTrustedIpcHandler } from './trusted-ipc'
+
+export interface DisclaimerIpcDeps {
+  gate: Pick<DisclaimerGate, 'accept'> &
+    Partial<Pick<DisclaimerGate, 'isAccepted'>>
+  onAccepted?: () => void
+  getResolvedLanguage: () => SupportedLocale
+  applyLocale: (language: LanguagePreference) => Promise<void>
+  settings: {
+    get(): AppSettings
+    setDisclaimerLanguage(
+      language: LanguagePreference
+    ): Promise<{ saved: boolean }>
+  }
+  windowManager: Pick<WindowManager, 'close' | 'open'>
+  canContinue: () => boolean
+  quitApp: () => void
+}
+
+type DisclaimerHandler = (...args: unknown[]) => Promise<unknown>
+
+export function buildDisclaimerHandlers(
+  deps: DisclaimerIpcDeps
+): Record<string, DisclaimerHandler> {
+  return {
+    [Commands.OpenDisclaimerIssues]: async () =>
+      shell.openExternal(
+        `https://github.com/${NEXUS_RELEASE_CONFIG.repository}/issues`
+      ),
+    [Queries.GetDisclaimerState]: async () => ({
+      language: deps.settings.get().app.language,
+      resolvedLanguage: deps.getResolvedLanguage(),
+      disclaimerAccepted: deps.gate.isAccepted?.() ?? false,
+    }),
+    [Commands.SetDisclaimerLanguage]: async (input: unknown) => {
+      const language = languagePreferenceSchema.parse(input)
+      await deps.settings.setDisclaimerLanguage(language)
+      await deps.applyLocale(language)
+      return { ok: true }
+    },
+    [Commands.AcceptDisclaimer]: async () => {
+      await deps.gate.accept()
+      if (!deps.canContinue()) return { ok: true }
+      deps.windowManager.close('onboarding')
+      deps.windowManager.open('main', { show: true })
+      deps.onAccepted?.()
+      return { ok: true }
+    },
+    [Commands.DeclineDisclaimer]: async () => {
+      deps.quitApp()
+      return { ok: true }
+    },
+  }
+}
+
+export function registerDisclaimerIpc(deps: DisclaimerIpcDeps): () => void {
+  const handlers = buildDisclaimerHandlers(deps)
+  const channels = Object.keys(handlers)
+
+  for (const [channel, handler] of Object.entries(handlers)) {
+    registerTrustedIpcHandler(channel, async (_event, ...args) =>
+      handler(...args)
+    )
+  }
+
+  return () => {
+    for (const channel of channels) {
+      ipcMain.removeHandler(channel)
+    }
+  }
+}

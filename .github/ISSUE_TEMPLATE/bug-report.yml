@@ -1,0 +1,30 @@
+name: 问题反馈
+description: 报告下载、网盘或界面问题
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本号
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows 版本
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: 诊断记录
+      description: 在 设置 → 关于 → 导出诊断记录，并附上。请勿提供密码、应用密钥或私人文件。

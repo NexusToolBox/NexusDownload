@@ -1,0 +1,1655 @@
+/* Geometry copied from the approved design/final/client.html. Colors use existing shadcn tokens. */
+/* biome-ignore-all lint/style/noDescendingSpecificity: Each block retains the approved composition and is scoped to the Nexus shell. */
+.nexus-shell {
+  height: 100svh;
+  min-height: 0;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+.nexus-shell .motrix-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  stroke-width: 1.7;
+}
+.nexus-shell button {
+  cursor: pointer;
+}
+.nexus-shell .main {
+  min-height: 0;
+}
+.nexus-shell .panel {
+  margin: 0;
+}
+.nexus-shell .winctl button {
+  width: 46px;
+  height: 32px;
+  padding: 0;
+  color: var(--secondary-foreground);
+  border-radius: 6px;
+}
+.nexus-shell .winctl button:hover {
+  background: var(--sidebar-active);
+}
+.nexus-shell .winctl .close:hover {
+  background: #c42b1c;
+  color: white;
+}
+.nexus-shell .winctl .motrix-icon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 1;
+}
+.nexus-shell .nav .nexus-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: var(--secondary-foreground);
+  font-size: 14px;
+  font-weight: 500;
+}
+.nexus-shell .nav .nexus-nav-item[data-active="true"] {
+  background: var(--sidebar-active);
+  color: var(--foreground);
+}
+.nexus-shell .nav .nexus-nav-item:hover {
+  background: var(--sidebar-active);
+}
+.nexus-shell .nav .motrix-icon {
+  width: 18px;
+  height: 18px;
+}
+.nexus-shell .completed-check {
+  color: #1e9561;
+  margin-left: auto;
+}
+.nexus-shell .empty .glyph {
+  stroke-width: 1.6;
+  color: var(--muted-foreground);
+}
+.nexus-shell .empty-add {
+  margin-top: 22px;
+}
+.nexus-shell .chip.error {
+  color: var(--destructive);
+  background: color-mix(in srgb, var(--destructive) 9%, transparent);
+}
+.nexus-shell .task-failure {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+.nexus-shell .task-failure strong {
+  font-weight: 500;
+}
+.nexus-shell .task-failure span {
+  color: var(--secondary-foreground);
+}
+.nexus-shell .task-error {
+  color: var(--destructive);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.nexus-shell .list-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 12px 8px;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+.nexus-shell .list-section::after {
+  content: "";
+  height: 1px;
+  background: var(--border);
+  flex: 1;
+}
+.nexus-shell .ins-title {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.nexus-shell .ins-title h2 {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.nexus-shell .ins-title small {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-top: 4px;
+}
+.nexus-shell .bigpct {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.nexus-shell .bigpct strong {
+  font-size: 36px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.nexus-shell .bigpct span {
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .bigpct small {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .bigtrack {
+  height: 6px;
+  border-radius: 6px;
+  background: var(--accent);
+  overflow: hidden;
+}
+.nexus-shell .bigtrack i {
+  display: block;
+  height: 100%;
+  background: var(--live);
+  border-radius: 6px;
+}
+.nexus-shell .empty {
+  display: flex;
+}
+.nexus-shell :focus-visible {
+  outline: 2px solid var(--live);
+  outline-offset: 2px;
+}
+.nexus-shell *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.nexus-shell *::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  background-color: transparent;
+}
+.nexus-shell *:hover::-webkit-scrollbar-thumb {
+  background-color: color-mix(
+    in srgb,
+    var(--muted-foreground) 45%,
+    transparent
+  );
+}
+.dark .nexus-shell .panel {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 16px 40px -20px rgba(0, 0, 0, 0.6);
+}
+.nexus-shell [data-slot="panel-shell-header"] {
+  padding: 22px 24px 14px;
+}
+.nexus-shell [data-slot="panel-shell-header"] h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* 侧栏 */
+.nexus-shell .sidebar {
+  width: 232px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 12px 14px 12px;
+}
+.nexus-shell .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 8px;
+  margin-bottom: 18px;
+}
+.nexus-shell .brand img {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+.dark .nexus-shell .brand img {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.nexus-shell .brand b {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.nexus-shell .nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nexus-shell .nav button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: var(--secondary-foreground);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  transition:
+    background 140ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 140ms;
+}
+.nexus-shell .nav button svg.i {
+  width: 18px;
+  height: 18px;
+}
+.nexus-shell .nav button:hover {
+  background: color-mix(in srgb, var(--sidebar-active) 60%, transparent);
+  color: var(--foreground);
+}
+.nexus-shell .nav button[aria-current="page"] {
+  background: var(--sidebar-active);
+  color: var(--foreground);
+}
+.nexus-shell .nav .badge {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+.nexus-shell .nav button[aria-current="page"] .badge {
+  color: var(--secondary-foreground);
+}
+.nexus-shell .side-group {
+  margin-top: 22px;
+}
+.nexus-shell .side-group h3 {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  padding: 0 10px;
+  margin-bottom: 6px;
+}
+.nexus-shell .queue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 9px;
+  font-size: 13px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .queue:hover {
+  background: color-mix(in srgb, var(--sidebar-active) 60%, transparent);
+}
+.nexus-shell .queue .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--live);
+}
+.nexus-shell .queue .dot.idle {
+  background: var(--muted-foreground);
+  opacity: 0.5;
+}
+.nexus-shell .queue small {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .side-foot {
+  margin-top: auto;
+  padding: 0 10px;
+}
+.nexus-shell .disk {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.nexus-shell .disk b {
+  font-weight: 500;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .track {
+  height: 4px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--muted-foreground) 22%, transparent);
+  overflow: hidden;
+}
+.nexus-shell .track i {
+  display: block;
+  height: 100%;
+  background: var(--secondary-foreground);
+  border-radius: 4px;
+}
+/* 主区 */
+.nexus-shell .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0 10px 10px 0;
+}
+.nexus-shell .titlebar {
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.nexus-shell .winctl {
+  display: flex;
+}
+.nexus-shell .winctl span {
+  width: 46px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--secondary-foreground);
+  border-radius: 6px;
+}
+.nexus-shell .winctl span:hover {
+  background: var(--sidebar-active);
+}
+.nexus-shell .winctl span.close:hover {
+  background: #c42b1c;
+  color: #fff;
+}
+.nexus-shell .panel {
+  flex: 1;
+  min-height: 0;
+  background: var(--background);
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 0 1px rgba(20, 23, 30, 0.06),
+    0 1px 2px rgba(20, 23, 30, 0.04),
+    0 12px 32px -18px rgba(20, 23, 30, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.nexus-shell .page {
+  height: 100%;
+  display: none;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.nexus-shell .page.on {
+  display: flex;
+}
+/* 面板头 */
+.nexus-shell .phead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 24px 14px;
+}
+.nexus-shell .phead h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.nexus-shell .phead .count {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+  margin-top: 6px;
+}
+.nexus-shell .spacer {
+  flex: 1;
+}
+.nexus-shell .addbar {
+  text-align: left;
+  justify-content: flex-start;
+  flex: 0 1 460px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 6px 0 14px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--muted-foreground);
+  cursor: text;
+  transition: box-shadow 140ms;
+}
+.nexus-shell .addbar:hover {
+  box-shadow: 0 0 0 1px var(--input) inset;
+}
+.nexus-shell .addbar span {
+  flex: 1;
+  font-size: 13.5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.nexus-shell kbd {
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  color: var(--muted-foreground);
+  border: 1px solid var(--input);
+  border-radius: 6px;
+  padding: 2px 6px;
+  background: var(--background);
+}
+.nexus-shell .pillgroup {
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--border) inset;
+  height: 38px;
+  padding: 0 4px;
+}
+/* 筛选 */
+.nexus-shell .filters {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 24px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.nexus-shell .seg {
+  display: flex;
+  gap: 2px;
+}
+.nexus-shell .seg button {
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--secondary-foreground);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.nexus-shell .seg button em {
+  font-style: normal;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.nexus-shell .seg button:hover {
+  color: var(--foreground);
+}
+.nexus-shell .seg button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--foreground);
+  font-weight: 500;
+}
+.nexus-shell .seg button.err[aria-pressed="false"] em {
+  color: var(--destructive);
+}
+.nexus-shell .sortby {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+/* 列表 + 详情 */
+.nexus-shell .split {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.nexus-shell .list {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 8px 12px 12px;
+}
+.nexus-shell .inspector {
+  width: 320px;
+  flex: none;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.nexus-shell .ins-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px 22px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.nexus-shell .ins-scroll > * {
+  flex-shrink: 0;
+}
+.nexus-shell .row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 112px 84px 32px;
+  align-items: center;
+  column-gap: 12px;
+  min-height: 64px;
+  padding: 10px 12px 16px;
+  border-radius: 10px;
+  cursor: default;
+}
+.nexus-shell .row:hover {
+  background: var(--muted);
+}
+.nexus-shell .row[aria-selected="true"] {
+  background: var(--muted);
+  box-shadow: 0 0 0 1px var(--input) inset;
+}
+.nexus-shell .ft {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--secondary-foreground);
+}
+.nexus-shell .ft svg.i {
+  width: 18px;
+  height: 18px;
+}
+.nexus-shell .name {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nexus-shell .meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+.nexus-shell .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--accent);
+  color: var(--secondary-foreground);
+}
+.nexus-shell .chip.live {
+  background: var(--live-soft);
+  color: var(--live-strong);
+}
+.nexus-shell .chip.amber {
+  background: #fbf0dd;
+  color: #c97b12;
+}
+.nexus-shell .chip.red {
+  background: color-mix(in srgb, var(--destructive) 12%, var(--background));
+  color: var(--destructive);
+}
+.nexus-shell .speed {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 500;
+}
+.nexus-shell .speed small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+.nexus-shell .speed.live {
+  color: var(--live-strong);
+}
+.nexus-shell .pct {
+  text-align: right;
+  font-size: 13px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .act {
+  opacity: 0;
+  transition: opacity 140ms;
+}
+.nexus-shell .row:hover .act,
+.nexus-shell .row[aria-selected="true"] .act {
+  opacity: 1;
+}
+/* 进度：行底部的“水位线”，横贯整行 */
+.nexus-shell .water {
+  position: absolute;
+  left: 60px;
+  right: 56px;
+  bottom: 7px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--accent);
+  overflow: hidden;
+}
+.nexus-shell .water i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--live);
+}
+.nexus-shell .water.paused i {
+  background: var(--muted-foreground);
+}
+.nexus-shell .water.err {
+  background: color-mix(in srgb, var(--destructive) 25%, transparent);
+}
+.nexus-shell .water.err i {
+  background: var(--destructive);
+}
+.nexus-shell .water.done {
+  display: none;
+}
+.nexus-shell .water.flow i {
+  background: linear-gradient(
+    90deg,
+    var(--live) 0 40%,
+    color-mix(in srgb, var(--live) 45%, transparent) 50%,
+    var(--live) 60%
+  );
+  background-size: 200% 100%;
+  animation: flow 1.6s linear infinite;
+}
+@keyframes flow {
+  to {
+    background-position: -200% 0;
+  }
+}
+.nexus-shell .spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nexus-shell .water.flow i,
+  .nexus-shell .spin {
+    animation: none;
+  }
+}
+.nexus-shell .pkg {
+  margin-top: 2px;
+}
+.nexus-shell .pkg > .row .ft {
+  background: color-mix(in srgb, #5866ff 12%, var(--accent));
+  color: #5866ff;
+}
+.nexus-shell .children {
+  margin-left: 48px;
+  border-left: 1px solid var(--border);
+  padding-left: 4px;
+}
+.nexus-shell .children .row {
+  min-height: 44px;
+  grid-template-columns: 24px minmax(0, 1fr) 112px 84px 32px;
+  padding: 8px 12px 12px;
+}
+.nexus-shell .children .row .ft {
+  color: var(--muted-foreground);
+}
+.nexus-shell .children .row .ft {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: none;
+}
+.nexus-shell .children .name {
+  font-size: 13px;
+  font-weight: 400;
+}
+.nexus-shell .children .water {
+  left: 48px;
+  right: 56px;
+}
+.nexus-shell .group-label {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  padding: 14px 12px 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nexus-shell .group-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+/* 详情 */
+.nexus-shell .ins-top {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.nexus-shell .ins-top .ft {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+.nexus-shell .ins-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nexus-shell .ins-sub {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-top: 4px;
+}
+.nexus-shell .bignum {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.nexus-shell .bignum b {
+  font-size: 36px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.nexus-shell .bignum span {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin-left: -2px;
+}
+.nexus-shell .bignum .r {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .bar {
+  height: 6px;
+  border-radius: 6px;
+  background: var(--accent);
+  overflow: hidden;
+  margin-top: 12px;
+}
+.nexus-shell .bar i {
+  display: block;
+  height: 100%;
+  background: var(--live);
+  border-radius: 6px;
+}
+.nexus-shell .nexus-speed-chart {
+  display: block;
+  width: 100%;
+  height: 36px;
+  margin-top: 8px;
+}
+.nexus-shell [data-slot="downloads-speed-limit"] {
+  height: 28px;
+  font-size: 12.5px;
+  padding: 0 12px;
+  border: 0;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  gap: 6px;
+}
+.nexus-shell .nexus-transfer,
+.nexus-shell .nexus-transfer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.nexus-shell .nexus-transfer .live {
+  color: var(--live-strong);
+}
+.nexus-shell .nexus-transfer .motrix-icon {
+  width: 12px;
+  height: 12px;
+}
+.nexus-shell .package-hint {
+  padding: 12px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .spark {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .spark b {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--live-strong);
+}
+.nexus-shell .spark svg {
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin-top: 8px;
+}
+.nexus-shell .facts {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  row-gap: 8px;
+  font-size: 13px;
+}
+.nexus-shell .facts dt {
+  color: var(--muted-foreground);
+}
+.nexus-shell .facts dd {
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.nexus-shell .facts .save-path {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.nexus-shell .facts dd small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.nexus-shell .hr {
+  height: 1px;
+  background: var(--border);
+}
+.nexus-shell .steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.nexus-shell .steps li {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  height: 28px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+  position: relative;
+}
+.nexus-shell .steps li::before {
+  content: "";
+  position: absolute;
+  left: 9.5px;
+  top: 22px;
+  height: 12px;
+  width: 1px;
+  background: var(--input);
+}
+.nexus-shell .steps li:last-child::before {
+  display: none;
+}
+.nexus-shell .steps .mk {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 1px var(--input) inset;
+  background: var(--background);
+}
+.nexus-shell .steps .done {
+  color: var(--secondary-foreground);
+}
+.nexus-shell .steps .done .mk {
+  background: var(--foreground);
+  box-shadow: none;
+  color: var(--background);
+}
+.nexus-shell .steps .now {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.nexus-shell .steps .now .mk {
+  box-shadow: 0 0 0 1.5px var(--live) inset;
+}
+.nexus-shell .steps .now .mk::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--live);
+}
+.nexus-shell .steps small {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.nexus-shell .ins-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 22px 14px;
+  border-top: 1px solid var(--border);
+}
+/* 状态栏 */
+.nexus-shell .statusbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .spill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: var(--muted);
+}
+.nexus-shell .spill .sep {
+  width: 1px;
+  height: 12px;
+  background: var(--input);
+}
+.nexus-shell .spill.live {
+  color: var(--live-strong);
+}
+.nexus-shell .okdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1e9561;
+}
+/* 预检卡 */
+.nexus-shell .scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--sidebar) 55%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms;
+}
+.nexus-shell .precheck {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  width: 560px;
+  margin-left: -280px;
+  background: var(--background);
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 1px rgba(20, 23, 30, 0.08),
+    0 18px 48px -12px rgba(20, 23, 30, 0.28);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.985);
+  pointer-events: none;
+  transition:
+    opacity 220ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  overflow: hidden;
+}
+.nexus-shell .show-pre .scrim {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nexus-shell .show-pre .precheck {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.nexus-shell .pc-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13.5px;
+}
+.nexus-shell .pc-input .val {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--foreground);
+}
+.nexus-shell .pc-body {
+  padding: 18px 20px 6px;
+}
+.nexus-shell .pc-kind {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .pc-title {
+  font-size: 18px;
+  font-weight: 650;
+  margin: 8px 0 2px;
+  letter-spacing: -0.01em;
+}
+.nexus-shell .pc-sum {
+  font-size: 13px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .checks {
+  list-style: none;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 20px;
+}
+.nexus-shell .checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 0;
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+.nexus-shell .checks li:nth-child(-n + 2) {
+  border-top: 0;
+}
+.nexus-shell .checks svg.i {
+  margin-top: 1px;
+  color: #1e9561;
+}
+.nexus-shell .checks .w svg.i {
+  color: #c97b12;
+}
+.nexus-shell .checks b {
+  font-weight: 500;
+  display: block;
+}
+.nexus-shell .checks small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.nexus-shell .pc-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px 16px;
+  border-top: 1px solid var(--border);
+  margin-top: 10px;
+}
+.nexus-shell .pc-foot .muted {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-right: auto;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+/* 网盘页 */
+.nexus-shell .cloud {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.nexus-shell .drives {
+  width: 208px;
+  flex: none;
+  border-right: 1px solid var(--border);
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nexus-shell .drive {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .drive:hover {
+  background: var(--muted);
+}
+.nexus-shell .drive[aria-current="true"] {
+  background: var(--accent);
+  color: var(--foreground);
+  font-weight: 500;
+}
+.nexus-shell .logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  color: #fff;
+  flex: none;
+}
+.nexus-shell .drive .st {
+  margin-left: auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.nexus-shell .drive .tip {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .files {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.nexus-shell .crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 20px 10px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .crumbs b {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.nexus-shell .ftable {
+  flex: 1;
+  overflow: auto;
+  padding: 0 12px;
+}
+.nexus-shell .frow {
+  display: grid;
+  grid-template-columns: 28px 28px minmax(0, 1fr) 96px 120px;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 13.5px;
+}
+.nexus-shell .frow:hover {
+  background: var(--muted);
+}
+.nexus-shell .frow.sel {
+  background: var(--accent);
+}
+.nexus-shell .frow > span:nth-child(3) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nexus-shell .frow.head {
+  height: 32px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .frow.head:hover {
+  background: none;
+}
+.nexus-shell .frow .r {
+  text-align: right;
+  color: var(--secondary-foreground);
+  font-size: 13px;
+}
+.nexus-shell .frow .d {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  text-align: right;
+}
+.nexus-shell .cb {
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1.5px var(--input) inset;
+  display: grid;
+  place-items: center;
+}
+.nexus-shell .cb.on {
+  background: var(--foreground);
+  box-shadow: none;
+  color: var(--background);
+}
+.nexus-shell .selbar {
+  margin: 8px 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 10px 16px;
+  border-radius: 14px;
+  background: var(--muted);
+  box-shadow: 0 0 0 1px var(--border) inset;
+  font-size: 13px;
+}
+.nexus-shell .selbar .muted {
+  color: var(--muted-foreground);
+}
+.nexus-shell .health {
+  width: 268px;
+  flex: none;
+  border-left: 1px solid var(--border);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 13px;
+}
+.nexus-shell .health h4 {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.nexus-shell .acct {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nexus-shell .avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9aa5b8, #5e6878);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+}
+.nexus-shell .meter {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+.nexus-shell .meter b {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.nexus-shell .gov {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nexus-shell .gov div {
+  display: flex;
+  justify-content: space-between;
+}
+.nexus-shell .gov span {
+  color: var(--muted-foreground);
+}
+/* 设置页 */
+.nexus-shell .settings {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.nexus-shell .snav {
+  width: 200px;
+  flex: none;
+  padding: 6px 10px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nexus-shell .snav button {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 9px;
+  text-align: left;
+  font-size: 13.5px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .snav button:hover {
+  background: var(--muted);
+}
+.nexus-shell .snav button[aria-current="true"] {
+  background: var(--accent);
+  color: var(--foreground);
+  font-weight: 500;
+}
+.nexus-shell .sbody {
+  flex: 1;
+  overflow: auto;
+  padding: 4px 32px 32px;
+  max-width: 760px;
+}
+.nexus-shell .sbody h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 20px 0 4px;
+}
+.nexus-shell .sbody p.lead {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-bottom: 12px;
+}
+.nexus-shell .toggle {
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--input);
+  position: relative;
+  flex: none;
+}
+.nexus-shell .toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 140ms;
+}
+.nexus-shell .toggle.on {
+  background: var(--primary);
+}
+.nexus-shell .toggle.on::after {
+  transform: translateX(16px);
+}
+.dark .nexus-shell .toggle.on::after {
+  background: var(--background);
+}
+.nexus-shell .select {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 10px 0 12px;
+  border-radius: 9px;
+  box-shadow: 0 0 0 1px var(--input) inset;
+  font-size: 13px;
+}
+.nexus-shell .path {
+  font-size: 13px;
+  color: var(--secondary-foreground);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.nexus-shell .rules {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.nexus-shell .rules td {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+}
+.nexus-shell .rules tr:first-child td {
+  border-top: 0;
+}
+.nexus-shell .rules td:first-child {
+  width: 120px;
+  font-weight: 500;
+}
+.nexus-shell .rules td.x {
+  color: var(--muted-foreground);
+}
+.nexus-shell .rules td.p {
+  color: var(--secondary-foreground);
+  text-align: right;
+}
+/* 服务页 */
+.nexus-shell .svc {
+  flex: 1;
+  overflow: auto;
+  padding: 4px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nexus-shell .svc h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 12px 0 2px;
+}
+.nexus-shell .svc p.lead {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+.nexus-shell .route {
+  display: grid;
+  grid-template-columns: 40px 1fr 150px 140px 40px;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--border) inset;
+  font-size: 13.5px;
+}
+.nexus-shell .route .ft {
+  width: 40px;
+  height: 40px;
+}
+.nexus-shell .route b {
+  font-weight: 500;
+}
+.nexus-shell .route small {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+.nexus-shell .route .st {
+  font-size: 12.5px;
+  color: var(--secondary-foreground);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.nexus-shell .route .st i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1e9561;
+}
+.nexus-shell .route .st i.off {
+  background: var(--muted-foreground);
+  opacity: 0.5;
+}
+.nexus-shell .route .st i.warn {
+  background: #c97b12;
+}
+/* 媒体页 */
+.nexus-shell .media {
+  flex: 1;
+  overflow: auto;
+  padding: 4px 24px 24px;
+}
+.nexus-shell .mcard {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--border) inset;
+  margin-top: 8px;
+}
+.nexus-shell .thumb {
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  background:
+    radial-gradient(120% 90% at 20% 110%, #0b8a86 0, transparent 55%),
+    radial-gradient(90% 80% at 85% 0%, #5866ff 0, transparent 60%), #11141a;
+  position: relative;
+  overflow: hidden;
+}
+.nexus-shell .thumb span {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 11.5px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.nexus-shell .mtitle {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.nexus-shell .mmeta {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.nexus-shell .opts {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  row-gap: 12px;
+  align-items: center;
+  font-size: 13px;
+}
+.nexus-shell .opts dt {
+  color: var(--muted-foreground);
+}
+.nexus-shell .radios {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.nexus-shell .radios span {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--input) inset;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .radios span.on {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: none;
+}
+.nexus-shell .radios span.dis {
+  opacity: 0.45;
+}
+/* 空状态 */
+.nexus-shell .empty {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+.nexus-shell .show-empty .empty {
+  display: flex;
+}
+.nexus-shell .show-empty .split,
+.nexus-shell .show-empty .filters,
+.nexus-shell .show-empty .statusbar .spill.live {
+  display: none;
+}
+.nexus-shell .empty .glyph {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 22px;
+}
+.nexus-shell .empty h2 {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.nexus-shell .empty p {
+  font-size: 13.5px;
+  color: var(--muted-foreground);
+  margin-top: 8px;
+  line-height: 1.7;
+}
+.nexus-shell .empty .srcs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 18px;
+  max-width: 420px;
+}
+
+.nexus-shell button.sortby {
+  height: 28px;
+  padding: 0 8px;
+  font-size: 12.5px;
+  background: transparent;
+}
+.nexus-shell .nexus-filter-empty {
+  padding: 48px 24px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted-foreground);
+}
+
+/* Mirror structural borders and keep translated labels readable. */
+html[dir="rtl"] .nexus-shell .snav {
+  border-right: 0;
+  border-left: 1px solid var(--border);
+}
+html[dir="rtl"] .nexus-shell .snav button {
+  text-align: right;
+}
+html[dir="rtl"] .nexus-shell .inspector {
+  border-left: 0;
+  border-right: 1px solid var(--border);
+}
+html[dir="rtl"] .nexus-shell .nav .badge,
+html[dir="rtl"] .nx-section-action {
+  margin-left: 0;
+  margin-right: auto;
+}
+html[dir="rtl"] .nexus-shell .winctl {
+  direction: ltr;
+}
+.nexus-shell .snav button {
+  min-height: 34px;
+  height: auto;
+  white-space: normal;
+  text-align: start;
+  padding-block: 7px;
+}
+.nexus-shell .snav {
+  width: 208px;
+}
+.nx-item {
+  min-width: 0;
+}
+.nx-item > :first-child {
+  min-width: 0;
+}
+.nx-item h3,
+.nx-item label {
+  overflow-wrap: anywhere;
+}

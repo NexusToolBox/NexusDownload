@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexusDownload 组件与细节样稿</title>
+<link rel="icon" href="icons/app-icon.svg">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-ui);font-size:13.5px;color:var(--text);background:#DADDE3;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+[data-theme="dark"] body{background:#05060A}
+button,input,textarea{font:inherit;color:inherit;background:none;border:0}
+button{cursor:pointer}
+svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+svg.i.sm{width:14px;height:14px}
+
+/* ---------- 演示框架（不属于产品） ---------- */
+.doc{max-width:1180px;margin:0 auto;padding:72px 32px 80px}
+.bar{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(20,22,28,.8);z-index:9;font-size:12px}
+.bar button{padding:6px 12px;border-radius:999px;color:#AEB4BF}
+.bar button[aria-pressed="true"]{background:#fff;color:#111}
+.spec{margin-top:56px}
+.spec:first-of-type{margin-top:0}
+.spec>h2{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.spec>p{color:#5A616D;margin:6px 0 18px;max-width:46em;line-height:1.7}
+[data-theme="dark"] .spec>p{color:#8D95A1}
+[data-theme="dark"] .spec>h2{color:#ECEEF2}
+.row2{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+.cap{font-size:12px;color:#5A616D;margin-top:10px}
+[data-theme="dark"] .cap{color:#8D95A1}
+.surface{background:var(--panel);border-radius:14px;box-shadow:var(--shadow-panel)}
+
+/* =========================================================
+   组件库：页面只允许使用下面这些组件
+   ========================================================= */
+
+/* 按钮：四种，不允许其他样式 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:32px;padding:0 14px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap;transition:background var(--t-fast),opacity var(--t-fast)}
+.btn.primary{background:var(--ink);color:var(--ink-text)}
+.btn.primary:hover{opacity:.88}
+.btn.secondary{box-shadow:inset 0 0 0 1px var(--line-strong)}
+.btn.secondary:hover{background:var(--panel-2)}
+.btn.quiet{padding:0 10px;color:var(--text-2)}
+.btn.quiet:hover{background:var(--panel-2);color:var(--text)}
+.btn.danger{color:var(--red)}
+.btn.danger:hover{background:var(--red-soft)}
+.btn.lg{height:36px;padding:0 18px}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.icon-btn{width:32px;height:32px;display:grid;place-items:center;border-radius:999px;color:var(--text-2)}
+.icon-btn:hover{background:var(--panel-2);color:var(--text)}
+
+/* 分组与行：所有设置、列表型内容都用它 */
+.section{margin-bottom:28px}
+.section-head{display:flex;align-items:flex-end;gap:12px;margin-bottom:10px}
+.section-head h3{font-size:15px;font-weight:600}
+.section-head .sub{font-size:12.5px;color:var(--text-3);margin-top:3px}
+.section-head .act{margin-left:auto}
+.group{border-radius:12px;box-shadow:inset 0 0 0 1px var(--line);background:var(--panel)}
+.item{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 12px 10px 16px;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item .lead{flex:none}
+.item .body{flex:1;min-width:0}
+.item .title{font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:8px}
+.item .desc{font-size:12.5px;color:var(--text-3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .trail{display:flex;align-items:center;gap:6px;flex:none}
+.item.sub{padding-left:52px;min-height:48px}
+.group-foot{border-top:1px solid var(--line);padding:6px 8px}
+
+/* 状态：一个点 + 可选短文字 */
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-2)}
+.status i{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.status.warn i{background:var(--amber)} .status.warn{color:var(--amber)}
+.status.err i{background:var(--red)} .status.err{color:var(--red)}
+.status.off i{background:var(--text-3);opacity:.5} .status.off{color:var(--text-3)}
+.status.live i{background:var(--live)}
+
+/* 平台标识 */
+.logo{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;letter-spacing:-.04em;flex:none}
+.logo.sm{width:22px;height:22px;border-radius:7px;font-size:11px}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;flex:none}
+
+/* 容量条 */
+.meter-label{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--text-3)}
+.meter-label b{font-size:13.5px;font-weight:500;color:var(--text)}
+.meter{height:6px;border-radius:6px;background:var(--panel-3);overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;border-radius:6px;background:var(--text-2)}
+.meter.warn i{background:var(--amber)}
+
+/* 提示条：只在出问题时出现 */
+.banner{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:10px;font-size:13px}
+.banner.err{background:var(--red-soft);color:var(--red)}
+.banner.warn{background:var(--amber-soft);color:var(--amber)}
+.banner span{flex:1;color:var(--text)}
+.banner .btn{height:28px}
+
+/* 标签 */
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;font-size:11.5px;font-weight:500;background:var(--panel-3);color:var(--text-2)}
+
+/* 选择器（替代原生 select） */
+.select{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px 0 12px;border-radius:9px;box-shadow:inset 0 0 0 1px var(--line-strong);font-size:13px;background:var(--panel)}
+.select svg{color:var(--text-3)}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--panel-3)}
+.seg span{height:26px;padding:0 12px;display:inline-flex;align-items:center;border-radius:999px;font-size:12.5px;color:var(--text-2)}
+.seg span.on{background:var(--panel);color:var(--text);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+/* 开关 */
+.toggle{width:38px;height:22px;border-radius:999px;background:var(--line-strong);position:relative;flex:none}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.toggle.on{background:var(--ink)}
+.toggle.on::after{left:18px}
+[data-theme="dark"] .toggle.on::after{background:var(--panel)}
+
+/* 输入框 */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12.5px;color:var(--text-2)}
+.field>.seg,.field>.select{align-self:flex-start}
+.input{height:36px;padding:0 12px;border-radius:9px;background:var(--panel-3);font-size:13.5px;width:100%}
+.input:focus{outline:2px solid var(--live);outline-offset:0;background:var(--panel)}
+
+/* 菜单 */
+.menu{width:200px;padding:6px;border-radius:12px;background:var(--panel);box-shadow:var(--shadow-pop)}
+.menu div{height:32px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:8px;font-size:13px}
+.menu div:hover{background:var(--panel-2)}
+.menu hr{border:0;height:1px;background:var(--line);margin:5px 4px}
+.menu .danger{color:var(--red)}
+
+/* 对话框 */
+.dialog{width:420px;border-radius:16px;background:var(--panel);box-shadow:var(--shadow-pop);overflow:hidden}
+.dialog-head{padding:20px 22px 4px;display:flex;align-items:flex-start;gap:12px}
+.dialog-head h4{font-size:17px;font-weight:650;flex:1}
+.dialog-body{padding:12px 22px 4px;display:flex;flex-direction:column;gap:14px}
+.dialog-foot{display:flex;justify-content:flex-end;gap:8px;padding:18px 22px 20px}
+
+/* ---------- 账号栏 ---------- */
+.acct-panel{width:280px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:18px;border-left:1px solid var(--line);background:var(--panel)}
+.acct-head{display:flex;align-items:center;gap:12px;padding:8px;margin:-8px;border-radius:12px}
+.acct-head:hover{background:var(--panel-2)}
+.acct-head .name{font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:6px}
+.acct-head .meta{font-size:12.5px;color:var(--text-3);margin-top:2px}
+.acct-head .chev{margin-left:auto;color:var(--text-3)}
+.vip{font-size:11px;font-weight:600;padding:1px 6px;border-radius:5px;background:linear-gradient(135deg,#F3D9A4,#E2B867);color:#5A3C05}
+.health{display:flex;align-items:center;justify-content:space-between}
+.health small{font-size:12px;color:var(--text-3)}
+.caps{display:flex;flex-wrap:wrap;gap:6px}
+.caps-label{font-size:12px;color:var(--text-3);margin-bottom:8px}
+
+/* ---------- 预检卡 ---------- */
+.pc{width:560px;border-radius:16px;background:var(--panel);box-shadow:var(--shadow-pop);overflow:hidden}
+.pc-input{display:flex;align-items:center;gap:10px;height:52px;padding:0 14px 0 16px}
+.pc-input input{flex:1;font-size:14px;outline:0;min-width:0}
+.pc-input input::placeholder{color:var(--text-3)}
+.pc-input .val{flex:1;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+kbd{font-family:var(--font-ui);font-size:11px;color:var(--text-3);border:1px solid var(--line-strong);border-radius:6px;padding:2px 6px}
+.pc-hint{border-top:1px solid var(--line);padding:12px 16px 14px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--text-3)}
+.pc-body{border-top:1px solid var(--line);padding:16px 20px 4px}
+.pc-kind{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-3)}
+.pc-title{font-size:17px;font-weight:650;margin:8px 0 2px}
+.pc-sum{font-size:13px;color:var(--text-2)}
+.checks{list-style:none;margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+.checks li{display:flex;gap:9px;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+.checks li:nth-child(-n+2){border-top:0}
+.checks svg{margin-top:1px;color:var(--green)}
+.checks .w svg{color:var(--amber)} .checks .e svg{color:var(--red)}
+.checks b{font-weight:500;display:block}
+.checks small{font-size:12px;color:var(--text-3)}
+.pc-foot{display:flex;align-items:center;gap:8px;padding:12px 16px 14px 20px;border-top:1px solid var(--line);margin-top:10px}
+.pc-foot .path{margin-right:auto;font-size:12.5px;color:var(--text-3);display:flex;align-items:center;gap:6px;max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* 设置页框 */
+.settings{display:flex;width:900px;height:auto;min-height:520px;overflow:hidden}
+.snav{width:188px;flex:none;padding:16px 10px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.snav span{height:34px;display:flex;align-items:center;padding:0 12px;border-radius:9px;color:var(--text-2)}
+.snav span.on{background:var(--panel-3);color:var(--text);font-weight:500}
+.sbody{flex:1;padding:24px 32px 12px}
+.queue-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+
+/* 任务行（大小未知、服务器拒绝） */
+.task{position:relative;display:grid;grid-template-columns:36px minmax(0,1fr) 150px 60px 32px;align-items:center;column-gap:12px;min-height:64px;padding:10px 12px 16px;border-radius:10px;width:720px}
+.task:hover{background:var(--panel-2)}
+.ft{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--panel-3);color:var(--text-2)}
+.tname{font-size:14px;font-weight:500}
+.tmeta{display:flex;gap:8px;align-items:center;margin-top:4px;font-size:12.5px;color:var(--text-3)}
+.tchip{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:999px;font-size:11.5px;font-weight:500;background:var(--panel-3);color:var(--text-2)}
+.tchip.red{background:var(--red-soft);color:var(--red)}
+.tspeed{text-align:right;font-size:13px;font-weight:500;color:var(--live-strong)}
+.tspeed small{display:block;font-weight:400;color:var(--text-3);font-size:12px;margin-top:3px}
+.tpct{text-align:right;color:var(--text-2)}
+.water{position:absolute;left:60px;right:56px;bottom:7px;height:3px;border-radius:3px;background:var(--panel-3);overflow:hidden}
+.water i{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--live)}
+.water.indet i{width:30%;animation:indet 1.4s ease-in-out infinite}
+@keyframes indet{0%{left:-30%}100%{left:100%}}
+.water.err i{left:0;width:100%;background:var(--red);opacity:.5}
+@media (prefers-reduced-motion:reduce){.water.indet i,.spin{animation:none}}
+
+/* ---------- v1.3：头像、官方图标、状态栏、关于 ---------- */
+.pfp{position:relative;width:40px;height:40px;flex:none}
+.pfp>.ph{width:40px;height:40px;border-radius:50%;display:block;object-fit:cover;background:var(--panel-3)}
+.pfp>.ph.fallback{display:grid;place-items:center;color:#fff;font-weight:600;font-size:15px}
+.pfp>.badge{position:absolute;right:-3px;bottom:-3px;width:18px;height:18px;border-radius:6px;box-shadow:0 0 0 2px var(--panel);overflow:hidden}
+.plogo{width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;background:#fff;box-shadow:inset 0 0 0 1px var(--line);font-size:9px;color:#8C939F;text-align:center;line-height:1.1}
+.plogo.sm{width:22px;height:22px;border-radius:7px}
+.plist{width:200px;padding:8px}
+.plist .p{display:flex;align-items:center;gap:10px;height:44px;padding:0 10px;border-radius:10px;font-size:13.5px}
+.plist .p.on{background:var(--panel-2);font-weight:500}
+.plist .p .st{margin-left:auto}
+.sbar{display:flex;align-items:center;gap:8px;width:820px;padding:10px 16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--text-2);background:var(--panel);border-radius:0 0 14px 14px}
+.sbar .sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 11px;border-radius:999px;background:var(--panel-2)}
+.pill.btnlike{cursor:pointer}
+.pill.warn{background:var(--amber-soft);color:var(--amber)}
+.pill.err{background:var(--red-soft);color:var(--red)}
+.about{width:560px;padding:28px 32px 20px}
+.about-head{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.about-head img{width:64px;height:64px;border-radius:15px}
+.about-head h3{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.about-head .v{font-size:13px;color:var(--text-3);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="bar"><button data-t="light" aria-pressed="true">浅色</button><button data-t="dark" aria-pressed="false">深色</button></div>
+<div class="doc">
+
+<!-- 1 组件 -->
+<section class="spec">
+  <h2>1. 组件库</h2>
+  <p>整个应用只允许使用这一页里的组件。页面上看着乱，主要是因为每个页面各自拼样式：按钮有四五种外观，说明文字没有固定位置，设置项一会儿是行、一会儿是裸露的输入框。</p>
+  <div class="surface" style="padding:24px;display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn primary">下载 20 个文件</button>
+      <button class="btn secondary">更改</button>
+      <button class="btn quiet">取消</button>
+      <button class="btn danger">退出登录</button>
+      <button class="icon-btn" title="更多"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg></button>
+      <span class="cap" style="margin:0 0 0 12px">主按钮每个区域最多一个；次要操作用描边；取消用无边框；危险操作用红字；三个以上操作收进“⋯”菜单</span>
+    </div>
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+      <span class="status"><i></i>正常</span>
+      <span class="status live"><i></i>下载中</span>
+      <span class="status warn"><i></i>空间不足</span>
+      <span class="status err"><i></i>登录已失效</span>
+      <span class="status off"><i></i>未登录</span>
+      <span class="cap" style="margin:0 0 0 12px">状态一律是“圆点 + 两到五个字”</span>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <span class="select">每天<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+      <span class="seg"><span class="on">全部</span><span>工作日</span><span>自定义</span></span>
+      <span class="toggle on"></span><span class="toggle"></span>
+      <span class="chip">转存后下载</span>
+      <span class="cap" style="margin:0 0 0 12px">不使用浏览器原生的下拉框、折叠三角、文本域</span>
+    </div>
+    <div class="banner err" style="max-width:520px"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg><span>登录已失效</span><button class="btn secondary">重新登录</button></div>
+  </div>
+</section>
+
+<!-- 2 账号栏 -->
+<section class="spec">
+  <h2>2. 网盘页右侧账号栏</h2>
+  <p>容量统一写成“已用 X / 共 Y”，下面一条进度条，宽度等于已用除以总量，每个账号用自己的数值，超过 90% 变成琥珀色。账号名可以点开切换账号或添加账号，其余操作收进“⋯”菜单。账号正常时只显示一行状态；出问题时状态变成提示条，带解决按钮。</p>
+  <div class="row2">
+    <div>
+      <div class="acct-panel surface">
+        <div class="acct-head">
+          <span class="avatar" style="background:#2F6BFF">冷</span>
+          <div><div class="name">冷兔子<span class="vip">SVIP</span></div><div class="meta">百度网盘</div></div>
+          <svg class="i sm chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+        </div>
+        <div>
+          <div class="meter-label"><span>已用 <b>142.6 GB</b></span><span>共 1.10 TB</span></div>
+          <div class="meter"><i style="width:13%"></i></div>
+        </div>
+        <div class="health"><span class="status"><i></i>账号正常</span><small>2 分钟前检查</small>
+          <button class="icon-btn" title="立即检查" style="width:28px;height:28px;margin:-6px -6px -6px 0"><svg class="i sm" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4"/></svg></button></div>
+        <div>
+          <div class="caps-label">这个账号支持</div>
+          <div class="caps"><span class="chip">下载自己的文件</span><span class="chip">转存后下载分享</span></div>
+        </div>
+      </div>
+      <div class="cap">正常状态</div>
+    </div>
+    <div>
+      <div class="acct-panel surface">
+        <div class="acct-head">
+          <span class="avatar" style="background:#2B8CFF;font-size:12px">115</span>
+          <div><div class="name">追番小号</div><div class="meta">115 网盘</div></div>
+          <svg class="i sm chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+        </div>
+        <div>
+          <div class="meter-label"><span>已用 <b>14.2 TB</b></span><span>共 15.0 TB</span></div>
+          <div class="meter warn"><i style="width:94%"></i></div>
+        </div>
+        <div class="banner err" style="flex-wrap:wrap"><span style="color:var(--red)">已在其他地方登录</span><button class="btn secondary" style="background:var(--panel)">重新登录</button></div>
+        <div>
+          <div class="caps-label">这个账号支持</div>
+          <div class="caps"><span class="chip">下载自己的文件</span><span class="chip">离线下载</span></div>
+        </div>
+      </div>
+      <div class="cap">异常状态：空间接近满、登录失效</div>
+    </div>
+    <div>
+      <div class="menu" style="margin-top:58px">
+        <div style="font-weight:500"><span class="avatar" style="width:22px;height:22px;font-size:11px;background:#2F6BFF">冷</span>冷兔子<svg class="i sm" viewBox="0 0 24 24" style="margin-left:auto"><path d="M5 12l4 4 10-10"/></svg></div>
+        <div><span class="avatar" style="width:22px;height:22px;font-size:11px;background:#8C939F">转</span>转存专用号</div>
+        <hr>
+        <div><svg class="i sm" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>添加账号</div>
+      </div>
+      <div class="cap">点账号名弹出</div>
+    </div>
+    <div>
+      <div class="menu" style="margin-top:58px">
+        <div>编辑备注</div><div>设为转存专用号</div><div>检测账号</div><div>重新登录</div><hr><div class="danger">退出登录</div>
+      </div>
+      <div class="cap">“⋯”菜单（放在网盘页标题栏右侧）</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 设置：网盘账号 -->
+<section class="spec">
+  <h2>3. 设置 → 网盘账号</h2>
+  <p>每个账号一行：平台图标、账号名、状态、“⋯”菜单。没登录的平台只有一个“登录”按钮。“全部检测”放在分组标题右侧，不单独占一行。出错原因写在这个账号行的副标题里，不在页面底部。</p>
+  <div class="surface settings">
+    <div class="snav"><span>常规</span><span>下载与目录</span><span>队列与计划</span><span class="on">网盘账号</span><span>媒体</span><span>浏览器</span><span>手机投递</span><span>AI 助手</span><span>外观</span><span>外部工具</span><span>诊断</span><span>关于</span></div>
+    <div class="sbody">
+      <div class="section">
+        <div class="section-head"><div><h3>网盘账号</h3><div class="sub">登录信息加密保存在本机</div></div><button class="btn secondary act">全部检测</button></div>
+        <div class="group">
+          <div class="item"><span class="logo lead" style="background:#2F6BFF">百</span>
+            <div class="body"><div class="title">冷兔子<span class="vip">SVIP</span></div><div class="desc">百度网盘</div></div>
+            <div class="trail"><span class="status"><i></i>正常</span><button class="icon-btn"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg></button></div></div>
+          <div class="item sub">
+            <div class="body"><div class="title">转存专用号</div><div class="desc">百度网盘，分享先转存到这个账号</div></div>
+            <div class="trail"><span class="status"><i></i>正常</span><button class="icon-btn"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg></button></div></div>
+          <div class="item"><span class="logo lead" style="background:#3C5BFF">夸</span>
+            <div class="body"><div class="title">夸克网盘</div></div>
+            <div class="trail"><button class="btn secondary">登录</button></div></div>
+          <div class="item"><span class="logo lead" style="background:#F07C1A">U</span>
+            <div class="body"><div class="title">UC 网盘</div></div>
+            <div class="trail"><button class="btn secondary">登录</button></div></div>
+          <div class="item"><span class="logo lead" style="background:#2B8CFF;font-size:10px">115</span>
+            <div class="body"><div class="title">追番小号</div><div class="desc" style="color:var(--red)">115 网盘，已在其他地方登录</div></div>
+            <div class="trail"><button class="btn secondary">重新登录</button><button class="icon-btn"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg></button></div></div>
+          <div class="item"><span class="logo lead" style="background:#1E9E8E;font-size:10px">123</span>
+            <div class="body"><div class="title">123 云盘</div></div>
+            <div class="trail"><button class="btn secondary">登录</button></div></div>
+          <div class="item"><span class="logo lead" style="background:#5C4EE5">阿</span>
+            <div class="body"><div class="title">阿里云盘</div><div class="desc">需要你自己的开放平台应用</div></div>
+            <div class="trail"><button class="btn secondary">设置授权</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 设置：队列与计划 -->
+<section class="spec">
+  <h2>4. 设置 → 队列与计划</h2>
+  <p>每个队列一行，副标题用标签说明规则；编辑在对话框里完成。解压密码本不要裸露一个输入框，改为一行“已保存 N 个”加“管理”按钮。</p>
+  <div class="row2">
+    <div class="surface settings" style="width:760px">
+      <div class="snav"><span>常规</span><span>下载与目录</span><span class="on">队列与计划</span><span>网盘账号</span><span>媒体</span></div>
+      <div class="sbody">
+        <div class="section">
+          <div class="section-head"><div><h3>队列</h3></div><button class="btn secondary act"><svg class="i sm" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>新建队列</button></div>
+          <div class="group">
+            <div class="item"><div class="body"><div class="title">主队列</div><div class="queue-meta"><span class="chip">同时 3 个</span><span class="chip">手动开始</span></div></div>
+              <div class="trail"><span class="status live"><i></i>运行中</span><button class="icon-btn"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg></button></div></div>
+            <div class="item"><div class="body"><div class="title">夜间队列</div><div class="queue-meta"><span class="chip">同时 5 个</span><span class="chip">每天 23:00–07:00</span><span class="chip">完成后睡眠</span></div></div>
+              <div class="trail"><span class="status off"><i></i>23:00 开始</span><button class="icon-btn"><svg class="i" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg></button></div></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-head"><div><h3>解压密码</h3><div class="sub">自动解压时依次尝试</div></div></div>
+          <div class="group">
+            <div class="item"><div class="body"><div class="title">密码本</div><div class="desc">已保存 12 个，加密保存在本机</div></div><div class="trail"><button class="btn secondary">管理</button></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="dialog">
+        <div class="dialog-head"><h4>编辑队列</h4><button class="icon-btn" style="margin:-6px -8px 0 0"><svg class="i" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button></div>
+        <div class="dialog-body">
+          <div class="field"><label>名称</label><input class="input" value="夜间队列"></div>
+          <div class="field"><label>同时下载</label><span class="seg"><span>1</span><span>3</span><span class="on">5</span><span>不限</span></span></div>
+          <div class="field"><label>开始时间</label><div style="display:flex;gap:8px;align-items:center"><span class="select">23:00<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span><span style="color:var(--text-3)">至</span><span class="select">07:00<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span><span class="select">每天<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span></div></div>
+          <div class="field"><label>全部完成后</label><span class="select" style="width:160px;justify-content:space-between">睡眠<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span></div>
+        </div>
+        <div class="dialog-foot"><button class="btn quiet">取消</button><button class="btn primary">保存</button></div>
+      </div>
+      <div class="cap">点“⋯ → 编辑”打开</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 预检卡 -->
+<section class="spec">
+  <h2>5. 添加与预检卡的几种状态</h2>
+  <p>输入框是单行，不显示拼写检查的红线，也没有右下角的拖拽角。粘贴后自动识别，识别期间显示“正在检查”。拿不到大小时写“大小未知”，不写“0 B”。服务器拒绝访问时，在卡片里直接说明，不要创建一个永远停在 0% 的任务。</p>
+  <div class="row2">
+    <div>
+      <div class="pc">
+        <div class="pc-input"><svg class="i" viewBox="0 0 24 24" style="color:var(--text-3)"><path d="M12 5v14M5 12h14"/></svg><input placeholder="粘贴链接、分享口令或磁力" spellcheck="false"><kbd>Esc</kbd></div>
+        <div class="pc-hint">也可以把文件或种子拖进窗口</div>
+      </div>
+      <div class="cap">刚打开</div>
+    </div>
+    <div>
+      <div class="pc">
+        <div class="pc-input"><svg class="i" viewBox="0 0 24 24" style="color:var(--text-3)"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span class="val">https://pan.baidu.com/s/1aB3cD 提取码 8k2m</span><button class="icon-btn" style="width:28px;height:28px"><svg class="i sm" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button></div>
+        <div class="pc-hint"><svg class="i sm spin" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/></svg>正在检查</div>
+      </div>
+      <div class="cap">识别中</div>
+    </div>
+    <div>
+      <div class="pc">
+        <div class="pc-input"><svg class="i" viewBox="0 0 24 24" style="color:var(--text-3)"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span class="val">https://speed.cloudflare.com/__down?during=download&amp;bytes=1073741824</span><button class="icon-btn" style="width:28px;height:28px"><svg class="i sm" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button></div>
+        <div class="pc-body">
+          <div class="pc-kind">普通链接</div>
+          <div class="pc-title">__down</div>
+          <div class="pc-sum">speed.cloudflare.com</div>
+          <ul class="checks">
+            <li class="e"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg><div><b>服务器拒绝访问</b><small>这个链接需要从原网页打开</small></div></li>
+            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg><div><b>D 盘空间足够</b><small>剩余 298 GB</small></div></li>
+          </ul>
+        </div>
+        <div class="pc-foot"><span class="path">已自动带上来源网页重试，仍被拒绝</span><button class="btn secondary">在浏览器中打开</button></div>
+      </div>
+      <div class="cap">服务器拒绝（403）：先自动带上来源网页重试一次，仍失败就这样说明</div>
+    </div>
+    <div>
+      <div class="pc">
+        <div class="pc-input"><svg class="i" viewBox="0 0 24 24" style="color:var(--text-3)"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span class="val">https://mirrors.example.com/stream/archive.tar</span><button class="icon-btn" style="width:28px;height:28px"><svg class="i sm" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button></div>
+        <div class="pc-body">
+          <div class="pc-kind">普通链接</div>
+          <div class="pc-title">archive.tar</div>
+          <div class="pc-sum">大小未知</div>
+          <ul class="checks">
+            <li class="w"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg><div><b>不支持断点续传</b><small>中途断开需要重新下载</small></div></li>
+            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg><div><b>D 盘剩余 298 GB</b><small>下载时持续检查</small></div></li>
+          </ul>
+        </div>
+        <div class="pc-foot"><span class="path"><svg class="i sm" viewBox="0 0 24 24"><path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h3.5l2 2H18a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5z"/></svg>D:\下载</span><button class="btn primary">下载</button></div>
+      </div>
+      <div class="cap">大小未知、不支持续传：只提醒，仍然可以下载</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 任务行 -->
+<section class="spec">
+  <h2>6. 任务行的两个特殊状态</h2>
+  <div class="surface" style="padding:8px 12px;display:inline-block">
+    <div class="task">
+      <div class="ft"><svg class="i" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/></svg></div>
+      <div><div class="tname">archive.tar</div><div class="tmeta"><span class="tchip">普通链接</span><span>已下载 1.24 GB，大小未知</span></div></div>
+      <div class="tspeed">18.2 MB/s<small>剩余时间未知</small></div><div class="tpct">—</div>
+      <button class="icon-btn"><svg class="i" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg></button>
+      <div class="water indet"><i></i></div>
+    </div>
+    <div class="task">
+      <div class="ft"><svg class="i" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/></svg></div>
+      <div><div class="tname">__down</div><div class="tmeta"><span class="tchip red">服务器拒绝访问</span><span>需要从原网页打开</span></div></div>
+      <div class="tspeed" style="color:var(--text-3);font-weight:400">已停止</div><div class="tpct">0%</div>
+      <button class="icon-btn" title="重试"><svg class="i" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4"/></svg></button>
+      <div class="water err"><i></i></div>
+    </div>
+  </div>
+  <div class="cap">大小未知时水位线来回流动，显示已下载量；失败的任务进入“需要处理”，写明原因，不显示“下载中”</div>
+</section>
+
+<!-- 7 平台图标与账号头像 -->
+<section class="spec">
+  <h2>7. 平台官方图标与账号头像（v1.3）</h2>
+  <p>不再用“百、夸、U、阿、115、123”这种自己画的色块字。所有出现网盘平台的地方（网盘页左侧列表、设置 → 网盘账号、任务行来源、预检卡）都用平台自己的官方图标原图：放在白底圆角方块里，不改颜色、不加描边以外的效果，深色主题下白底不变。下图虚线方块就是放官方图标的位置。</p>
+  <p>账号栏头部：左边是这个账号在网盘里的头像（圆形），右下角叠一个小号官方图标，说明是哪个平台；标题是网盘里的昵称，副标题是“平台名 · 备注”。拿不到头像时，用昵称第一个字放在平台主色的圆里；昵称是手机号时中间四位打星。</p>
+  <div class="row2">
+    <div>
+      <div class="surface plist">
+        <div class="p on"><span class="plogo" style="border:1px dashed var(--line-strong);box-shadow:none"></span>百度网盘<span class="status st"><i></i></span></div>
+        <div class="p"><span class="plogo" style="border:1px dashed var(--line-strong);box-shadow:none"></span>夸克网盘<span class="status st"><i></i></span></div>
+        <div class="p"><span class="plogo" style="border:1px dashed var(--line-strong);box-shadow:none"></span>UC 网盘<span class="status off st"><i></i></span></div>
+        <div class="p"><span class="plogo" style="border:1px dashed var(--line-strong);box-shadow:none"></span>阿里云盘<span class="status off st"><i></i></span></div>
+        <div class="p"><span class="plogo" style="border:1px dashed var(--line-strong);box-shadow:none"></span>115 网盘<span class="status err st"><i></i></span></div>
+        <div class="p"><span class="plogo" style="border:1px dashed var(--line-strong);box-shadow:none"></span>123 云盘<span class="status off st"><i></i></span></div>
+      </div>
+      <div class="cap">左侧平台列表：右边只留状态点，不写“已登录 / 未登录”四个字<br>（绿=正常，灰=未登录，红=需要重新登录；鼠标悬停时提示文字）</div>
+    </div>
+    <div>
+      <div class="acct-panel surface">
+        <div class="acct-head">
+          <span class="pfp"><span class="ph" style="background:linear-gradient(135deg,#F6C99B,#C9795B)"></span><span class="badge plogo sm" style="width:18px;height:18px;border-radius:6px;border:1px dashed var(--line-strong)"></span></span>
+          <div><div class="name">冷兔子<span class="vip">SVIP</span></div><div class="meta">百度网盘 · 主力号</div></div>
+          <svg class="i sm chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+        </div>
+        <div>
+          <div class="meter-label"><span>已用 <b>142.6 GB</b></span><span>共 1.10 TB</span></div>
+          <div class="meter"><i style="width:13%"></i></div>
+        </div>
+        <div class="health"><span class="status"><i></i>账号正常</span><small>2 分钟前检查</small></div>
+      </div>
+      <div class="cap">有头像：真实头像 + 右下角平台小图标</div>
+    </div>
+    <div>
+      <div class="acct-panel surface">
+        <div class="acct-head">
+          <span class="pfp"><span class="ph fallback" style="background:#2B8CFF">追</span><span class="badge plogo sm" style="width:18px;height:18px;border-radius:6px;border:1px dashed var(--line-strong)"></span></span>
+          <div><div class="name">138****5678</div><div class="meta">115 网盘</div></div>
+          <svg class="i sm chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+        </div>
+        <div>
+          <div class="meter-label"><span>已用 <b>14.2 TB</b></span><span>共 15.0 TB</span></div>
+          <div class="meter warn"><i style="width:94%"></i></div>
+        </div>
+        <div class="health"><span class="status"><i></i>账号正常</span><small>今天 20:48 检查</small></div>
+      </div>
+      <div class="cap">没有头像：首字圆形；手机号打星</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 状态栏 -->
+<section class="spec">
+  <h2>8. 下载页底部状态栏（v1.3）</h2>
+  <p>右侧只放一个状态胶囊，说明“下载服务”是否正常；一切正常时只有这一个。网盘账号只在出问题时才出现，而且可以点，点了直接去网盘页处理。不要再出现“网盘账号 · 5 个已登录”和一个只有圆点、没有文字的空胶囊。</p>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div class="sbar">
+      <span class="pill"><svg class="i sm" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12l4-3"/></svg>常规速度<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+      <span class="pill" style="color:var(--live-strong)"><svg class="i sm" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg>52.2 MB/s<span style="width:1px;height:12px;background:var(--line-strong)"></span><span style="color:var(--text-2)">↑ 1.2 MB/s</span></span>
+      <span class="sp"></span>
+      <span class="pill"><span class="status"><i></i>下载服务正常</span></span>
+    </div>
+    <div class="cap" style="margin-top:-6px">正常</div>
+    <div class="sbar">
+      <span class="pill"><svg class="i sm" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12l4-3"/></svg>常规速度<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+      <span class="pill"><svg class="i sm" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg>0 B/s</span>
+      <span class="sp"></span>
+      <span class="pill warn btnlike">115 网盘需要重新登录<svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+      <span class="pill"><span class="status"><i></i>下载服务正常</span></span>
+    </div>
+    <div class="cap" style="margin-top:-6px">有账号出问题（两个以上写“2 个网盘账号需要处理”）</div>
+    <div class="sbar">
+      <span class="pill"><svg class="i sm" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12l4-3"/></svg>常规速度<svg class="i sm" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></span>
+      <span class="sp"></span>
+      <span class="pill err btnlike">下载服务未运行 · 重新启动</span>
+    </div>
+    <div class="cap" style="margin-top:-6px">下载服务异常：点了直接重启；启动中显示灰点“下载服务启动中”</div>
+  </div>
+</section>
+
+<!-- 9 关于 -->
+<section class="spec">
+  <h2>9. 设置 → 关于（v1.4 精简版）</h2>
+  <p>删掉从 Motrix 继承来的“关于”弹窗（蓝色 N 图标、英文开发者、更新通道、“自动更新不可用”又给“检查”按钮）。托盘和菜单里的“关于”一律打开 设置 → 关于。页面就是一个头部加一个分组，底部不放任何小字。更新从 GitHub Releases 获取，在应用内下载并重启完成，不打开网页。</p>
+  <div class="surface about">
+    <div class="about-head">
+      <img src="icons/app-icon.svg" alt="">
+      <div><h3>NexusDownload</h3><div class="v">版本 1.3.0</div></div>
+    </div>
+    <div class="group">
+      <div class="item"><div class="body"><div class="title">检查更新</div></div><div class="trail"><span class="status" style="margin-right:6px">已是最新</span><button class="btn secondary">检查</button></div></div>
+      <div class="item"><div class="body"><div class="title">官网</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></div></div>
+      <div class="item"><div class="body"><div class="title">更新日志</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+      <div class="item"><div class="body"><div class="title">开源许可</div></div><div class="trail" style="color:var(--text-3)"><svg class="i sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+    </div>
+  </div>
+  <div class="cap">已是最新：只在按钮左边写“已是最新”，不写上次检查时间，不提 GitHub</div>
+  <div class="row2" style="margin-top:20px">
+    <div><div class="group surface" style="width:440px">
+      <div class="item"><div class="body"><div class="title">新版本 1.3.1</div></div><div class="trail"><button class="btn quiet">更新内容</button><button class="btn primary">更新</button></div></div>
+    </div><div class="cap">有新版本：点“更新”直接开始下载，不再弹确认框</div></div>
+    <div><div class="group surface" style="width:440px">
+      <div class="item"><div class="body"><div class="title">正在更新</div><div class="meter" style="margin-top:8px"><i style="width:46%;background:var(--live)"></i></div></div><div class="trail"><span class="status" style="min-width:34px;justify-content:flex-end">46%</span></div></div>
+    </div><div class="cap">下载中：只有进度条和百分比</div></div>
+    <div><div class="group surface" style="width:440px">
+      <div class="item"><div class="body"><div class="title">新版本已就绪</div></div><div class="trail"><button class="btn primary">重启</button></div></div>
+    </div><div class="cap">下载并校验完成：一个“重启”按钮；有任务在下载时，点了再提示会暂停几个任务</div></div>
+  </div>
+</section>
+
+</div>
+<script>
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{document.documentElement.dataset.theme=b.dataset.t;document.querySelectorAll('[data-t]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+if(new URLSearchParams(location.search).get('theme')==='dark')document.querySelector('[data-t="dark"]').click();
+</script>
+</body>
+</html>

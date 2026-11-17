@@ -1,0 +1,28 @@
+<svg role="img" aria-label="NexusDownload" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256">
+  <!-- NexusDownload 应用图标：三股来源汇成一点，再向下落地 -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22262E"/>
+      <stop offset="1" stop-color="#0B0D11"/>
+    </linearGradient>
+    <linearGradient id="flow" gradientUnits="userSpaceOnUse" x1="0" y1="10" x2="0" y2="29">
+      <stop offset="0" stop-color="#5866FF" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#33D1C6"/>
+    </linearGradient>
+    <radialGradient id="node" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".45" stop-color="#9FF3EC"/>
+      <stop offset="1" stop-color="#33D1C6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#tile)"/>
+  <rect x="2.5" y="2.5" width="59" height="59" rx="13.5" fill="none" stroke="#FFFFFF" stroke-opacity=".08"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 11 C 15 21, 25 23, 32 28" stroke="url(#flow)" stroke-width="4.8" opacity=".75"/>
+    <path d="M49 11 C 49 21, 39 23, 32 28" stroke="url(#flow)" stroke-width="4.8" opacity=".75"/>
+    <path d="M32 11 L 32 28" stroke="url(#flow)" stroke-width="4.8"/>
+    <path d="M32 28 L 32 49" stroke="#F4F6F8" stroke-width="4.8"/>
+    <path d="M24.5 41.5 L 32 49 L 39.5 41.5" stroke="#F4F6F8" stroke-width="4.8"/>
+  </g>
+
+</svg>

@@ -1,0 +1,182 @@
+/* The approved preflight is anchored below the panel header. */
+.nexus-dialog[data-slot="dialog-content"] {
+  top: 110px;
+  left: 248px;
+  right: 26px;
+  margin-inline: auto;
+  width: 560px;
+  max-width: calc(100vw - 274px);
+  height: auto;
+  max-height: calc(100svh - 140px);
+  padding: 0;
+  display: block;
+  border-radius: 16px;
+  overflow: auto;
+  gap: 0;
+  border: 0;
+  box-shadow:
+    0 16px 56px #00000026,
+    0 4px 12px #0000000d;
+  font-size: 13.5px;
+}
+.nexus-add-scrim[data-slot="dialog-overlay"] {
+  inset: 40px 10px 10px 232px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--sidebar) 55%, transparent);
+}
+.nexus-dialog .precheck {
+  position: static;
+  width: 100%;
+  margin: 0;
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+  box-shadow: none;
+}
+.nexus-dialog .pc-input .nexus-source-input {
+  min-height: 24px;
+  max-height: 90px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  box-shadow: none;
+  font-size: 13.5px;
+  field-sizing: content;
+  resize: none;
+}
+.nexus-dialog .pc-input .nexus-source-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 0;
+}
+.nexus-dialog .checks {
+  padding: 0;
+}
+.nexus-dialog .checks small {
+  font-size: 12.5px;
+}
+.nexus-dialog .checks .motrix-icon {
+  margin-top: 1px;
+  color: #26845b;
+}
+.nexus-dialog .checks .w .motrix-icon {
+  color: #a66b12;
+}
+.nexus-dialog .pc-title {
+  line-height: 1.45;
+  color: var(--foreground);
+}
+.nexus-dialog .pc-foot .muted {
+  max-width: 245px;
+  min-width: 0;
+  justify-content: start;
+  height: auto;
+  white-space: normal;
+  word-break: break-word;
+  padding: 0;
+}
+.nexus-inbox-list {
+  max-height: 260px;
+  overflow: auto;
+  margin-top: 16px;
+}
+.nexus-inbox-list p {
+  color: var(--muted-foreground);
+  padding: 20px 0;
+}
+.nexus-inbox-row {
+  width: 100%;
+  justify-content: start;
+  padding: 12px 8px;
+  height: auto;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+}
+.nexus-inbox-row span {
+  flex: 1;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.nexus-dialog .nexus-inbox-row small {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.nexus-add-feedback {
+  padding-top: 12px;
+  color: var(--destructive);
+  font-size: 13px;
+}
+
+.nexus-save-path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nexus-inbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nexus-inbox-item .nexus-inbox-row {
+  flex: 1;
+  min-width: 0;
+}
+.nexus-inbox-item > button:last-child {
+  color: var(--muted-foreground);
+}
+
+.nexus-v4-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+.nexus-v4-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.nexus-v4-card {
+  padding: 24px;
+}
+.nexus-v4-card fieldset {
+  border: 0;
+  margin: 16px 0;
+  padding: 0;
+}
+.nexus-v4-message {
+  padding: 12px;
+  background: var(--muted);
+  border-radius: 9px;
+}
+
+.nexus-task-area {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+.nexus-task-area > .list {
+  flex: 1;
+  min-height: 0;
+}
+.nexus-v4-package {
+  border-bottom: 1px solid var(--border);
+}
+
+.nexus-workflow-notice:empty {
+  display: none;
+}
+.nexus-workflow-notice {
+  flex: 0 0 auto;
+  padding: 0 18px;
+  background: var(--paper);
+  font-size: 12px;
+}

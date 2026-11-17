@@ -1,0 +1,55 @@
+name: Windows portable release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413
+        with:
+          version: 12.18.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Validate version and release notes
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ('${{ github.ref_type }}' -eq 'tag' -and '${{ github.ref_name }}' -ne "v$version") { throw 'Tag and package versions differ.' }
+          if (!(Test-Path "docs/release-notes/$version.md")) { throw 'Release notes are missing.' }
+          "NEXUS_VERSION=$version" >> $env:GITHUB_ENV
+      - run: pnpm install --frozen-lockfile
+        env:
+          MOTRIX_SKIP_ELECTRON_REBUILD: '1'
+      - run: pnpm run check:boundaries
+      - run: pnpm run check:i18n
+      - run: pnpm run check:file-names
+      - run: pnpm run lint
+      - run: pnpm exec tsc --noEmit
+      - name: Build native test fixture
+        run: pnpm run build:finalize-fs
+      - run: pnpm test
+      - run: pnpm run ensure:electron-runtime
+      - name: Third-party notice contract
+        run: pnpm run check:third-party-notices
+      - name: Build portable ZIP
+        run: pnpm package:nexus
+      - name: Publish ZIP and checksum
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $name = "NexusDownload-v$env:NEXUS_VERSION-win-x64.zip"
+          gh release create "v$env:NEXUS_VERSION" "release/$name" "release/$name.sha256" --repo '${{ github.repository }}' --title "NexusDownload $env:NEXUS_VERSION" --notes-file "docs/release-notes/$env:NEXUS_VERSION.md" --verify-tag

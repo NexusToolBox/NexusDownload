@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexusDownload：网盘、BT 与视频，汇于一处的 Windows 下载工具</title>
+<meta name="description" content="NexusDownload 1.0 是免费开源的 Windows 下载工具，集成普通链接、BT、六家网盘、视频与图集、队列计划、手机投递及 AI 助手接口。网盘权限以平台实际授权为准。">
+<link rel="icon" href="icons/app-icon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="icons/app-icon.ico">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="site.css">
+</head>
+<body id="top">
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><img src="icons/app-icon.svg" alt="">NexusDownload</a>
+    <nav class="links" aria-label="页面导航">
+      <a href="#product">界面</a><a href="#features">功能</a><a href="#trust">隐私</a><a href="#download">下载</a>
+    </nav>
+    <a class="gh" href="#download" title="源码地址待发布" data-placeholder="source"><svg aria-hidden="true" class="i" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><span>源代码</span></a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="hero-title">
+  <svg class="flow" id="flow" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+    <defs>
+      <filter id="blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+      <linearGradient id="sg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="360">
+        <stop offset="0" stop-color="#5866FF" stop-opacity="0"/>
+        <stop offset=".35" stop-color="#5866FF" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#33D1C6"/>
+      </linearGradient>
+      <linearGradient id="bg" gradientUnits="userSpaceOnUse" x1="0" y1="350" x2="0" y2="432">
+        <stop offset="0" stop-color="#E9FFFC"/>
+        <stop offset="1" stop-color="#33D1C6" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="ng"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#B8FFF8"/><stop offset=".6" stop-color="#33D1C6" stop-opacity=".35"/><stop offset="1" stop-color="#33D1C6" stop-opacity="0"/></radialGradient>
+      <radialGradient id="halo"><stop offset="0" stop-color="#33D1C6" stop-opacity=".22"/><stop offset="1" stop-color="#05070A" stop-opacity="0"/></radialGradient>
+    </defs>
+    <circle cx="720" cy="350" r="420" fill="url(#halo)"/>
+    <!-- 六股来源从上方汇入一点 -->
+    <g fill="none" stroke-linecap="round">
+      <g stroke="url(#sg)" stroke-width="7" opacity=".55" class="glowset">
+        <path class="stream glow" d="M-260 -20 C 110 170, 640 210, 720 350"/>
+        <path class="stream glow" d="M370 -20 C 370 150, 680 220, 720 350" style="animation-delay:.12s"/>
+        <path class="stream glow" d="M610 -20 C 610 140, 710 230, 720 350" style="animation-delay:.24s"/>
+        <path class="stream glow" d="M830 -20 C 830 140, 730 230, 720 350" style="animation-delay:.18s"/>
+        <path class="stream glow" d="M1070 -20 C 1070 150, 760 220, 720 350" style="animation-delay:.06s"/>
+        <path class="stream glow" d="M1700 -20 C 1330 170, 800 210, 720 350" style="animation-delay:.3s"/>
+      </g>
+      <g stroke="url(#sg)" stroke-width="1.6">
+        <path class="stream" d="M-260 -20 C 110 170, 640 210, 720 350"/>
+        <path class="stream" d="M370 -20 C 370 150, 680 220, 720 350" style="animation-delay:.12s"/>
+        <path class="stream" d="M610 -20 C 610 140, 710 230, 720 350" style="animation-delay:.24s"/>
+        <path class="stream" d="M830 -20 C 830 140, 730 230, 720 350" style="animation-delay:.18s"/>
+        <path class="stream" d="M1070 -20 C 1070 150, 760 220, 720 350" style="animation-delay:.06s"/>
+        <path class="stream" d="M1700 -20 C 1330 170, 800 210, 720 350" style="animation-delay:.3s"/>
+      </g>
+      <g stroke="#E9FFFC" stroke-width="2.2">
+        <path class="pulse" d="M-260 -20 C 110 170, 640 210, 720 350"/>
+        <path class="pulse" d="M610 -20 C 610 140, 710 230, 720 350" style="animation-delay:3.4s"/>
+        <path class="pulse" d="M1070 -20 C 1070 150, 760 220, 720 350" style="animation-delay:4.6s"/>
+        <path class="pulse" d="M1700 -20 C 1330 170, 800 210, 720 350" style="animation-delay:2.9s"/>
+      </g>
+      <path class="beam" d="M720 350 L720 430" stroke="url(#bg)" stroke-width="2.4"/>
+    </g>
+    <circle class="node" cx="720" cy="350" r="34" fill="url(#ng)"/>
+    <!-- 来源标签：装饰本身就是信息 -->
+    <g class="tag" font-size="13" fill="#7D8694" text-anchor="middle" font-family="Geist Variable, Noto Sans SC, sans-serif">
+      <text x="256" y="147" text-anchor="start">百度网盘</text>
+      <text x="473" y="120" text-anchor="start">夸克网盘</text>
+      <text x="642" y="96" text-anchor="start">磁力链接</text>
+      <text x="798" y="96" text-anchor="end">哔哩哔哩</text>
+      <text x="967" y="120" text-anchor="end">普通链接</text>
+      <text x="1184" y="147" text-anchor="end">115 网盘</text>
+    </g>
+  </svg>
+
+  <div class="hero-copy">
+    <h1 id="hero-title"><span>所有下载，</span><span>汇于一处。</span></h1>
+    <p>普通链接、BT、网盘、视频与图集，统一管理。支持队列计划、局域网手机投递和 AI 助手接口。为 Windows 打造，免费开源。</p>
+    <div class="cta">
+      <a class="btn light" href="#download"><svg aria-hidden="true" class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>下载 Windows 版</a>
+      <a class="btn line" href="#product">看看界面</a>
+    </div>
+    <div class="fine">Windows 10 / 11，64 位，解压即用</div>
+  </div>
+</section>
+
+<section class="product" id="product">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <h2 class="h2">打开就是任务列表。</h2>
+        <p class="lede">选中任务，查看来源、账号、下载方式与处理进度。</p>
+      </div>
+    </div>
+  </div>
+  <div class="shot"><div class="shot-frame"><img src="assets/client-light.png" width="1280" height="800" alt="NexusDownload 1.0.0 便携版实际浅色截图：本地测试文件的下载与恢复" loading="lazy"></div></div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <article class="feature">
+      <div>
+        <h3>网盘里的文件，直接下到本地。</h3>
+        <p>支持六家网盘的账号、文件与分享下载，创建任务前检查权限、大小和空间。下载方式依平台授权选择；阿里云盘需自有应用及独立分享授权，真实账号权限仍需自行检测。</p>
+      </div>
+      <div class="frag drives">
+        <div class="drv"><span class="lg" style="background:#2F6BFF">百</span><div><b>百度网盘</b><small>分享需转存</small></div></div>
+        <div class="drv"><span class="lg" style="background:#3C5BFF">夸</span><div><b>夸克网盘</b><small>支持无需转存</small></div></div>
+        <div class="drv"><span class="lg" style="background:#F07C1A">U</span><div><b>UC 网盘</b><small>区分播放版本</small></div></div>
+        <div class="drv"><span class="lg" style="background:#5C4EE5">阿</span><div><b>阿里云盘</b><small>需自有授权</small></div></div>
+        <div class="drv"><span class="lg" style="background:#2B8CFF;font-size:10px">115</span><div><b>115 网盘</b><small>可选离线下载</small></div></div>
+        <div class="drv"><span class="lg" style="background:#1E9E8E;font-size:10px">123</span><div><b>123 云盘</b><small>登录后下载</small></div></div>
+      </div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <h3>地址过期后，核验文件再继续。</h3>
+        <p>用原账号重新获取下载地址，确认文件身份与大小后继续。身份变化或账号异常时暂停。历史速度与成功率保存在本机，有足够样本时显示预计时间。</p>
+      </div>
+      <div class="frag">
+        <div class="timeline">
+          <div class="tl-name">恢复过程示例<span class="num">4.00 GB</span></div>
+          <div class="tl-bar"><i></i><span class="cut" title="下载地址过期"></span></div>
+          <div class="tl-steps">
+            <div><b>41% 时地址过期</b>暂停，保留已下载部分</div>
+            <div><b>重新获取地址</b>核对文件身份与大小</div>
+            <div class="on"><b>从 41% 继续</b>不重下已完成的块</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <h3>下载与后续处理，逐步完成。</h3>
+        <p>视频与图集可选择内容，支持动图和实况照片合成。下载后按设置校验、解压、调用本机扫描、标记并归类；失败步骤可单独重试。自动解压默认关闭，原件默认保留。</p>
+      </div>
+      <div class="frag pipe">
+        <div><span class="mk"><svg aria-hidden="true" class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>核对文件大小<small>4.00 GB，一致</small></div>
+        <div><span class="mk"><svg aria-hidden="true" class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>按设置解压<small>支持密码与分卷</small></div>
+        <div><span class="mk"><svg aria-hidden="true" class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>调用本机安全扫描<small>无可用扫描器时跳过</small></div>
+        <div><span class="mk"><svg aria-hidden="true" class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>放进 D:\下载\素材<small>已通知</small></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="trust" id="trust">
+  <div class="wrap">
+    <h2 class="h2">账号只留在你的电脑上。</h2>
+    <p class="lede">NexusDownload 无需注册，没有自己的服务器。网盘登录信息加密保存在本机，绑定当前 Windows 用户。</p>
+    <div class="facts">
+      <div><b>默认本机下载</b><p>获取地址与下载由本机完成。第三方解析、离线与自管节点需自行配置授权，真实服务权限与额度需自行验收。</p></div>
+      <div><b>手机与 AI 接口默认关闭</b><p>手机在可信局域网配对后投递与控制；MCP 仅本机访问，返回脱敏状态，删除文件须在应用确认。</p></div>
+      <div><b>可复制脱敏账号报告</b><p>检测登录、目录、下载地址与小段读取。报告不包含 Cookie、令牌、提取码或签名地址。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="get" id="download">
+  <div class="wrap">
+    <img class="appicon" src="icons/app-icon.svg" alt="">
+    <h2 class="h2">下载 NexusDownload</h2>
+    <p class="meta num">v1.0.0，Windows 10 / 11 64 位 · 未签名 · 下载链接待发布</p>
+    <div class="cta">
+      <a class="btn light" href="#download" title="便携版下载地址将在发布时配置" data-placeholder="download"><svg aria-hidden="true" class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>下载便携版 ZIP</a>
+      <a class="btn line" href="#download" title="更新记录将在发布时开放" data-placeholder="releases">更新记录</a>
+    </div>
+    <div class="hash">SHA-256 <code>76632f2a<wbr>6c238381<wbr>691b8179<wbr>aa7f1388<wbr>86553d5c<wbr>f91acef9<wbr>83055fce<wbr>e21ed308</code><span>完整值随 ZIP 校验文件提供</span></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>NexusDownload 1.0.0 以 AGPL-3.0-only 开源，保留 Motrix MIT 声明；第三方资源保留各自许可。</span>
+    <nav><a href="#download" title="源码地址待发布" data-placeholder="source">源代码</a><a href="licenses/LICENSE.txt">开源许可</a><a href="licenses/THIRD_PARTY_NOTICES.zh-CN.md">致谢</a><a href="#download" title="反馈地址待发布" data-placeholder="issues">反馈问题</a></nav>
+  </div>
+</footer>
+<script src="site.js" defer></script>
+</body>
+</html>

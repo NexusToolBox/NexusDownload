@@ -1,0 +1,87 @@
+/* NexusDownload 设计变量 —— 客户端与官网共用的唯一来源
+   客户端实现时把这些值映射到底座 src/renderer/styles/globals.css 的同名语义变量 */
+
+@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/geist/index.css");
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc/400.css");
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc/500.css");
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc/700.css");
+
+:root {
+  /* 字体：拉丁与数字用 Geist，中文用思源黑体；两者均为开源字体，随应用打包 */
+  --font-ui: "Geist Variable", "Geist", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei UI", sans-serif;
+  --font-display-serif: "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+
+  /* 字号阶梯（客户端） */
+  --fs-caption: 11.5px;
+  --fs-meta: 12.5px;
+  --fs-body: 13.5px;
+  --fs-section: 15px;
+  --fs-dialog: 20px;
+  --fs-page: 28px;
+
+  /* 间距（4 的倍数） */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+
+  /* 圆角：越外层越大，同层一致 */
+  --r-window: 12px;
+  --r-panel: 14px;
+  --r-card: 12px;
+  --r-control: 9px;
+  --r-row: 10px;
+  --r-pill: 999px;
+
+  /* 控件高度 */
+  --h-sm: 28px; --h-md: 32px; --h-lg: 36px;
+
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --t-fast: 140ms; --t-mid: 220ms;
+}
+
+/* 浅色 */
+:root, [data-theme="light"] {
+  --shell: #ECEEF1;          /* 窗口底色、侧栏 */
+  --shell-2: #E3E6EA;        /* 侧栏选中 */
+  --panel: #FFFFFF;          /* 内容面板 */
+  --panel-2: #F6F7F9;        /* 悬停、次级面 */
+  --panel-3: #EEF0F3;        /* 输入框底、轨道 */
+  --line: #E4E7EB;
+  --line-strong: #D5D9DF;
+  --text: #15171C;
+  --text-2: #5A616D;
+  --text-3: #8C939F;
+  --ink: #15171C;            /* 主按钮底 */
+  --ink-text: #FFFFFF;
+  --live: #0C9C96;           /* 汇流青：只给“正在流动”的东西 */
+  --live-strong: #087F7A;
+  --live-soft: #DDF4F2;
+  --star: #5866FF;           /* 星蓝：只在品牌渐变里出现 */
+  --amber: #C97B12; --amber-soft: #FBF0DD;
+  --red: #D23F3F; --red-soft: #FCE8E8;
+  --green: #1E9561;
+  --shadow-panel: 0 0 0 1px rgba(20,23,30,.06), 0 1px 2px rgba(20,23,30,.04), 0 12px 32px -18px rgba(20,23,30,.18);
+  --shadow-pop: 0 0 0 1px rgba(20,23,30,.08), 0 18px 48px -12px rgba(20,23,30,.28);
+}
+
+[data-theme="dark"] {
+  --shell: #0D0F13;
+  --shell-2: #1B1E24;
+  --panel: #15181D;
+  --panel-2: #1B1F25;
+  --panel-3: #22262D;
+  --line: #262A31;
+  --line-strong: #323741;
+  --text: #ECEEF2;
+  --text-2: #A3AAB6;
+  --text-3: #6F7783;
+  --ink: #ECEEF2;
+  --ink-text: #0D0F13;
+  --live: #33D1C6;
+  --live-strong: #5EE0D7;
+  --live-soft: rgba(51,209,198,.14);
+  --star: #7A86FF;
+  --amber: #E6A443; --amber-soft: rgba(230,164,67,.14);
+  --red: #F06464; --red-soft: rgba(240,100,100,.14);
+  --green: #43C487;
+  --shadow-panel: 0 0 0 1px rgba(255,255,255,.05), 0 16px 40px -20px rgba(0,0,0,.6);
+  --shadow-pop: 0 0 0 1px rgba(255,255,255,.08), 0 24px 56px -12px rgba(0,0,0,.7);
+}

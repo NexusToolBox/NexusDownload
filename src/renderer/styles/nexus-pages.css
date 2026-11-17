@@ -1,0 +1,454 @@
+.nexus-shell .health p {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+/* Empty states retain the approved page geometry. */
+.nexus-shell .nexus-bordered-body {
+  border-top: 1px solid var(--border);
+}
+.nexus-shell .nexus-current-files {
+  height: 30px;
+  background: var(--accent);
+}
+.nexus-shell .nexus-file-empty {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.nexus-shell .nexus-file-empty .frow.head {
+  flex: none;
+}
+.nexus-shell .nexus-file-empty .empty {
+  padding: 24px;
+  display: flex;
+}
+.nexus-shell .nexus-file-empty .empty p {
+  max-width: 310px;
+  line-height: 1.8;
+}
+.nexus-shell .drive {
+  justify-content: start;
+  font-weight: 400;
+  width: 100%;
+}
+.nexus-shell .health {
+  overflow: auto;
+}
+.nexus-shell .health > * {
+  flex-shrink: 0;
+}
+.nexus-shell .nexus-account-note {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  margin-top: 2px;
+}
+
+.nexus-shell .nexus-media-input {
+  max-width: none;
+  height: 44px;
+  background: var(--accent);
+}
+.nexus-shell .nexus-media-input input {
+  height: 32px;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+  font-size: 13.5px;
+}
+.nexus-shell .nexus-media-empty {
+  display: flex;
+  min-height: 342px;
+}
+.nexus-shell .nexus-media-empty .empty {
+  display: flex;
+  padding: 24px;
+}
+.nexus-shell .nexus-recent-label {
+  padding: 22px 4px 6px;
+}
+.nexus-shell .nexus-recent-empty {
+  padding: 16px 4px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.nexus-shell .nexus-route-metric {
+  font-size: 12.5px;
+  color: var(--secondary-foreground);
+}
+.nexus-shell .svc .nexus-tools-heading {
+  margin-top: 18px;
+}
+
+/* v0.2 cloud data uses the approved three-column shell. */
+.nexus-shell .nexus-cloud-table {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.nexus-shell .nexus-cloud-table .head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--background);
+}
+.nexus-shell .nexus-cloud-table .frow[data-selected="true"] {
+  background: var(--accent);
+}
+.nexus-shell .nexus-cloud-filename {
+  justify-content: flex-start;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nexus-shell .nexus-cloud-filename:disabled {
+  opacity: 1;
+}
+.nexus-shell .nexus-cloud-selection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  flex: none;
+  border-top: 1px solid var(--border);
+}
+.nexus-shell .nexus-cloud-path {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nexus-shell .nexus-cloud-alert {
+  padding: 12px 24px;
+  color: var(--destructive);
+  font-size: 13.5px;
+}
+.nexus-shell .health {
+  overflow: auto;
+  min-height: 0;
+}
+.nexus-shell .health .select {
+  width: 100%;
+  min-width: 0;
+}
+.nexus-shell .nexus-account-health .gov div {
+  gap: 8px;
+  align-items: baseline;
+}
+.nexus-shell .nexus-account-health dt {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.nexus-shell .nexus-account-health dd {
+  min-width: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.nexus-cloud-report pre {
+  max-height: 50svh;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-size: 13px;
+}
+.nexus-cloud-checks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 13.5px;
+}
+.nexus-cloud-preflight {
+  max-width: 560px;
+  border-radius: 16px;
+}
+
+.nexus-shell .nexus-cloud-login-empty {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+}
+.nexus-shell .nexus-cloud-table .empty {
+  display: flex;
+}
+.nexus-shell .nexus-cloud-login-empty .logo {
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+  border-radius: 14px;
+}
+.nexus-shell .files .nexus-cloud-login-empty p {
+  margin: 0;
+}
+.nexus-shell .nexus-account-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nexus-shell .facts .save-path {
+  display: block;
+}
+.nexus-shell .nexus-account-row {
+  gap: 12px;
+}
+.nexus-shell .nexus-account-row .t {
+  flex: 1;
+}
+.nexus-shell .nexus-account-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nexus-status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: #26845b;
+}
+.nexus-account-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.nexus-shell .nexus-login-alternative {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.nexus-shell .nexus-service-routes .route {
+  grid-template-columns: 40px minmax(0, 1fr) auto 38px;
+  border-radius: 0;
+  box-shadow: none;
+}
+.nexus-shell .nexus-service-routes .route + .route {
+  border-top: 1px solid var(--border);
+}
+.nexus-shell .nexus-service-name {
+  height: auto;
+  padding: 0;
+  font-weight: 500;
+  font-size: 13.5px;
+}
+.nexus-shell .svc > .nexus-service-routes {
+  padding: 0;
+  overflow: hidden;
+}
+.nexus-shell .nexus-node-row {
+  padding: 16px;
+}
+.nexus-shell .nexus-media-choice {
+  cursor: pointer;
+  padding: 8px 12px;
+  transition:
+    background 140ms,
+    color 140ms;
+}
+.nexus-shell .nexus-media-choice.selected {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+.nexus-shell .nexus-media-choice:has([data-slot="checkbox"]:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.nexus-shell .nexus-media-choice [data-slot="checkbox"] {
+  border-color: currentColor;
+}
+.nexus-shell .nexus-media-login-card {
+  display: block;
+}
+.nexus-shell .nexus-media-result {
+  gap: 10px;
+}
+.nexus-shell .nexus-media-result h2 {
+  font-size: 18px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.nexus-shell .nexus-media-result fieldset {
+  margin: 4px 0;
+}
+.nexus-shell .nexus-media-result .nexus-v4-controls {
+  margin: 8px 0;
+}
+.nexus-shell .nexus-cloud-capabilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.nexus-shell .nexus-cloud-capabilities h4 {
+  flex-basis: 100%;
+}
+.nexus-shell .nexus-account-health dd {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+.nexus-shell .nexus-media-directory {
+  min-width: 0;
+  max-width: min(420px, 70%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nexus-shell .nexus-recent-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.nexus-shell .nexus-recent-item > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nexus-shell .nexus-recent-item small {
+  color: var(--muted-foreground);
+}
+@media (max-width: 1100px) {
+  .nexus-shell .drives {
+    width: 168px;
+  }
+  .nexus-shell .health {
+    width: 238px;
+    padding: 18px;
+  }
+  .nexus-shell .frow {
+    grid-template-columns: 18px 28px minmax(0, 1fr) 76px;
+  }
+  .nexus-shell .frow .d {
+    display: none;
+  }
+  .nexus-shell .nexus-service-routes .route {
+    gap: 10px;
+    padding: 14px;
+  }
+}
+
+.nx-platform-logo {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  flex: none;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #00000012;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.nx-platform-logo img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+.nx-platform-logo.sm {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+}
+.nx-profile-avatar {
+  width: 38px;
+  height: 38px;
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+.nx-profile-avatar > img,
+.nx-profile-avatar > span:first-child {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 600;
+}
+.nx-profile-avatar .nx-platform-logo {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+}
+.nx-drive-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  margin-left: auto;
+  flex: none;
+  opacity: 0.5;
+}
+.nx-drive-dot.ready {
+  background: #1e9561;
+  opacity: 1;
+}
+.nx-drive-dot.error {
+  background: var(--destructive);
+  opacity: 1;
+}
+.nexus-shell .nexus-cloud-filename {
+  text-align: left;
+  justify-content: flex-start;
+  padding-left: 0;
+}
+.nexus-shell .nexus-media-choice.selected {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.nx-media-directory {
+  flex: 1;
+  min-width: 0;
+}
+.nexus-shell .nx-flush-title[data-nexus="button"] {
+  padding-inline: 0;
+}
+.nx-engine-status {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  opacity: 1;
+}
+.nx-engine-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--destructive);
+}
+.nx-engine-status.ready i {
+  background: #1e9561;
+}
+.nx-engine-status.starting i,
+.nx-engine-status.reconnecting i {
+  background: var(--muted-foreground);
+}
+.nexus-shell .nx-account-warning {
+  color: #b98129;
+  background: color-mix(in srgb, #b98129 10%, transparent);
+}
+
+.nexus-shell .nexus-cloud-filename[data-nexus="button"] {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  overflow: hidden;
+  padding-inline: 0;
+}
+
+.nexus-shell .nx-engine-status.failed,
+.nexus-shell .nx-engine-status.stopped,
+.nexus-shell .nx-engine-status.disconnected {
+  color: var(--destructive);
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+}

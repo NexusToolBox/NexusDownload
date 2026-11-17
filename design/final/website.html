@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexusDownload：网盘、BT 与视频，汇于一处的 Windows 下载工具</title>
+<meta name="description" content="NexusDownload 是免费开源的 Windows 下载工具。网盘文件、BT 磁力、视频页面和普通链接，在一个窗口里下载、续传和整理。">
+<link rel="icon" href="icons/app-icon.svg">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc/900.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+::selection{background:#33D1C6;color:#05070A}
+body{font-family:var(--font-ui);color:#15171C;background:#fff;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1}
+a{color:inherit;text-decoration:none}
+svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{width:min(1160px,100% - 48px);margin:0 auto}
+:focus-visible{outline:2px solid #33D1C6;outline-offset:3px;border-radius:6px}
+
+/* 导航 */
+.nav{position:absolute;inset:0 0 auto;z-index:10;color:#E9ECF1}
+.nav .wrap{display:flex;align-items:center;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:650;font-size:15px;letter-spacing:-.01em}
+.logo img{width:26px;height:26px}
+.links{margin:0 auto 0 0;position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.links a{font-size:13.5px;padding:7px 14px;border-radius:999px;color:#B9C0CB}
+.links a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.gh{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#B9C0CB;margin-left:auto}
+.gh:hover{color:#fff}
+
+/* 首屏 */
+.hero{position:relative;background:#05070A;color:#fff;overflow:hidden}
+.hero svg.flow{position:absolute;left:0;top:0;width:100%;height:900px;overflow:visible}
+.hero-copy{position:relative;text-align:center;padding:408px 24px 120px}
+.hero h1 span{display:inline-block}
+.hero h1{font-family:var(--font-display-serif);font-weight:900;font-size:clamp(44px,6.4vw,88px);line-height:1.1;letter-spacing:.01em;text-wrap:balance}
+.hero p{margin:22px auto 0;max-width:30em;font-size:17px;line-height:1.75;color:#A9B1BD}
+.cta{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 22px;border-radius:999px;font-size:15px;font-weight:500;transition:transform .15s,background .15s}
+.btn.light{background:#fff;color:#0B0D11}
+.btn.light:hover{transform:translateY(-1px)}
+.btn.line{color:#E4E7EC;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.btn.line:hover{background:rgba(255,255,255,.06)}
+.fine{margin-top:16px;font-size:13px;color:#6F7783}
+
+/* 通用段落 */
+section{padding:120px 0;scroll-margin-top:24px}
+.h2{font-size:clamp(30px,3.6vw,44px);font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.lede{font-size:17px;line-height:1.75;color:#5A616D;max-width:34em;margin-top:16px}
+
+/* 产品 */
+.product{background:#EEF0F3;padding-bottom:0;overflow:hidden}
+.product .head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap}
+.shot{margin-top:56px;position:relative;height:640px}
+.shot-frame{position:absolute;left:50%;top:0;width:1280px;height:800px;transform:translateX(-50%) scale(.9);transform-origin:top center;
+  border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 50px 100px -40px rgba(20,24,32,.45)}
+.shot-frame iframe{width:1280px;height:800px;border:0;display:block;pointer-events:none}
+
+/* 能力 */
+.feature{display:grid;grid-template-columns:1fr 1.1fr;gap:72px;align-items:center;padding:56px 0;border-top:1px solid #E4E7EB}
+.feature:first-of-type{border-top:0}
+.feature h3{font-size:28px;font-weight:700;letter-spacing:-.015em;line-height:1.3}
+.feature p{font-size:16px;line-height:1.8;color:#5A616D;margin-top:14px;max-width:28em}
+.frag{border-radius:20px;background:#F3F4F6;padding:20px}
+
+.drives{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.drv{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 0 0 1px #E4E7EB}
+.drv .lg{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;letter-spacing:-.04em;flex:none}
+.drv b{font-size:14px;font-weight:500;display:block}
+.drv small{font-size:12px;color:#8C939F}
+
+.timeline{background:#fff;border-radius:12px;padding:20px;box-shadow:0 0 0 1px #E4E7EB}
+.tl-name{display:flex;justify-content:space-between;font-size:14px;font-weight:500}
+.tl-name span{font-weight:400;color:#8C939F;font-size:13px}
+.tl-bar{position:relative;height:8px;border-radius:8px;background:#EEF0F3;margin:18px 0 14px}
+.tl-bar i{position:absolute;left:0;top:0;bottom:0;width:68%;border-radius:8px;background:#0C9C96}
+.tl-bar .cut{position:absolute;left:41%;top:-6px;width:2px;height:20px;background:#15171C;border-radius:2px}
+.tl-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:13px;color:#5A616D}
+.tl-steps div{border-left:2px solid #E4E7EB;padding-left:10px}
+.tl-steps b{display:block;color:#15171C;font-weight:500;margin-bottom:2px}
+.tl-steps .on{border-color:#0C9C96}
+
+.pipe{display:flex;flex-direction:column;gap:8px}
+.pipe div{display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 0 0 1px #E4E7EB;font-size:14px}
+.pipe .mk{width:22px;height:22px;border-radius:50%;background:#15171C;color:#fff;display:grid;place-items:center}
+.pipe small{margin-left:auto;color:#8C939F;font-size:12.5px}
+
+/* 隐私 */
+.trust{background:#F6F7F9}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:48px;border-top:1px solid #DDE1E6}
+.facts div{padding:28px 32px 0 0}
+.facts b{font-size:17px;font-weight:600;display:block}
+.facts p{font-size:15px;line-height:1.75;color:#5A616D;margin-top:8px}
+
+/* 下载 */
+.get{background:#05070A;color:#fff;text-align:center;position:relative;overflow:hidden}
+.get::before{content:"";position:absolute;left:50%;top:-240px;width:900px;height:480px;margin-left:-450px;
+  background:radial-gradient(closest-side,rgba(51,209,198,.22),rgba(88,102,255,.10) 55%,transparent);pointer-events:none}
+.get .appicon{width:88px;height:88px;margin:0 auto 28px;display:block;position:relative}
+.get .h2{color:#fff;position:relative}
+.get .meta{margin-top:18px;color:#8D95A1;font-size:15px;position:relative}
+.get .cta{position:relative}
+.hash{margin:28px auto 0;display:inline-flex;align-items:center;gap:10px;font-size:12.5px;color:#6F7783;position:relative}
+.hash code{font-family:var(--font-ui);color:#A9B1BD;letter-spacing:.02em}
+
+footer{background:#05070A;color:#6F7783;font-size:13px;border-top:1px solid #15181D}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:28px 0;flex-wrap:wrap}
+footer nav{display:flex;gap:22px}
+footer a:hover{color:#E4E7EC}
+
+/* 动效：只有首屏汇流一次 */
+.stream{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 1.8s cubic-bezier(.3,.6,.2,1) forwards}
+.stream.glow{filter:url(#blur)}
+.beam{stroke-dasharray:260;stroke-dashoffset:260;animation:draw 1s .9s ease-out forwards}
+.node{opacity:0;animation:ignite 1s 1.2s ease-out forwards}
+.tag{opacity:0;animation:fade .8s .2s ease-out forwards}
+.pulse{stroke-dasharray:6 1400;animation:travel 5.5s linear infinite;opacity:0;animation-delay:2.2s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes ignite{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+@keyframes fade{to{opacity:1}}
+@keyframes travel{0%{stroke-dashoffset:0;opacity:0}8%{opacity:1}100%{stroke-dashoffset:-1400;opacity:1}}
+.node{transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:reduce){.stream,.beam{animation:none;stroke-dashoffset:0}.node,.tag{animation:none;opacity:1}.pulse{display:none}}
+
+/* 移动端 */
+@media (max-width:860px){
+  .links{display:none}
+  .gh span{display:none}
+  .hero p{font-size:15.5px}
+  section{padding:84px 0}
+  .feature{grid-template-columns:1fr;gap:28px}
+  .facts{grid-template-columns:1fr}
+  .facts div{padding:22px 0 0}
+  .hero-copy{padding-top:330px;padding-bottom:88px}
+  .tl-steps{grid-template-columns:1fr;gap:10px}
+  .drives{grid-template-columns:1fr}
+  footer .wrap{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#"><img src="icons/app-icon.svg" alt="">NexusDownload</a>
+    <nav class="links" aria-label="页面导航">
+      <a href="#product">界面</a><a href="#features">功能</a><a href="#trust">隐私</a><a href="#download">下载</a>
+    </nav>
+    <a class="gh" href="#"><svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><span>源代码</span></a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="hero-title">
+  <svg class="flow" id="flow" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+    <defs>
+      <filter id="blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+      <linearGradient id="sg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="360">
+        <stop offset="0" stop-color="#5866FF" stop-opacity="0"/>
+        <stop offset=".35" stop-color="#5866FF" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#33D1C6"/>
+      </linearGradient>
+      <linearGradient id="bg" gradientUnits="userSpaceOnUse" x1="0" y1="350" x2="0" y2="432">
+        <stop offset="0" stop-color="#E9FFFC"/>
+        <stop offset="1" stop-color="#33D1C6" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="ng"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#B8FFF8"/><stop offset=".6" stop-color="#33D1C6" stop-opacity=".35"/><stop offset="1" stop-color="#33D1C6" stop-opacity="0"/></radialGradient>
+      <radialGradient id="halo"><stop offset="0" stop-color="#33D1C6" stop-opacity=".22"/><stop offset="1" stop-color="#05070A" stop-opacity="0"/></radialGradient>
+    </defs>
+    <circle cx="720" cy="350" r="420" fill="url(#halo)"/>
+    <!-- 六股来源从上方汇入一点 -->
+    <g fill="none" stroke-linecap="round">
+      <g stroke="url(#sg)" stroke-width="7" opacity=".55" class="glowset">
+        <path class="stream glow" d="M-260 -20 C 110 170, 640 210, 720 350"/>
+        <path class="stream glow" d="M370 -20 C 370 150, 680 220, 720 350" style="animation-delay:.12s"/>
+        <path class="stream glow" d="M610 -20 C 610 140, 710 230, 720 350" style="animation-delay:.24s"/>
+        <path class="stream glow" d="M830 -20 C 830 140, 730 230, 720 350" style="animation-delay:.18s"/>
+        <path class="stream glow" d="M1070 -20 C 1070 150, 760 220, 720 350" style="animation-delay:.06s"/>
+        <path class="stream glow" d="M1700 -20 C 1330 170, 800 210, 720 350" style="animation-delay:.3s"/>
+      </g>
+      <g stroke="url(#sg)" stroke-width="1.6">
+        <path class="stream" d="M-260 -20 C 110 170, 640 210, 720 350"/>
+        <path class="stream" d="M370 -20 C 370 150, 680 220, 720 350" style="animation-delay:.12s"/>
+        <path class="stream" d="M610 -20 C 610 140, 710 230, 720 350" style="animation-delay:.24s"/>
+        <path class="stream" d="M830 -20 C 830 140, 730 230, 720 350" style="animation-delay:.18s"/>
+        <path class="stream" d="M1070 -20 C 1070 150, 760 220, 720 350" style="animation-delay:.06s"/>
+        <path class="stream" d="M1700 -20 C 1330 170, 800 210, 720 350" style="animation-delay:.3s"/>
+      </g>
+      <g stroke="#E9FFFC" stroke-width="2.2">
+        <path class="pulse" d="M-260 -20 C 110 170, 640 210, 720 350"/>
+        <path class="pulse" d="M610 -20 C 610 140, 710 230, 720 350" style="animation-delay:3.4s"/>
+        <path class="pulse" d="M1070 -20 C 1070 150, 760 220, 720 350" style="animation-delay:4.6s"/>
+        <path class="pulse" d="M1700 -20 C 1330 170, 800 210, 720 350" style="animation-delay:2.9s"/>
+      </g>
+      <path class="beam" d="M720 350 L720 430" stroke="url(#bg)" stroke-width="2.4"/>
+    </g>
+    <circle class="node" cx="720" cy="350" r="34" fill="url(#ng)"/>
+    <!-- 来源标签：装饰本身就是信息 -->
+    <g class="tag" font-size="13" fill="#7D8694" text-anchor="middle" font-family="Geist Variable, Noto Sans SC, sans-serif">
+      <text x="256" y="147" text-anchor="start">百度网盘</text>
+      <text x="473" y="120" text-anchor="start">夸克网盘</text>
+      <text x="642" y="96" text-anchor="start">磁力链接</text>
+      <text x="798" y="96" text-anchor="end">哔哩哔哩</text>
+      <text x="967" y="120" text-anchor="end">普通链接</text>
+      <text x="1184" y="147" text-anchor="end">115 网盘</text>
+    </g>
+  </svg>
+
+  <div class="hero-copy">
+    <h1 id="hero-title"><span>所有下载，</span><span>汇于一处。</span></h1>
+    <p>网盘文件、BT 磁力、视频页面和普通链接，在同一个窗口里下载、续传和整理。为 Windows 打造，免费开源。</p>
+    <div class="cta">
+      <a class="btn light" href="#download"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>下载 Windows 版</a>
+      <a class="btn line" href="#product">看看界面</a>
+    </div>
+    <div class="fine">Windows 10 / 11，64 位，解压即用</div>
+  </div>
+</section>
+
+<section class="product" id="product">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <h2 class="h2">打开就是任务列表。</h2>
+        <p class="lede">每个文件从哪来、用哪个账号、走哪条路线、处理到哪一步，选中就能看到。只有正在下载的东西才会亮起青色。</p>
+      </div>
+    </div>
+  </div>
+  <div class="shot"><div class="shot-frame"><iframe src="client.html?embed=1" title="NexusDownload 界面示意" tabindex="-1"></iframe></div></div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <article class="feature">
+      <div>
+        <h3>网盘里的文件，直接下到本地。</h3>
+        <p>登录自己的账号就能浏览和下载；别人发来的分享链接，粘贴进来自动识别提取码。能不转存就不转存，不占你的网盘空间。</p>
+      </div>
+      <div class="frag drives" aria-label="支持的网盘">
+        <div class="drv"><span class="lg" style="background:#2F6BFF">百</span><div><b>百度网盘</b><small>自己的文件、分享</small></div></div>
+        <div class="drv"><span class="lg" style="background:#3C5BFF">夸</span><div><b>夸克网盘</b><small>可免转存</small></div></div>
+        <div class="drv"><span class="lg" style="background:#F07C1A">U</span><div><b>UC 网盘</b><small>分享可免登录</small></div></div>
+        <div class="drv"><span class="lg" style="background:#5C4EE5">阿</span><div><b>阿里云盘</b><small>自己的文件、分享</small></div></div>
+        <div class="drv"><span class="lg" style="background:#2B8CFF;font-size:10px">115</span><div><b>115 网盘</b><small>支持离线下载</small></div></div>
+        <div class="drv"><span class="lg" style="background:#1E9E8E;font-size:10px">123</span><div><b>123 云盘</b><small>自己的文件、分享</small></div></div>
+      </div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <h3>链接过期了，它自己接上。</h3>
+        <p>网盘直链通常几十分钟就失效。NexusDownload 会用原来的账号重新取链，确认还是同一个文件，再从断开的地方继续，已下载的部分不会重来。</p>
+      </div>
+      <div class="frag">
+        <div class="timeline">
+          <div class="tl-name">设计素材合集.part2.rar<span class="num">4.00 GB</span></div>
+          <div class="tl-bar"><i></i><span class="cut" title="直链过期"></span></div>
+          <div class="tl-steps">
+            <div><b>41% 时直链过期</b>暂停，保留已下载部分</div>
+            <div><b>重新取链</b>核对文件 ID 与大小</div>
+            <div class="on"><b>从 41% 继续</b>不重下已完成的块</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <h3>下完就整理好。</h3>
+        <p>按你定的规则放进对应文件夹；压缩包自动解压，带密码的会先试分享页里写的密码；最后交给 Windows 安全中心扫描一遍再通知你。</p>
+      </div>
+      <div class="frag pipe">
+        <div><span class="mk"><svg class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>核对文件大小<small>4.00 GB，一致</small></div>
+        <div><span class="mk"><svg class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>解压分卷压缩包<small>用分享页中的密码</small></div>
+        <div><span class="mk"><svg class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>安全扫描<small>未发现威胁</small></div>
+        <div><span class="mk"><svg class="i" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2.6"><path d="M5 12l4 4 10-10"/></svg></span>放进 D:\下载\素材<small>已通知</small></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="trust" id="trust">
+  <div class="wrap">
+    <h2 class="h2">账号只留在你的电脑上。</h2>
+    <p class="lede">NexusDownload 不需要注册，也没有自己的服务器。网盘登录信息加密保存在本机，下载默认由这台电脑直接完成。</p>
+    <div class="facts">
+      <div><b>默认本机直连</b><p>取链和下载都在你的电脑上完成，不经过任何中转。</p></div>
+      <div><b>第三方服务由你决定</b><p>离线下载、NAS、解析服务都需要你手动开启，并且只拿到你授权的内容。</p></div>
+      <div><b>日志里没有密码</b><p>导出的诊断信息会去掉 Cookie、令牌和提取码，可以放心发给别人排查问题。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="get" id="download">
+  <div class="wrap">
+    <img class="appicon" src="icons/app-icon.svg" alt="">
+    <h2 class="h2">下载 NexusDownload</h2>
+    <p class="meta num">v0.1.0，2026 年 11 月发布，Windows 10 / 11 64 位</p>
+    <div class="cta">
+      <a class="btn light" href="#"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>下载便携版 ZIP</a>
+      <a class="btn line" href="#">更新记录</a>
+    </div>
+    <div class="hash">SHA-256 <code>550b787c…c84888e</code><span>可在更新记录中核对完整值</span></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>NexusDownload 以 AGPL-3.0 开源，基于 Motrix（MIT）二次开发。</span>
+    <nav><a href="#">源代码</a><a href="#">开源许可</a><a href="#">致谢</a><a href="#">反馈问题</a></nav>
+  </div>
+</footer>
+<script>
+// 窄屏改为裁切铺满，宽屏保持比例并让光线延伸到两侧
+const f=document.getElementById('flow');
+const fit=()=>f.setAttribute('preserveAspectRatio',innerWidth<860?'xMidYMin slice':'xMidYMin meet');
+fit();addEventListener('resize',fit);
+// 产品截图按容器宽度等比缩放
+const frame=document.querySelector('.shot-frame'),shot=document.querySelector('.shot');
+const scaleShot=()=>{const k=Math.min(.9,(innerWidth-32)/1280);frame.style.transform=`translateX(-50%) scale(${k})`;shot.style.height=Math.round(800*k*(innerWidth<860?1:.8))+'px'};
+scaleShot();addEventListener('resize',scaleShot);
+</script>
+</body>
+</html>

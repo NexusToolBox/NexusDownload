@@ -161,3 +161,26 @@ it('shows completion only on request and retains the installed release notes', a
     within(screen.getByRole('dialog')).getByRole('button', { name: 'OK' })
   ).toBeVisible()
 })
+it('checks currently active downloads before confirming a restart', async () => {
+  vi.mocked(transport.invoke).mockResolvedValue({
+    ...available,
+    phase: 'downloaded',
+    activeTasks: [],
+  })
+  render(<NexusUpdateDialog />)
+  await waitFor(() => expect(transport.on).toHaveBeenCalled())
+  act(() => openUpdateDialog())
+  const button = await screen.findByRole('button', {
+    name: 'Restart and update',
+  })
+  vi.mocked(transport.invoke).mockResolvedValue({
+    ...available,
+    phase: 'downloaded',
+    activeTasks: ['one', 'two'],
+  })
+  await userEvent.click(button)
+  expect(screen.getByText('2 downloads will be paused')).toBeVisible()
+  expect(transport.invoke).not.toHaveBeenCalledWith(Commands.InstallUpdate)
+  await userEvent.click(button)
+  expect(transport.invoke).toHaveBeenCalledWith(Commands.InstallUpdate)
+})

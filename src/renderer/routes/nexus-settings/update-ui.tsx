@@ -126,7 +126,6 @@ export function NexusUpdateDialog() {
   const downloading =
     state.phase === 'downloading' || state.phase === 'installing'
   const received = (state.progress?.transferred ?? 0) > 0
-  const count = state.activeTasks?.length ?? 0
   const version = completed
     ? (state.completedVersion ?? state.restoredVersion)
     : state.availableVersion
@@ -186,7 +185,7 @@ export function NexusUpdateDialog() {
         )}
         {confirm !== null && ready && !completed && (
           <p className="nx-update-confirm">
-            {t('nexus.v13.update.pauseTasks', { count })}
+            {t('nexus.v13.update.pauseTasks', { count: confirm })}
           </p>
         )}
         <DialogFooter>
@@ -234,8 +233,12 @@ export function NexusUpdateDialog() {
               </Button>
               <Button
                 variant="primary"
-                onClick={() => {
+                onClick={async () => {
                   if (ready) {
+                    const latest = (await transport.invoke(
+                      Queries.GetUpdateState
+                    )) as typeof state
+                    const count = latest.activeTasks?.length ?? 0
                     if (count && confirm !== count) setConfirm(count)
                     else void update.install()
                   } else void update.download()

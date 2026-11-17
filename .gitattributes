@@ -1,3 +1,8 @@
+# Keep Windows checkouts consistent with the formatter and source archives.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
 # Reviewed license texts are hash-pinned byte-for-byte in
 # scripts/third-party-notices.config.json (verified by
 # scripts/generate-third-party-notices.mjs). Disable line-ending conversion so

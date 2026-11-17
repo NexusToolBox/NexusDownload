@@ -1090,7 +1090,12 @@ describe('PluginHost.deactivate — lifecycle wiring', () => {
   })
 
   afterEach(() => {
-    rmSync(root, { recursive: true, force: true })
+    rmSync(root, {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 200,
+    })
   })
 
   it('deactivate completes cleanly when worker responds ok', async () => {

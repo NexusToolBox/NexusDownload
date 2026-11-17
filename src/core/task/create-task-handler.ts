@@ -703,7 +703,6 @@ async function handleCreateTaskUnderAdmission(
         {
           method: 'createDownload',
           uriCount: params.uris.length,
-          uris: params.uris,
           gid: reservedGid,
           saveDir: params.saveDir,
           filename: params.filename,

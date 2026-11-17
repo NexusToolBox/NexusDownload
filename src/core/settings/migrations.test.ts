@@ -94,7 +94,7 @@ describe('migrate', () => {
 
 describe('migration v3 → v4', () => {
   it('targets version 12', () => {
-    expect(CURRENT_SETTINGS_VERSION).toBe(13)
+    expect(CURRENT_SETTINGS_VERSION).toBe(14)
   })
 
   it('adds dhtListenPort defaulting to listenPort value', () => {
@@ -205,7 +205,7 @@ describe('migration v5 → v6 (media namespace)', () => {
 
 describe('migration v6 → v7 (speedLimit namespace)', () => {
   it('targets version 12', () => {
-    expect(CURRENT_SETTINGS_VERSION).toBe(13)
+    expect(CURRENT_SETTINGS_VERSION).toBe(14)
   })
 
   it('v6→v7: maps a configured limit to base, turtle off', () => {
@@ -384,6 +384,7 @@ describe('migration v10 → v11 (magnet metadata timeout)', () => {
 
     expect(migrate(input)).toEqual({
       ...input,
+      proxy: { mode: 'system', domestic: false },
       version: CURRENT_SETTINGS_VERSION,
       engine: { ...input.engine, magnetResolveTimeout: 600 },
     })
@@ -480,7 +481,8 @@ describe('migration v12 → v13 (anime direct source and blacklist)', () => {
     const input = { version: 12, tracker }
     const result = migrate(input)
     expect(result).toEqual({
-      version: 13,
+      proxy: { mode: 'system', domestic: false },
+      version: CURRENT_SETTINGS_VERSION,
       tracker: {
         ...tracker,
         sources: [...tracker.sources, ANIME_TRACKER_DIRECT_SOURCE],

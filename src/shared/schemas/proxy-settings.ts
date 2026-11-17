@@ -33,6 +33,8 @@ function migrateProxyScopes(input: unknown): unknown {
 }
 
 export const proxySettingsSchema = z.object({
+  mode: z.enum(['system', 'none', 'manual']).catch('system'),
+  domestic: z.boolean().catch(false),
   enabled: z.boolean().catch(false),
   protocol: z.enum(['http', 'https', 'socks5']).catch('http'),
   host: withoutControlCharacters(253).catch(''),
@@ -74,7 +76,11 @@ export const proxySettingsInputSchema = settingsInputObject(proxySettingsSchema)
     scopes: settingsInputObject(proxyScopesSchema),
   })
   .superRefine((value, ctx) => {
-    if (value.enabled && !isProxyHost(value.host)) {
+    if (
+      (value.mode === 'manual' ||
+        (value.mode === undefined && value.enabled)) &&
+      !isProxyHost(value.host)
+    ) {
       ctx.addIssue({
         code: 'custom',
         path: ['host'],

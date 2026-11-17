@@ -15,7 +15,8 @@ export async function mediaSession(
   platform: MediaPlatform,
   url?: string,
   readPage = false,
-  cookie = ''
+  cookie = '',
+  proxy: Electron.ProxyConfig = { mode: 'direct' }
 ): Promise<string> {
   const address =
     url ??
@@ -42,6 +43,7 @@ export async function mediaSession(
   const isolated = session.fromPartition(`nexus-media-${randomUUID()}`, {
     cache: false,
   })
+  await isolated.setProxy(proxy)
   const win = new BrowserWindow({
     show: !readPage,
     width: 1000,

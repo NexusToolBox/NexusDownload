@@ -110,6 +110,7 @@ import { PluginStateStore } from '@core/plugin/state/plugin-state-store'
 import { BuiltinUpdater } from '@core/plugin/update/builtin-updater'
 import { AppliedDownloadProxyPolicy } from '@core/proxy/applied-download-proxy-policy'
 import { ProxyBridgeManager } from '@core/proxy/proxy-bridge-manager'
+import { isDomesticPlatform } from '@core/proxy/request-proxy'
 import type { DurableFinalizeRuntime } from '@core/session/durable-finalize-runtime'
 import { MotrixDatabase } from '@core/session/motrix-database'
 import { SessionManager } from '@core/session/session-manager'
@@ -311,10 +312,10 @@ import {
   makeElectronFfmpegDetect,
   resolveElectronFfmpegEnvPath,
 } from './plugin/ffmpeg-detect-electron'
-import { fetchFfmpegAsset } from './plugin/ffmpeg-fetch-electron'
 import { resolvePluginHostLanguage } from './plugin/host-language'
 import { resolvePluginsDir } from './plugin/plugins-dir'
 import { resolveVerifiedFfmpeg } from './plugin/verified-ffmpeg-electron'
+import { createRequestRouting } from './proxy/request-routing'
 import { createMainProxyApplier } from './proxy/wiring'
 import { QuitController } from './quit/quit-controller'
 import {
@@ -632,6 +633,7 @@ let rpcClient: Aria2RpcClient
 let supervisor: EngineSupervisor
 let pluginHttpClient: PluginHttpClient | undefined
 let proxyBridge: ProxyBridgeManager
+let requestRouting: ReturnType<typeof createRequestRouting> | undefined
 let speedLimitController: SpeedLimitController
 let sessionManager: SessionManager
 let completedEngineTaskCleanup: CompletedEngineTaskCleanup
@@ -797,6 +799,7 @@ function performCleanup(): Promise<void> {
       await adapter?.dispose()
     })
     await safely('proxy-bridge', () => proxyBridge?.close())
+    await safely('request-routing', () => requestRouting?.close())
     await safely('main-process-work', () => acceptedWorkDrain)
     await safely('task-inspector-activity', () =>
       taskInspectorActivityRuntime?.dispose()
@@ -2229,6 +2232,16 @@ async function initializeMainProcess(): Promise<void> {
   )
   const adapter = aria2Adapter
   proxyBridge = new ProxyBridgeManager()
+  const routing = createRequestRouting(() => settingsManager.getProxy())
+  requestRouting = routing
+  const routedFetch = routing.fetch
+  adapter.configureRequestProxy(async (url, headers) => {
+    const referer = new Headers(headers).get('referer')
+    return routing.router.resolve(
+      url,
+      isDomesticPlatform(url) || Boolean(referer && isDomesticPlatform(referer))
+    )
+  })
   supervisor = new EngineSupervisor(
     eventBus,
     settingsManager,
@@ -2698,6 +2711,7 @@ async function initializeMainProcess(): Promise<void> {
       directory: updateDirectory(portableProfile),
       engine: adapter,
       events: eventBus,
+      fetcher: routedFetch,
       latestUrl: `${NEXUS_RELEASE_CONFIG.apiBase}/repos/${NEXUS_RELEASE_CONFIG.repository}/releases/latest`,
       prefix: () => settingsManager.getApp().githubDownloadPrefix,
       activeTasks: () =>
@@ -2822,7 +2836,10 @@ async function initializeMainProcess(): Promise<void> {
           publishTaskUpdateNow,
         }),
     },
-    (settings) => proxyBridge.resolveForFetch(settings)
+    () =>
+      routing.router.resolve(
+        'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt'
+      )
   )
   trackerManager.configureTaskTracking(
     adapter,
@@ -2833,7 +2850,8 @@ async function initializeMainProcess(): Promise<void> {
   const proxyApplier = createMainProxyApplier(
     supervisor,
     trackerManager,
-    proxyBridge
+    proxyBridge,
+    () => settingsManager.getProxy()
   )
   const initialProxySettings = settingsManager.getProxy()
   const proxyReady = mainProcessWork
@@ -3280,6 +3298,7 @@ async function initializeMainProcess(): Promise<void> {
     enabled: () => nexusWorkspace.getPreferences().diagnosticsEnabled,
   })
   const nexusWorkspace = new NexusWorkspace({
+    fetch: routedFetch,
     tasks: () => taskManager.getAll(),
     file: path.join(platform.userDataDir, 'nexus-workspace.json'),
     defaultDirectory: () => settingsManager.getApp().defaultSaveDir,
@@ -3364,7 +3383,8 @@ async function initializeMainProcess(): Promise<void> {
   }
   const productHls = new HlsDashPipeline({
     coordinator: productMedia,
-    fetchManifest,
+    fetchManifest: (url, options) =>
+      fetchManifest(url, { ...options, fetchImpl: routedFetch }),
     assertFfmpegAvailable: assertProductFfmpeg,
   })
   const productMux = new MuxPipeline({
@@ -3381,10 +3401,11 @@ async function initializeMainProcess(): Promise<void> {
     path.join(platform.userDataDir, 'nexus-tools'),
     mediaBroker,
     () => eventBus.emit(Events.NexusWorkspaceChanged),
-    fetchFfmpegAsset,
+    routedFetch,
     () => settingsManager.getApp().githubDownloadPrefix
   )
   const nexusExternal = new ExternalMedia({
+    proxy: (url) => routing.router.resolve(url),
     tools: nexusTools,
     broker: mediaBroker,
     changed: () => eventBus.emit(Events.NexusWorkspaceChanged),
@@ -3419,7 +3440,14 @@ async function initializeMainProcess(): Promise<void> {
       await nexusPackageManager?.create(name, ids, directory)
     },
     broker: mediaBroker,
-    login: (site, url) => mediaSession(site, url),
+    login: (site, url) =>
+      mediaSession(
+        site,
+        url,
+        false,
+        '',
+        routing.sessionConfig(site !== 'external' && site !== 'pixiv')
+      ),
     io: {
       anonymousCookie: (() => {
         const anonymous = new DouyinAnonymous()
@@ -3429,7 +3457,7 @@ async function initializeMainProcess(): Promise<void> {
         const platform = detectMedia(url)
         let current = url
         for (let hop = 0; hop < 6; hop++) {
-          const response = await fetch(current, {
+          const response = await routedFetch(current, {
             method: 'GET',
             headers,
             redirect: 'manual',
@@ -3447,7 +3475,7 @@ async function initializeMainProcess(): Promise<void> {
       request: async (url, headers, body) => {
         let current = url
         for (let hop = 0; hop < 6; hop++) {
-          const response = await fetch(current, {
+          const response = await routedFetch(current, {
             headers,
             method: body === undefined ? 'GET' : 'POST',
             body,
@@ -3488,11 +3516,19 @@ async function initializeMainProcess(): Promise<void> {
         throw new Error('media.blocked')
       },
       page: async (url, site, cookie) =>
-        JSON.parse(await mediaSession(site, url, true, cookie)),
-      probeMedia: probeDouyinMedia,
+        JSON.parse(
+          await mediaSession(
+            site,
+            url,
+            true,
+            cookie,
+            routing.sessionConfig(true)
+          )
+        ),
+      probeMedia: (url, headers) => probeDouyinMedia(url, headers, routedFetch),
       probe: async (url, headers) => {
         try {
-          const r = await fetch(url, {
+          const r = await routedFetch(url, {
             method: 'HEAD',
             headers,
             redirect: 'error',
@@ -3534,6 +3570,7 @@ async function initializeMainProcess(): Promise<void> {
     },
   })
   const nexusCloud = new CloudRuntime({
+    fetch: routedFetch,
     duplicateWarning: () => nexusWorkspace.getPreferences().duplicateWarning,
     profiles: mediaStorageReady ? nexusProfiles : undefined,
     enqueue: (ids) => nexusQueues.intent(ids, true),
@@ -3566,21 +3603,27 @@ async function initializeMainProcess(): Promise<void> {
       publishTaskUpdate()
     },
     login: (platform, validate) =>
-      loginCloud(platform, validate, (step, reason) => {
-        void nexusDiagnostics.record('cloud', 'login', {
-          login: {
-            platform,
-            step,
-            reason: reason as 'page' | 'cookie' | 'token' | 'validate',
-          },
-        })
-      }),
+      loginCloud(
+        platform,
+        validate,
+        (step, reason) => {
+          void nexusDiagnostics.record('cloud', 'login', {
+            login: {
+              platform,
+              step,
+              reason: reason as 'page' | 'cookie' | 'token' | 'validate',
+            },
+          })
+        },
+        routing.sessionConfig(true)
+      ),
     diagnosticsEnabled: () =>
       nexusWorkspace.getPreferences().diagnosticsEnabled,
     diagnostic: (request) => {
       void nexusDiagnostics.record('cloud', 'request', { request })
     },
-    authorize: authorizeAliyun,
+    authorize: (url, redirect, state) =>
+      authorizeAliyun(url, redirect, state, routing.sessionConfig(true)),
     mutate: (ids, operation) =>
       activeTaskInspectorActivityRuntime.runTaskMutation(ids, operation),
   })

@@ -6,7 +6,7 @@ import {
 } from '@shared/schemas/tracker-settings'
 import type { TrackerSource } from '@shared/types/tracker'
 
-export const CURRENT_SETTINGS_VERSION = 13
+export const CURRENT_SETTINGS_VERSION = 14
 
 interface Migration {
   version: number
@@ -338,6 +338,20 @@ const migrations: Migration[] = [
   { version: 11, migrate: migrateV10ToV11 },
   { version: 12, migrate: migrateV11ToV12 },
   { version: 13, migrate: migrateV12ToV13 },
+  {
+    version: 14,
+    migrate: (data) => {
+      const proxy = (data.proxy ?? {}) as Record<string, unknown>
+      return {
+        ...data,
+        proxy: {
+          ...proxy,
+          mode: proxy.mode ?? (proxy.enabled ? 'manual' : 'system'),
+          domestic: proxy.domestic ?? false,
+        },
+      }
+    },
+  },
 ]
 
 export function migrate(

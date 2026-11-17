@@ -148,9 +148,27 @@ import {
 } from './translate'
 
 export class Aria2Adapter implements EngineAdapter {
+  private requestProxy?: (
+    url: string,
+    headers?: Record<string, string>
+  ) => Promise<string>
+  configureRequestProxy(
+    resolve: (url: string, headers?: Record<string, string>) => Promise<string>
+  ): void {
+    this.requestProxy = resolve
+  }
   private btTrackerPolicy?: BtTrackerPolicy
   configureBtTrackerPolicy(policy: BtTrackerPolicy): void {
     this.btTrackerPolicy = policy
+  }
+  private async applyTrackerProxy(
+    options: Record<string, string | string[]>
+  ): Promise<void> {
+    if (!this.requestProxy) return
+    const raw = options['bt-tracker']
+    const trackers = (Array.isArray(raw) ? raw : raw?.split(',')) ?? []
+    const target = trackers.find((url) => /^https?:\/\//i.test(url))
+    options['all-proxy'] = target ? await this.requestProxy(target) : ''
   }
   async setTaskBtTracker(
     engineTaskId: string,
@@ -275,6 +293,8 @@ export class Aria2Adapter implements EngineAdapter {
   }
 
   getDirectResourceMetadataProfile(): DirectResourceMetadataProfile | null {
+    // A global snapshot cannot describe a URL-dependent PAC route.
+    if (this.requestProxy) return null
     return this.directResourceMetadataProfile
   }
 
@@ -562,7 +582,10 @@ export class Aria2Adapter implements EngineAdapter {
         options[k] = v
       }
     }
-    const taskProxy = params.proxy?.trim()
+    const taskProxy =
+      params.proxy?.trim() ??
+      (await this.requestProxy?.(params.uris[0], params.headers))
+    if (taskProxy === '') options['all-proxy'] = ''
     if (taskProxy) {
       const normalizedProxy = normalizeAria2TaskProxyUrl(taskProxy)
       if (!normalizedProxy) {
@@ -640,6 +663,7 @@ export class Aria2Adapter implements EngineAdapter {
     if (params.uris.some((uri) => /^magnet:/i.test(uri))) {
       options['max-file-not-found'] = '0'
       await this.applyBtTrackerPolicy(options, requestedGid)
+      await this.applyTrackerProxy(options)
     }
 
     if (params.retainRequestContext) {
@@ -1090,6 +1114,7 @@ export class Aria2Adapter implements EngineAdapter {
     // Override both user configuration and stale task options so a failed
     // Web Seed cannot abort peers or other Web Seeds before their first byte.
     opts['max-file-not-found'] = '0'
+    await this.applyTrackerProxy(opts)
     if (params.outputRoot) await mkdir(params.saveDir, { recursive: true })
     const b64 = (legacyMetadata ?? Buffer.from(params.metadata)).toString(
       'base64'

@@ -186,6 +186,7 @@ export class CloudRuntime {
   readonly governor: AccountGovernor
   constructor(
     private options: {
+      fetch?: typeof fetch
       enqueue?(ids: string[]): Promise<void>
       profiles?: import('../speed-profiles').SpeedProfiles
       duplicateWarning?: () => boolean
@@ -225,6 +226,7 @@ export class CloudRuntime {
       ) => CloudAdapter
     }
   ) {
+    this.relay = new DownloadRelay(60000, this.options.fetch)
     this.governor = new AccountGovernor({
       persist: async (id, state) => {
         const account = this.state.accounts.find((a) => a.id === id)
@@ -393,6 +395,7 @@ export class CloudRuntime {
     const existing = this.adapters.get(key)
     if (existing) return existing
     const http = new CloudHttp({
+      fetch: this.options.fetch,
       platform,
       diagnostic: (record) => this.recordRequest(record),
       cookie: () => (accountId ? this.options.broker.get(accountId) : ''),
@@ -667,6 +670,7 @@ export class CloudRuntime {
           await this.options.broker.update('pan123-device', () => device)
         }
         const http = new CloudHttp({
+          fetch: this.options.fetch,
           platform,
           diagnostic: (record) => this.recordRequest(record),
           cookie: () => '',
@@ -698,6 +702,7 @@ export class CloudRuntime {
             state
           )
           const http = new CloudHttp({
+            fetch: this.options.fetch,
             platform,
             diagnostic: (record) => this.recordRequest(record),
             cookie: () => '',
@@ -712,6 +717,7 @@ export class CloudRuntime {
         cookie = await this.options.login(platform, async (credential) => {
           let candidate = credential
           const http = new CloudHttp({
+            fetch: this.options.fetch,
             platform,
             cookie: () => candidate,
             merge: async (cookies) => {
@@ -1807,7 +1813,7 @@ export class CloudRuntime {
             )
         )
         try {
-          const response = await fetch(uri, {
+          const response = await (this.options.fetch ?? fetch)(uri, {
             headers: { Range: 'bytes=0-0' },
             signal: AbortSignal.timeout(30000),
           })

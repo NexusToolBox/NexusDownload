@@ -15,12 +15,23 @@ export type { SystemProxyResult } from '@shared/types/system-proxy'
 export function parseElectronProxyChain(s: string): SystemProxyResult | null {
   if (!s) return null
   for (const entry of s.split(';').map((e) => e.trim())) {
-    if (!entry || entry === 'DIRECT') continue
+    if (!entry) continue
+    if (entry === 'DIRECT') return null
     const [type, hostPort] = entry.split(/\s+/)
     if (!hostPort) continue
-    const [host, portStr] = hostPort.split(':')
+    const separator = hostPort.lastIndexOf(':')
+    const host = hostPort.slice(0, separator).replace(/^\[|\]$/g, '')
+    const portStr = hostPort.slice(separator + 1)
     const port = Number.parseInt(portStr ?? '', 10)
-    if (!host || !Number.isFinite(port) || port <= 0) continue
+    if (
+      separator < 1 ||
+      !host ||
+      !/^\d+$/.test(portStr) ||
+      !Number.isFinite(port) ||
+      port <= 0 ||
+      port > 65535
+    )
+      continue
 
     const protocol =
       type === 'PROXY' || type === 'HTTP'

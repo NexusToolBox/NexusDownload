@@ -42,6 +42,7 @@ export class ExternalMedia {
   constructor(
     private deps: {
       tools: ToolManager
+      proxy?(url: string): Promise<string>
       broker: CredentialBroker
       changed(): void
       complete?(job: ExternalJob): Promise<void>
@@ -206,6 +207,7 @@ export class ExternalMedia {
                 '--',
                 address,
               ]
+          args.unshift('--proxy', (await this.deps.proxy?.(address)) ?? '')
           return this.process(tool, args)
         })
         const parsed: unknown = JSON.parse(raw)
@@ -361,6 +363,7 @@ export class ExternalMedia {
                   '--',
                   job.url,
                 ]
+            args.unshift('--proxy', (await this.deps.proxy?.(job.url)) ?? '')
             return this.process(
               binary,
               args,

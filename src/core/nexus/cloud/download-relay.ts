@@ -27,7 +27,10 @@ export class DownloadRelay {
     )
   })
   private origin = ''
-  constructor(private readonly idleTimeoutMs = 60000) {}
+  constructor(
+    private readonly idleTimeoutMs = 60000,
+    private readonly fetcher: typeof fetch = fetch
+  ) {}
   async start() {
     this.server.listen(0, '127.0.0.1')
     await once(this.server, 'listening')
@@ -86,7 +89,7 @@ export class DownloadRelay {
     }
     try {
       const operation = () =>
-        fetch(lease.resource.url, {
+        this.fetcher(lease.resource.url, {
           method,
           headers: {
             ...lease.resource.headers,

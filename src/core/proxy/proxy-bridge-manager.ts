@@ -72,6 +72,8 @@ export class ProxyBridgeManager implements ProxyBridgeResolver {
   async resolveForDownload(
     settings: ProxySettings
   ): Promise<Aria2ProxyOptions | null> {
+    // Nexus routes each task by its URL; keep the engine's global route direct.
+    if (settings.mode) return null
     return this.runExclusive(async () => {
       await this.reconcileLocked(settings)
       if (settings.protocol !== 'socks5') {

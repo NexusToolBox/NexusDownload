@@ -92,9 +92,12 @@ function scopeDirty(
   n: ProxySettings,
   scope: keyof ProxySettings['scopes']
 ): boolean {
+  if (o.mode !== n.mode || o.domestic !== n.domestic) return true
   if (o.scopes[scope] !== n.scopes[scope]) return true
   if (!n.scopes[scope] && !o.scopes[scope]) return false
   return (
+    o.mode !== n.mode ||
+    o.domestic !== n.domestic ||
     o.enabled !== n.enabled ||
     o.protocol !== n.protocol ||
     o.host !== n.host ||

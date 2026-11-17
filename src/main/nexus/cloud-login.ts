@@ -49,13 +49,15 @@ function fitLoginPage(win: BrowserWindow) {
 export async function loginCloud(
   platform: CloudPlatform,
   validate: (credential: string) => Promise<string>,
-  diagnostic?: (step: LoginStep, reason: string) => void
+  diagnostic?: (step: LoginStep, reason: string) => void,
+  proxy: Electron.ProxyConfig = { mode: 'direct' }
 ): Promise<string> {
   if (platform === 'aliyun') throw new Error('cloud.login')
   const isolated = session.fromPartition(
     `nexus-login-${platform}-${randomUUID()}`,
     { cache: false }
   )
+  await isolated.setProxy(proxy)
   const win = new BrowserWindow({
     width: 1000,
     height: 740,
@@ -264,12 +266,14 @@ export async function loginCloud(
 export async function authorizeAliyun(
   address: string,
   redirectUri: string,
-  state: string
+  state: string,
+  proxy: Electron.ProxyConfig = { mode: 'direct' }
 ): Promise<string> {
   const callback = new URL(redirectUri)
   const isolated = session.fromPartition(`nexus-oauth-${randomUUID()}`, {
     cache: false,
   })
+  await isolated.setProxy(proxy)
   const win = new BrowserWindow({
     width: 1000,
     height: 740,

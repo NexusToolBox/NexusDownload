@@ -2,19 +2,24 @@ import type { EngineSupervisor } from '@core/engine/engine-supervisor'
 import { createProxyApplier } from '@core/proxy/applier'
 import type { ProxyBridgeManager } from '@core/proxy/proxy-bridge-manager'
 import type { TrackerManager } from '@core/tracker/tracker-manager'
+import type { ProxySettings } from '@shared/types/settings'
 import { session } from 'electron'
 
 export function createMainProxyApplier(
   engineSupervisor: EngineSupervisor,
   trackerManager: TrackerManager,
-  proxyBridge: ProxyBridgeManager
+  proxyBridge: ProxyBridgeManager,
+  settings?: () => ProxySettings
 ) {
   return createProxyApplier({
     engineSupervisor,
     trackerManager,
     proxyBridge,
     applyUpdateAppProxy: async (cfg) => {
-      if (cfg) {
+      const mode = settings?.().mode
+      if (mode === 'system') {
+        await session.defaultSession.setProxy({ mode: 'system' })
+      } else if (cfg && mode !== 'none') {
         await session.defaultSession.setProxy(cfg)
       } else {
         await session.defaultSession.setProxy({ mode: 'direct' })

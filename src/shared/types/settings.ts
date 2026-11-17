@@ -308,6 +308,8 @@ export interface MediaSettings {
 }
 
 export interface ProxySettings {
+  mode?: 'system' | 'none' | 'manual'
+  domestic?: boolean
   enabled: boolean
   protocol: 'http' | 'https' | 'socks5'
   host: string

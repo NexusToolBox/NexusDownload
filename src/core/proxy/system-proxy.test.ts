@@ -30,12 +30,8 @@ describe('parseElectronProxyChain', () => {
     })
   })
 
-  it('takes the first non-DIRECT entry from a chain', () => {
-    expect(parseElectronProxyChain('DIRECT; PROXY a:1; PROXY b:2')).toEqual({
-      protocol: 'http',
-      host: 'a',
-      port: 1,
-    })
+  it('preserves DIRECT when it is the preferred route', () => {
+    expect(parseElectronProxyChain('DIRECT; PROXY a:1; PROXY b:2')).toBeNull()
   })
 
   it('returns null when chain is all DIRECT', () => {

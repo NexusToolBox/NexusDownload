@@ -38,7 +38,12 @@ describe('portable startup relocation', () => {
   })
   afterEach(async () => {
     db.close()
-    await rm(directory, { recursive: true, force: true })
+    await rm(directory, {
+      recursive: true,
+      force: true,
+      maxRetries: 5,
+      retryDelay: 300,
+    })
   })
 
   it('keeps a fresh profile independent and records the location before task creation', async () => {

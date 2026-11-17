@@ -235,7 +235,7 @@ it
       }
       await Promise.race([
         exited,
-        delay(30000).then(() => {
+        delay(process.env.CI ? 60000 : 30000).then(() => {
           throw new Error(`Updater timeout: ${stderr}`)
         }),
       ])
@@ -292,5 +292,5 @@ it
       })
     }
   },
-  60000
+  120000
 )

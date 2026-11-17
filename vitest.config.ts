@@ -2,6 +2,8 @@ import path from 'node:path'
 import { defineConfig } from 'vitest/config'
 import packageJson from './package.json' with { type: 'json' }
 
+const isWindowsCi = process.platform === 'win32' && Boolean(process.env.CI)
+
 // Retained upstream packaging and server integration suites target other products.
 const desktopExcluded = [
   'src/server/**',
@@ -47,6 +49,9 @@ export default defineConfig({
       {
         test: {
           name: 'node',
+          // Hosted Windows disk IO and native-process cold starts exceed 5s.
+          testTimeout: isWindowsCi ? 30_000 : 5_000,
+          hookTimeout: isWindowsCi ? 30_000 : 10_000,
           globalSetup: ['tests/setup/build-worker.ts'],
           include: ['src/**/*.test.{ts,tsx}', 'tests/**/*.test.{ts,tsx}'],
           exclude: ['src/{renderer,preload}/**', ...desktopExcluded],

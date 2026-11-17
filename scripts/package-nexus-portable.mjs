@@ -12,7 +12,7 @@ if (process.platform !== 'win32')
   throw new Error('Build the portable ZIP on Windows')
 for (const args of [
   ['run', 'build'],
-  ['run', 'stage:electron'],
+  ['run', 'stage:electron', '--', '--platform', 'win32', '--arch', 'x64'],
   [
     'exec',
     'electron-builder',

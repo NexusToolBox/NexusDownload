@@ -216,6 +216,7 @@ export class NexusWorkspace {
   }
   private async findDuplicate(identity: string) {
     if (!this.state.preferences.duplicateWarning) return
+    let completed: Awaited<ReturnType<typeof duplicateTask>>
     for (const task of this.options.tasks?.() ?? []) {
       const binding = this.state.bindings.find(
         (item) => item.taskId === task.id
@@ -235,9 +236,11 @@ export class NexusWorkspace {
         })
       if (matches) {
         const duplicate = await duplicateTask(task)
-        if (duplicate) return duplicate
+        if (duplicate?.status === 'active') return duplicate
+        if (duplicate) completed = duplicate
       }
     }
+    return completed
   }
   cloudInput(raw: unknown): string {
     if (typeof raw !== 'string') return ''

@@ -398,6 +398,15 @@ export function NexusAddHost() {
       : downloadable.flatMap((item) => (item.duplicate ? [item.duplicate] : []))
   const total = cloudCheck?.count ?? downloadable.length
   const singleDuplicate = total === 1 && duplicates.length === 1
+  const summaryBytes = cloudCheck
+    ? cloudCheck.files.reduce((sum, file) => sum + (file.bytes ?? 0), 0)
+    : (preflight?.items.reduce(
+        (sum, item) => sum + (item.source.expectedBytes ?? 0),
+        0
+      ) ?? 0)
+  const summaryUnknown = cloudCheck
+    ? cloudCheck.files.some((file) => file.bytes === null)
+    : preflight?.items.some((item) => item.source.expectedBytes === null)
   const disk = preflight?.disks[0]
   const httpFailure = preflight?.items.find((item) => item.probe?.error)
   const noRange = preflight?.items.some((item) => item.probe?.range === false)
@@ -490,15 +499,9 @@ export function NexusAddHost() {
                 : preflight
                   ? t('nexus.preflight.summary', {
                       count: cloudCheck?.count ?? preflight.items.length,
-                      size: (
-                        cloudCheck
-                          ? cloudCheck.unknown > 0
-                          : preflight.unknownCount > 0
-                      )
+                      size: summaryUnknown
                         ? t('nexus.v12.unknownSize')
-                        : formatBytes(
-                            cloudCheck?.knownBytes ?? preflight.knownBytes
-                          ),
+                        : formatBytes(summaryBytes),
                     })
                   : ''}
             </DialogDescription>

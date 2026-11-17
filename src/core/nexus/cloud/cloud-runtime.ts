@@ -1164,12 +1164,16 @@ export class CloudRuntime {
     const bindings = this.state.bindings.filter(
       (binding) => binding.platform === platform && binding.file.id === file.id
     )
+    let completed: Awaited<ReturnType<typeof duplicateTask>>
     for (const binding of bindings) {
       const duplicate = await duplicateTask(
         tasks.find((task) => task.id === binding.taskId)
       )
-      if (duplicate) return { path: '', basis: 'source', ...duplicate }
+      if (duplicate?.status === 'active')
+        return { path: '', basis: 'source', ...duplicate }
+      if (duplicate) completed = duplicate
     }
+    if (completed) return { path: '', basis: 'source', ...completed }
     // A deleted output must be downloadable again even if a similarly named file exists elsewhere.
     if (bindings.length) return null
     return this.existingFiles.find(file, parents, directory, tasks)

@@ -1618,11 +1618,11 @@
   padding: 12px;
   margin-block: 12px;
   border-radius: 10px;
-  background: var(--amber-soft);
+  background: color-mix(in srgb, var(--amber, #b7791f) 9%, var(--background));
   color: var(--foreground);
 }
 .nx-duplicate > p:first-child {
-  color: var(--amber);
+  color: var(--amber, #b7791f);
   display: flex;
   gap: 8px;
   align-items: center;

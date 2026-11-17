@@ -381,7 +381,22 @@ function TaskInspector({
             </small>
           </div>
         </div>
-        {!failure && (
+        {done && (
+          <div className="nx-completed-summary">
+            <p>
+              {t('nexus.status.completed')} ·{' '}
+              {formatBytes(task.totalBytes || task.downloadedBytes)}
+            </p>
+            {task.finishedAt && (
+              <time dateTime={new Date(task.finishedAt).toISOString()}>
+                {new Date(task.finishedAt).toLocaleString(
+                  i18n.resolvedLanguage
+                )}
+              </time>
+            )}
+          </div>
+        )}
+        {!failure && !done && (
           <>
             <div className="bignum">
               <b>
@@ -487,7 +502,7 @@ function TaskInspector({
           </div>
         )}
         <div className="hr" />
-        {!failure && (
+        {!failure && !done && (
           <ol className="steps">
             <li className="done">
               <span className="mk">
@@ -794,7 +809,9 @@ export function NexusDownloadsPage() {
             <Button
               key={key}
               variant="ghost"
-              className={key === 'attention' ? 'err' : ''}
+              className={
+                key === 'attention' && counts.attention > 0 ? 'err' : ''
+              }
               aria-pressed={filter === key}
               onClick={() => setFilter(key)}
             >

@@ -64,7 +64,14 @@ export function ProcessingSteps({
   const [error, setError] = useState('')
   const run = (req: unknown) =>
     void workflowCall(req).catch(() => setError(t('nexus.v4.workflow.failed')))
-  if (!record && completed) return null
+  const steps = record?.steps.filter(
+    (step) =>
+      step.status !== 'skipped' &&
+      step.name !== 'notify' &&
+      (step.name !== 'organize' || Boolean(record.moves.length)) &&
+      (step.name !== 'verify' || Boolean(record.config.sha256))
+  )
+  if (!steps?.length && completed) return null
   return (
     <Section title={t('nexus.v4.processing.title')}>
       <Group>
@@ -82,7 +89,7 @@ export function ProcessingSteps({
             />
           </Item>
         )}
-        {record?.steps.map((s) => (
+        {steps?.map((s) => (
           <Item
             key={s.name}
             title={`${t(`nexus.v4.processing.${s.name}`)} · ${t(`nexus.v4.processing.status.${s.status}`)}`}
@@ -93,7 +100,7 @@ export function ProcessingSteps({
                 onClick={() => {
                   run({
                     action: 'processing-retry',
-                    id: record.id,
+                    id: record?.id,
                     step: s.name,
                     ...(password ? { password } : {}),
                   })

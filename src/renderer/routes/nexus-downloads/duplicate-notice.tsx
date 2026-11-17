@@ -61,7 +61,8 @@ export function DuplicateNotice({
               {single.taskId && (
                 <Button
                   disabled={busy}
-                  variant="quiet"
+                  variant="primary"
+                  autoFocus
                   onClick={() => {
                     void transport
                       .invoke(Commands.OpenTaskFile, { taskId: single.taskId })
@@ -71,7 +72,7 @@ export function DuplicateNotice({
                   {t('nexus.v151.duplicate.open')}
                 </Button>
               )}
-              <Button disabled={busy} variant="primary" onClick={onDownload}>
+              <Button disabled={busy} variant="secondary" onClick={onDownload}>
                 {t('nexus.v151.duplicate.again')}
               </Button>
             </>

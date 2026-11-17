@@ -11,6 +11,7 @@ import type { PortableProfile } from '../platform/portable-profile'
 import {
   acknowledgePortableUpdate,
   acknowledgePortableUpdateBoot,
+  inspectPortableUpdate,
   isPortableUpdateDirectory,
 } from './portable-updater'
 
@@ -25,6 +26,50 @@ const csc = path.join(
 )
 const quote = (value: string) => `'${value.replaceAll("'", "''")}'`
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+it('recovers UTF-8 notes from a matching request written by an older updater', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'nexus-update-notes-'))
+  const profile = { root, dataDir: path.join(root, 'data') } as PortableProfile
+  const updates = path.join(profile.dataDir, 'updates')
+  try {
+    await mkdir(updates, { recursive: true })
+    const state = {
+      phase: 'completed',
+      version: '1.5.2',
+      previousVersion: '1.5.1',
+      token: randomUUID(),
+      releaseNotes: 'ANSI-corrupted notes',
+    }
+    await writeFile(
+      path.join(updates, 'transaction.json'),
+      JSON.stringify(state)
+    )
+    await writeFile(
+      path.join(updates, 'request.json'),
+      JSON.stringify({
+        token: state.token,
+        version: state.version,
+        releaseNotes: '## 改进\n- 更新说明',
+      })
+    )
+    expect((await inspectPortableUpdate(profile))?.releaseNotes).toBe(
+      '## 改进\n- 更新说明'
+    )
+    await writeFile(
+      path.join(updates, 'request.json'),
+      JSON.stringify({
+        token: randomUUID(),
+        version: state.version,
+        releaseNotes: 'Unrelated notes',
+      })
+    )
+    expect((await inspectPortableUpdate(profile))?.releaseNotes).toBe(
+      state.releaseNotes
+    )
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
 
 it('acknowledges a new-version consent window without consuming the one-time update notice', async () => {
   const root = await mkdtemp(path.join(tmpdir(), 'nexus-update-consent-'))
@@ -189,7 +234,8 @@ it
           previousVersion: '1.3.0',
           token,
           parentPid: 2147483647,
-          releaseNotes: 'Changes',
+          releaseNotes:
+            '## 改进\n- 更新会保留任务和账号\n\n---\n\n## Improvements\n- Retain tasks and accounts',
         })
       )
       supervisor = spawn(
@@ -245,6 +291,7 @@ it
       expect(state.phase, stderr).toBe(
         scenario === 'success' ? 'completed' : 'restored'
       )
+      expect(state.releaseNotes).toContain('更新会保留任务和账号')
       expect(await readFile(path.join(root, 'data/tasks.db'), 'utf8')).toBe(
         'retained-tasks'
       )

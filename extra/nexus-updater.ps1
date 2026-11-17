@@ -2,7 +2,7 @@ param([Parameter(Mandatory=$true)][string]$Request, [ValidateSet('Supervise','Ap
 $ErrorActionPreference='Stop'
 $ProgressPreference='SilentlyContinue'
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-$job = Get-Content -LiteralPath $Request -Raw | ConvertFrom-Json
+$job = Get-Content -LiteralPath $Request -Raw -Encoding UTF8 | ConvertFrom-Json
 $root = [IO.Path]::GetFullPath($job.root).TrimEnd('\')
 $data = Join-Path $root 'data'
 $backup = Join-Path $root '.update-backup'
@@ -27,7 +27,7 @@ function Clear-Program {
   foreach ($item in (Program-Items $root)) { Assert-Child $item.FullName $root; Remove-Item -LiteralPath $item.FullName -Recurse -Force }
 }
 function Restore-Old {
-  $state=Get-Content -LiteralPath $journal -Raw | ConvertFrom-Json
+  $state=Get-Content -LiteralPath $journal -Raw -Encoding UTF8 | ConvertFrom-Json
   if ($state.phase -eq 'backing-up') {
     Assert-Child $backup $root
     if (Test-Path -LiteralPath $backup) { Remove-Item -LiteralPath $backup -Recurse -Force }
@@ -107,7 +107,7 @@ try {
   $healthy=$false
   while ([DateTime]::UtcNow -lt $deadline) {
     if (Test-Path -LiteralPath $ack) {
-      $receipt=Get-Content -LiteralPath $ack -Raw | ConvertFrom-Json
+      $receipt=Get-Content -LiteralPath $ack -Raw -Encoding UTF8 | ConvertFrom-Json
       if ($receipt.token -eq $job.token -and $receipt.version -eq $job.version) { $healthy=$true; break }
     }
     # The acknowledgement can arrive between the file check and process exit.
@@ -118,7 +118,7 @@ try {
     if (!$next.HasExited) { Stop-Process -Id $next.Id -Force; $next.WaitForExit() }
     throw 'New application did not become ready'
   }
-  $state=Get-Content -LiteralPath $journal -Raw | ConvertFrom-Json
+  $state=Get-Content -LiteralPath $journal -Raw -Encoding UTF8 | ConvertFrom-Json
   $state.phase='completed'; Save-State $state
   # Only application files are removed. data and Downloads are never traversed.
   foreach ($item in (Program-Items $root)) {
@@ -129,7 +129,7 @@ try {
   Remove-Item -LiteralPath $job.zip -Force
 } catch {
   if (Test-Path -LiteralPath $journal) {
-    $state=Get-Content -LiteralPath $journal -Raw | ConvertFrom-Json
+    $state=Get-Content -LiteralPath $journal -Raw -Encoding UTF8 | ConvertFrom-Json
     if ($state.phase -in @('backing-up','replacing','booting','rolling-back')) { Restore-Old; exit 1 }
   }
   # Extraction or permission failure precedes any program mutation.

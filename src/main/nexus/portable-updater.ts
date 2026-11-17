@@ -94,11 +94,25 @@ const transactionSchema = z.object({
 export async function inspectPortableUpdate(profile: PortableProfile) {
   const directory = updateDirectory(profile)
   try {
-    return transactionSchema.parse(
+    const state = transactionSchema.parse(
       JSON.parse(
         await readFile(path.join(directory, 'transaction.json'), 'utf8')
       )
     )
+    // Older PowerShell helpers decoded non-ASCII release notes using ANSI.
+    // The original request remains UTF-8 and belongs to this exact transaction.
+    try {
+      const request = JSON.parse(
+        await readFile(path.join(directory, 'request.json'), 'utf8')
+      )
+      if (
+        request.token === state.token &&
+        request.version === state.version &&
+        typeof request.releaseNotes === 'string'
+      )
+        state.releaseNotes = request.releaseNotes
+    } catch {}
+    return state
   } catch {
     return undefined
   }

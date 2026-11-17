@@ -267,6 +267,7 @@ import { NexusGlobalShortcut } from './nexus/global-shortcut'
 import { configureNexusNotifications } from './nexus/notification-identity'
 import {
   acknowledgePortableUpdate,
+  acknowledgePortableUpdateBoot,
   isPortableUpdateDirectory,
   preparePortableUpdate,
   scheduleInterruptedRecovery,
@@ -2184,7 +2185,16 @@ async function initializeMainProcess(): Promise<void> {
     launcher.markWindowReady()
     beginLegacyInvitation()
   } else {
-    windowManager.open('onboarding')
+    const onboarding = windowManager.open('onboarding')
+    onboarding?.once('ready-to-show', () => {
+      if (portableProfile)
+        void acknowledgePortableUpdateBoot(
+          portableProfile,
+          app.getVersion()
+        ).catch((err) =>
+          log.warn({ err }, 'portable update consent readiness failed')
+        )
+    })
 
     // A second launch must also be able to restore a minimized onboarding
     // window while download ingress is still waiting for legal acceptance.

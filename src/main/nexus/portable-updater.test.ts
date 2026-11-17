@@ -10,6 +10,7 @@ import { expect, it } from 'vitest'
 import type { PortableProfile } from '../platform/portable-profile'
 import {
   acknowledgePortableUpdate,
+  acknowledgePortableUpdateBoot,
   isPortableUpdateDirectory,
 } from './portable-updater'
 
@@ -24,6 +25,43 @@ const csc = path.join(
 )
 const quote = (value: string) => `'${value.replaceAll("'", "''")}'`
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+it('acknowledges a new-version consent window without consuming the one-time update notice', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'nexus-update-consent-'))
+  try {
+    const profile = {
+      root,
+      dataDir: path.join(root, 'data'),
+    } as PortableProfile
+    const updates = path.join(profile.dataDir, 'updates')
+    await mkdir(updates, { recursive: true })
+    const token = randomUUID()
+    await writeFile(
+      path.join(updates, 'transaction.json'),
+      JSON.stringify({
+        phase: 'booting',
+        version: '1.5.1',
+        previousVersion: '1.5.0',
+        token,
+      })
+    )
+    await acknowledgePortableUpdateBoot(profile, '1.5.0')
+    await expect(readFile(path.join(updates, 'boot-ok.json'))).rejects.toThrow()
+    await acknowledgePortableUpdateBoot(profile, '1.5.1')
+    expect(
+      JSON.parse(await readFile(path.join(updates, 'boot-ok.json'), 'utf8'))
+    ).toEqual({ token, version: '1.5.1' })
+    await expect(
+      readFile(path.join(updates, 'notice-seen.json'))
+    ).rejects.toThrow()
+    expect((await acknowledgePortableUpdate(profile, '1.5.1'))?.version).toBe(
+      '1.5.1'
+    )
+    expect(await acknowledgePortableUpdate(profile, '1.5.1')).toBeUndefined()
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
 
 it('recognizes the exact update directory across Windows path aliases', async () => {
   const root = await mkdtemp(path.join(tmpdir(), 'nexus-update-path-'))

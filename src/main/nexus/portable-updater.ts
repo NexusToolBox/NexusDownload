@@ -103,8 +103,8 @@ export async function inspectPortableUpdate(profile: PortableProfile) {
     return undefined
   }
 }
-/** Called only after shell initialization, engine restoration and renderer readiness. */
-export async function acknowledgePortableUpdate(
+/** A usable consent window also completes boot; the update notice waits for the main shell. */
+export async function acknowledgePortableUpdateBoot(
   profile: PortableProfile,
   version: string
 ) {
@@ -114,6 +114,14 @@ export async function acknowledgePortableUpdate(
       path.join(updateDirectory(profile), 'boot-ok.json'),
       JSON.stringify({ token: state.token, version })
     )
+  return state
+}
+/** Called only after shell initialization, engine restoration and renderer readiness. */
+export async function acknowledgePortableUpdate(
+  profile: PortableProfile,
+  version: string
+) {
+  const state = await acknowledgePortableUpdateBoot(profile, version)
   if (state && ['booting', 'completed', 'restored'].includes(state.phase)) {
     const receipt = `${state.token}:${state.phase === 'restored' ? 'restored' : 'completed'}`
     const notice = path.join(updateDirectory(profile), 'notice-seen.json')

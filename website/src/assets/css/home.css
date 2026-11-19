@@ -6,7 +6,7 @@
 /* ---------- 导航：电影段里是透明白字，进入云层后恢复正常 ---------- */
 .page--home .nav { position: fixed; inset: 0 0 auto 0; }
 .page--home.is-dark .nav { background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; color: #F3F1ED; }
-.page--home.is-dark .brand .logo { color: #F3F1ED; --logo-fg: #1E2530; }
+.page--home.is-dark .nav .logo { border-radius: 7px; outline: 1px solid rgba(243,241,237,.28); outline-offset: -1px; }
 .page--home.is-dark .nav__links a { color: rgba(243,241,237,.74); }
 .page--home.is-dark .nav__links a:hover { color: #fff; background: rgba(255,255,255,.08); }
 .page--home.is-dark .nav__icon { color: rgba(243,241,237,.94); background: rgba(255,255,255,.09); }

@@ -23,6 +23,7 @@ node build.mjs --serve
 | 发布信息的离线默认值、仓库地址、域名 | `site.json` |
 | 导航、页脚的文字 | `src/i18n/zh.json`、`src/i18n/en.json` |
 | 导航、页脚的结构 | `src/partials/nav.html`、`src/partials/footer.html` |
+| 品牌图标 | `src/assets/img/nexusdownload.svg` 用软件的 `../public/mo-logo.svg`；`src/static/favicon.svg` 用 `../extra/nexus/app-icon-16.svg` |
 | 首页文字 | `src/pages/zh/index.html`、`src/pages/en/index.html` |
 | 首页电影段的节奏、底图路径 | `src/assets/js/home/main.js` 顶部的 `PLATES` 和 `TIMELINE` |
 | 首页图片 | `src/assets/img/`（hero 桌面首屏、hero-m 手机首屏、incloud 云内部、clouds 纯黑底云片表） |

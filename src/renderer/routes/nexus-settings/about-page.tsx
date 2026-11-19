@@ -5,7 +5,7 @@ import {
   DownloadIcon,
 } from '@renderer/components/icons'
 import { transport } from '@renderer/lib/transport'
-import { NEXUS_RELEASE_CONFIG } from '@shared/nexus-release-config'
+import { getNexusWebsiteUrl } from '@shared/nexus-release-config'
 import { NEXUS_VERSION } from '@shared/nexus-version'
 import { Commands } from '@shared/protocol/commands'
 import { useState } from 'react'
@@ -14,7 +14,7 @@ import { useSearchParams } from 'react-router'
 import { useAppUpdate } from '../settings/cards/use-app-update'
 import { openUpdateDialog } from './update-ui'
 export function NexusAbout() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [, setParams] = useSearchParams()
   const update = useAppUpdate()
   const { state } = update
@@ -106,7 +106,11 @@ export function NexusAbout() {
           <Button
             variant="quiet"
             aria-label={t('nexus.v13.update.website')}
-            onClick={() => external(NEXUS_RELEASE_CONFIG.website)}
+            onClick={() =>
+              external(
+                getNexusWebsiteUrl(i18n.resolvedLanguage ?? i18n.language)
+              )
+            }
           >
             <ArrowUpRightIcon />
           </Button>

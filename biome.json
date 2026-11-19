@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/*.{md,mdx,yaml,yml}", "!design/final"]
+    "includes": ["**", "!**/*.{md,mdx,yaml,yml}", "!design/final", "!website"]
   },
   "assist": {
     "enabled": true,

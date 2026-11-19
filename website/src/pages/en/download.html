@@ -1,0 +1,40 @@
+<!--
+title: Download - NexusDownload
+description: Download the latest NexusDownload. Free, open source, portable.
+layout: page
+nav: download
+-->
+<section class="wrap dl">
+  <div>
+    <h1 class="display">Download NexusDownload</h1>
+    <p class="lead">Free, open source and portable. For Windows 10 and 11.</p>
+    <div class="dl__card card">
+      <div class="dl__row">
+        {{> logo}}
+        <div>
+          <p class="dl__name">NexusDownload {{site.version}}</p>
+          <p class="dl__meta">Portable, released {{site.releaseDate}}</p>
+        </div>
+        <a class="btn btn--ink btn--lg" href="{{site.downloadUrl}}" target="_blank" rel="noopener">{{> icon-download}}Download</a>
+      </div>
+      <div class="dl__sub">
+        <a href="{{site.releasesUrl}}" target="_blank" rel="noopener">All releases</a>
+        <a href="{{site.releasesUrl}}/latest" target="_blank" rel="noopener">Checksums & release notes</a>
+        <a href="{{site.github}}" target="_blank" rel="noopener">{{> icon-github}}Source code</a>
+      </div>
+    </div>
+  </div>
+  <div class="dl__visual" aria-hidden="true">{{> app-en}}</div>
+</section>
+
+<section class="wrap">
+  <div class="dl-facts">
+    <div class="reveal">{{> icon-monitor}}<h2>Requirements</h2><p>Windows 10 or 11, 64-bit. Nothing else to install.</p></div>
+    <div class="reveal">{{> icon-folder}}<h2>Install & uninstall</h2><p>Unzip anywhere and run. Delete the folder to uninstall.</p></div>
+    <div class="reveal">{{> icon-refresh}}<h2>Updates</h2><p>You'll be notified in the app. One click updates it; history and accounts are kept.</p></div>
+  </div>
+  <div class="dl-note reveal">
+    <div class="note note--warn"><strong>“Windows protected your PC” on first launch?</strong>Click “More info”, then “Run anyway”. The app isn't code-signed; the full source is on <a href="{{site.github}}" target="_blank" rel="noopener">GitHub</a>.</div>
+    <p class="lead" style="font-size:15px">New here? The <a class="link" href="/en/docs/">quick start</a> takes three minutes.</p>
+  </div>
+</section>

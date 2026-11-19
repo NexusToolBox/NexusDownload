@@ -1,6 +1,8 @@
 import { CommandIds } from '@shared/commands-catalog'
 import { EXTERNAL_URLS } from '@shared/external-urls'
+import { getNexusWebsiteUrl } from '@shared/nexus-release-config'
 import { shell } from 'electron'
+import { i18n } from '../../lib/i18n'
 import type { CommandRegistry } from '../command-registry'
 import type { CommandDeps } from '../types'
 
@@ -12,7 +14,9 @@ export function registerHelpCommands(
     id: CommandIds.HelpOpenWebsite,
     title: 'menu.help.officialWebsite',
     run: () => {
-      shell.openExternal(EXTERNAL_URLS.motrix.home)
+      shell.openExternal(
+        getNexusWebsiteUrl(i18n.resolvedLanguage ?? i18n.language)
+      )
     },
   })
   registry.register({

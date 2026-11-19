@@ -55,3 +55,13 @@ jobs:
         run: |
           $name = "NexusDownload-v$env:NEXUS_VERSION-win-x64.zip"
           gh release create "v$env:NEXUS_VERSION" "release/$name" "release/$name.sha256" --repo '${{ github.repository }}' --title "NexusDownload $env:NEXUS_VERSION" --notes-file "docs/release-notes/$env:NEXUS_VERSION.md" --verify-tag
+
+  website:
+    needs: release
+    if: github.ref_type == 'tag'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/website.yml
+    secrets:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -25,8 +25,8 @@ import {
 } from '@renderer/lib/parse-torrent-file'
 import { transport } from '@renderer/lib/transport'
 import {
+  getProductMenuLink,
   PRODUCT_MENU_ITEMS,
-  PRODUCT_MENU_LINKS,
   type ProductMenuItem,
 } from '@shared/application-menu-catalog'
 import { type CommandId, CommandIds } from '@shared/commands-catalog'
@@ -70,7 +70,7 @@ function usableFocus(element: HTMLElement | null): element is HTMLElement {
 }
 
 export function WebMenuButton() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const [creatorOpen, setCreatorOpen] = useState(false)
@@ -236,7 +236,10 @@ export function WebMenuButton() {
       if (group && group !== item.group && section !== 'app')
         result.push(<DropdownMenuSeparator key={`separator-${item.group}`} />)
       group = item.group
-      const href = PRODUCT_MENU_LINKS[item.commandId]
+      const href = getProductMenuLink(
+        item.commandId,
+        i18n.resolvedLanguage ?? i18n.language
+      )
       result.push(
         <DropdownMenuItem
           key={item.id}

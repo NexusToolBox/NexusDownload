@@ -1,0 +1,24 @@
+[
+  {
+    "group": { "zh": "入门", "en": "Basics" },
+    "items": [
+      { "slug": "", "icon": "compass", "zh": "概览与快速开始", "en": "Overview & quick start", "desc": { "zh": "解压便携版，开始下载。", "en": "Extract the app and start a download." } },
+      { "slug": "add-downloads", "icon": "plus", "zh": "添加下载", "en": "Adding downloads", "desc": { "zh": "支持的链接、快捷键、批量与队列。", "en": "Supported links, shortcuts, batches and queues." } },
+      { "slug": "cloud-drives", "icon": "cloud", "zh": "网盘账号", "en": "Cloud drive accounts", "desc": { "zh": "登录自己的网盘，直接下载里面的文件。", "en": "Sign in and download your own files." } }
+    ]
+  },
+  {
+    "group": { "zh": "进阶", "en": "Going further" },
+    "items": [
+      { "slug": "settings", "icon": "sliders", "zh": "下载设置与代理", "en": "Settings & proxy", "desc": { "zh": "同时下载数、限速、计划任务、代理。", "en": "Concurrency, limits, schedules and proxy." } },
+      { "slug": "after-download", "icon": "check", "zh": "下载完成之后", "en": "After a download", "desc": { "zh": "打开文件、解压和整理。", "en": "Open, extract and sort files." } },
+      { "slug": "data-privacy", "icon": "shield", "zh": "数据与隐私", "en": "Data & privacy", "desc": { "zh": "记录、账号和设置都存在哪里。", "en": "Where your history, accounts and settings live." } }
+    ]
+  },
+  {
+    "group": { "zh": "帮助", "en": "Help" },
+    "items": [
+      { "slug": "faq", "icon": "help", "zh": "常见问题", "en": "FAQ", "desc": { "zh": "安装、速度、网盘登录。", "en": "Install, speed and sign-in questions." } }
+    ]
+  }
+]

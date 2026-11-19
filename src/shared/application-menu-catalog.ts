@@ -1,5 +1,6 @@
 import { type CommandId, CommandIds } from './commands-catalog'
 import { EXTERNAL_URLS } from './external-urls'
+import { getNexusWebsiteUrl } from './nexus-release-config'
 
 export interface ProductMenuItem {
   id: string
@@ -194,9 +195,14 @@ export const PRODUCT_MENU_ITEMS: readonly ProductMenuItem[] = [
     scope: 'local',
   },
 ]
-export const PRODUCT_MENU_LINKS: Partial<Record<CommandId, string>> = {
-  [CommandIds.HelpOpenWebsite]: EXTERNAL_URLS.motrix.home,
+const PRODUCT_MENU_LINKS: Partial<Record<CommandId, string>> = {
   [CommandIds.HelpOpenManual]: EXTERNAL_URLS.motrix.manual.home,
   [CommandIds.HelpOpenChangelog]: EXTERNAL_URLS.motrix.changelog,
   [CommandIds.HelpReportProblem]: EXTERNAL_URLS.github.issues,
+}
+
+export function getProductMenuLink(id: CommandId, language: string) {
+  return id === CommandIds.HelpOpenWebsite
+    ? getNexusWebsiteUrl(language)
+    : PRODUCT_MENU_LINKS[id]
 }

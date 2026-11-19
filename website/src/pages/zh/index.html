@@ -1,0 +1,157 @@
+<!--
+title: NexusDownload：从云端，到你手边
+description: Windows 上的下载工作台。普通链接、BT 与磁力、视频和你自己的网盘，一处下载、排队、续传。免费开源。
+layout: home
+nav: home
+-->
+
+<!-- ============ 电影段（只有这里是电影级） ============ -->
+<section class="cinema" data-cinema aria-label="NexusDownload">
+  <div class="cinema__stage">
+    <div class="cinema__layers" aria-hidden="true">
+      <div class="ly ly--hero"></div><div class="ly ly--glow"></div><div class="ly ly--haze"></div>
+      <div class="ly ly--cloud"></div><div class="ly ly--paper"></div><div class="ly ly--vig"></div>
+    </div>
+    <canvas class="cinema__gl" aria-hidden="true"></canvas>
+    <div class="cinema__grain" aria-hidden="true"></div>
+
+    <!-- 节拍 1：首屏 -->
+    <div class="beat beat--hero">
+      <div class="wrap hero">
+        <p class="hero__kicker">NexusDownload <span>{{site.version}}</span></p>
+        <h1 class="hero__title">
+          <span class="hero__line"><span>从云端，</span></span>
+          <span class="hero__line"><span>到你手边。</span></span>
+        </h1>
+        <p class="hero__sub">Windows 上的下载工作台。<br>链接、磁力、视频和你的网盘，一处下完。</p>
+        <div class="hero__actions">
+          <a class="btn btn--light btn--lg" href="{{site.downloadUrl}}">{{> icon-download}}免费下载</a>
+          <a class="btn btn--glass btn--lg" href="/docs/">快速开始</a>
+        </div>
+      </div>
+      <div class="hero__foot wrap">
+        <div class="hero__facts"><span>适用于 Windows 10 和 11</span><span>免费开源</span><span>数据只在本机</span></div>
+        {{> motion-toggle}}
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><span></span></div>
+    </div>
+
+    <!-- 节拍 2：下潜时，雾里出现的三句话 -->
+    <div class="beat beat--lines" aria-hidden="true">
+      <p class="line"><b>拆成多段，一起下。</b><span>大文件分成多段同时下载，最后拼回完整的一个。</span></p>
+      <p class="line"><b>断在哪，就从哪继续。</b><span>暂停、断网、关机都不要紧，回来接着下。</span></p>
+      <p class="line"><b>链接、磁力、网盘，<br>一处收下。</b><span>不用在几个软件之间来回切换。</span></p>
+    </div>
+
+    <!-- 节拍 3：落地，产品从雾里浮出来 -->
+    <div class="beat beat--land">
+      <div class="land wrap">
+        <p class="land__name">NexusDownload</p>
+        {{> app-zh}}
+        <div class="land__actions">
+          <a class="btn btn--ink btn--lg" href="{{site.downloadUrl}}">{{> icon-download}}免费下载 {{site.version}}</a>
+          <a class="btn btn--ghost btn--lg" href="{{site.github}}" target="_blank" rel="noopener">{{> icon-github}}GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 以下是普通浅色内容区 ============ -->
+<section class="sec wrap" id="features">
+  <header class="sec__head reveal">
+        <h2 class="h2">安静地，把事做完。</h2>
+    <p class="lead">不打扰、不花哨。把一个下载从开始到收尾，全部照顾好。</p>
+  </header>
+
+  <div class="bento">
+    <article class="tile tile--wide reveal">
+      <div class="tile__text"><h3>多段同时下载</h3><p>一个文件拆成多段一起下，最后拼回完整的一个。</p></div>
+      <div class="viz viz--segs" aria-hidden="true"><i style="--p:0.92"></i><i style="--p:0.74"></i><i style="--p:1"></i><i style="--p:0.61"></i><i style="--p:0.88"></i><i style="--p:0.7"></i><i style="--p:0.95"></i><i style="--p:0.66"></i><i style="--p:0.81"></i><i style="--p:1"></i><i style="--p:0.58"></i><i style="--p:0.77"></i><i style="--p:0.69"></i><i style="--p:0.9"></i><i style="--p:0.83"></i><i style="--p:0.72"></i></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--resume" aria-hidden="true">
+        <div class="ring"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="27"/><circle class="ring__p" cx="32" cy="32" r="27"/></svg><b>62%</b></div>
+        <div><p>已暂停</p><span class="pill">继续</span></div>
+      </div>
+      <div class="tile__text"><h3>断点续传</h3><p>暂停、断网、关机，回来从断处继续。网盘地址过期也会自动续上。</p></div>
+    </article>
+    <article class="tile reveal">
+      <ul class="viz viz--check" aria-hidden="true">
+        <li><span>文件名</span><b>纪录片_第一集.mkv</b></li>
+        <li><span>大小</span><b>4.3 GB</b></li>
+        <li><span>断点续传</span><b class="ok">支持</b></li>
+        <li><span>剩余空间</span><b class="ok">充足</b></li>
+      </ul>
+      <div class="tile__text"><h3>添加前先检查</h3><p>文件名、大小、能否续传、空间够不够，开始之前就知道。</p></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--plan" aria-hidden="true">
+        <div><time>23:00</time><span>开始队列</span></div>
+        <div><time>02:00</time><span>不限速</span></div>
+        <div><time>07:00</time><span>完成后关机</span></div>
+      </div>
+      <div class="tile__text"><h3>队列与计划</h3><p>排好队、定好时间、分时段限速，下完自动关机。</p></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--flow" aria-hidden="true"><span>校验</span><i></i><span>解压</span><i></i><span>扫描</span><i></i><span>整理</span></div>
+      <div class="tile__text"><h3>完成后自动收尾</h3><p>校验、解压、扫描、按类型整理到文件夹。</p></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--keys" aria-hidden="true"><div><kbd>Alt</kbd><span>+</span><kbd>D</kbd></div><p><em></em>剪贴板里的链接已带入</p></div>
+      <div class="tile__text"><h3>随手添加</h3><p>在任何软件里按 Alt + D；也能从浏览器扩展或手机直接发过来。</p></div>
+    </article>
+    <article class="tile tile--wide reveal">
+      <div class="tile__text"><h3>重复提醒</h3><p>同一个文件下过，会先告诉你。直接打开已有的就好。</p></div>
+      <div class="viz viz--dup" aria-hidden="true">
+        <div class="dlg">
+          <p><b>这个文件已经下载过</b><span>项目素材备份.zip，3.2 GB，昨天下载</span></p>
+          <div><span class="pill pill--ink">打开文件</span><span class="pill">仍然下载</span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="sec sec--band">
+  <div class="wrap split">
+    <header class="reveal">
+            <h2 class="h2">你的网盘，<br>登录就能下。</h2>
+      <p class="lead">浏览自己的网盘文件，打开分享链接，和普通任务一样多段下载、断点续传。</p>
+      <p class="fine">只下载你有权访问的文件，不绕过会员与权限。</p>
+      <a class="more" href="/docs/cloud-drives/">网盘账号怎么用 {{> icon-arrow}}</a>
+    </header>
+    <div class="accounts reveal" aria-label="支持的网盘">
+      <div class="accounts__head"><b>网盘账号</b><span>6 个</span></div>
+      <div class="acct"><i><img src="/assets/img/logos/baidu.png" alt=""></i><p><b>百度网盘</b><span>已登录</span></p><div class="cap"><em style="--w:0.62"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/quark.png" alt=""></i><p><b>夸克网盘</b><span>已登录</span></p><div class="cap"><em style="--w:0.38"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/uc.png" alt=""></i><p><b>UC 网盘</b><span>已登录</span></p><div class="cap"><em style="--w:0.21"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/aliyun.png" alt=""></i><p><b>阿里云盘</b><span>需自备开放平台应用</span></p><div class="cap"><em style="--w:0.12"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/115.png" alt=""></i><p><b>115 网盘</b><span>已登录</span></p><div class="cap"><em style="--w:0.74"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/123.png" alt=""></i><p><b>123 云盘</b><span>已登录</span></p><div class="cap"><em style="--w:0.45"></em></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <header class="sec__head reveal">
+        <h2 class="h2">数据，只在你的电脑上。</h2>
+  </header>
+  <div class="trio">
+    <div class="reveal">{{> icon-folder}}<h3>解压即用</h3><p>不安装、不写注册表，删除文件夹就是卸载。</p></div>
+    <div class="reveal">{{> icon-lock}}<h3>登录信息加密</h3><p>用 Windows 自带的加密保存在本机，换电脑需重新登录。</p></div>
+    <div class="reveal">{{> icon-code}}<h3>开源</h3><p>全部代码公开在 GitHub，任何人都能检查。</p></div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="final__sky" aria-hidden="true"></div>
+  <div class="wrap final__body reveal">
+    <h2 class="h2 h2--xl">现在开始。</h2>
+    <p class="lead">免费，开源，三分钟上手。</p>
+    <div class="final__actions">
+      <a class="btn btn--ink btn--lg" href="{{site.downloadUrl}}">{{> icon-download}}免费下载</a>
+      <a class="btn btn--ghost btn--lg" href="/docs/">阅读文档</a>
+    </div>
+  </div>
+</section>

@@ -198,7 +198,7 @@ try {
   await page.getByRole('option').last().click()
   await sleep(6000)
   await page.screenshot({
-    path: path.resolve('website/assets/client-light.png'),
+    path: path.join(root, 'client-light.png'),
     animations: 'disabled',
   })
   // Use the actual settings switches; never capture the MCP configuration.

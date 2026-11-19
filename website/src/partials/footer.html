@@ -1,0 +1,44 @@
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <a class="brand" href="{{root}}/">{{> logo}}<span>NexusDownload</span></a>
+      <p>{{t.footer.tagline}}</p>
+    </div>
+    <div class="footer__cols">
+      <div>
+        <p class="footer__title">{{t.footer.product}}</p>
+        <a href="{{root}}/download/">{{t.nav.download}}</a>
+        <a href="{{root}}/changelog/">{{t.nav.changelog}}</a>
+        <a href="{{site.releasesUrl}}" target="_blank" rel="noopener">{{t.footer.releases}}</a>
+      </div>
+      <div>
+        <p class="footer__title">{{t.footer.resources}}</p>
+        <a href="{{root}}/docs/">{{t.nav.docs}}</a>
+        <a href="{{root}}/docs/faq/">{{t.footer.faq}}</a>
+        <a href="{{root}}/docs/data-privacy/">{{t.footer.privacy}}</a>
+        <a href="{{site.github}}/blob/main/LICENSE" target="_blank" rel="noopener">{{t.footer.license}}</a>
+      </div>
+      <div>
+        <p class="footer__title">{{t.footer.community}}</p>
+        <a href="{{site.github}}" target="_blank" rel="noopener">GitHub</a>
+        <a href="{{site.issuesUrl}}" target="_blank" rel="noopener">{{t.footer.issues}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap footer__base">
+    <span>© {{year}} NexusDownload<span class="footer__made">{{t.footer.made}}</span></span>
+    <span class="footer__tools">{{> motion-toggle}}<a href="{{altUrl}}" hreflang="{{altHtmlLang}}" lang="{{altHtmlLang}}" data-lang-switch>{{t.otherLangName}}</a></span>
+  </div>
+</footer>
+<template id="search-tpl">
+  <div class="search" role="dialog" aria-modal="true" aria-label="{{t.nav.search}}" data-lang="{{lang}}">
+    <div class="search__backdrop" data-search-close></div>
+    <div class="search__panel">
+      <label class="search__field">{{> icon-search}}<input type="search" placeholder="{{t.search.placeholder}}" autocomplete="off" spellcheck="false"><kbd data-search-close>Esc</kbd></label>
+      <div class="search__results" role="listbox"></div>
+      <p class="search__hint" data-empty="{{t.search.empty}}" data-hint="{{t.search.hint}}">{{t.search.hint}}</p>
+      <div class="search__foot"><span><kbd>↑</kbd><kbd>↓</kbd> {{t.search.nav}}</span><span><kbd>Enter</kbd> {{t.search.open}}</span><span><kbd>Esc</kbd> {{t.search.close}}</span></div>
+    </div>
+  </div>
+</template>
+<script src="/assets/js/site.js" defer></script>

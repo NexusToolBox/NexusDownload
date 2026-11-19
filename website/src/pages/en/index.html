@@ -1,0 +1,152 @@
+<!--
+title: NexusDownload: From the cloud, down to you
+description: A download workbench for Windows. Direct links, BitTorrent and magnets, video, and your own cloud drives, queued, multi-connection and resumable. Free and open source.
+layout: home
+nav: home
+-->
+
+<section class="cinema" data-cinema aria-label="NexusDownload">
+  <div class="cinema__stage">
+    <div class="cinema__layers" aria-hidden="true">
+      <div class="ly ly--hero"></div><div class="ly ly--glow"></div><div class="ly ly--haze"></div>
+      <div class="ly ly--cloud"></div><div class="ly ly--paper"></div><div class="ly ly--vig"></div>
+    </div>
+    <canvas class="cinema__gl" aria-hidden="true"></canvas>
+    <div class="cinema__grain" aria-hidden="true"></div>
+
+    <div class="beat beat--hero">
+      <div class="wrap hero">
+        <p class="hero__kicker">NexusDownload <span>{{site.version}}</span></p>
+        <h1 class="hero__title">
+          <span class="hero__line"><span>From the cloud,</span></span>
+          <span class="hero__line"><span>down to you.</span></span>
+        </h1>
+        <p class="hero__sub">A download workbench for Windows.<br>Links, magnets, video and your cloud drives, all in one place.</p>
+        <div class="hero__actions">
+          <a class="btn btn--light btn--lg" href="{{site.downloadUrl}}">{{> icon-download}}Download free</a>
+          <a class="btn btn--glass btn--lg" href="/en/docs/">Quick start</a>
+        </div>
+      </div>
+      <div class="hero__foot wrap">
+        <div class="hero__facts"><span>For Windows 10 and 11</span><span>Free &amp; open source</span><span>Your data stays local</span></div>
+        {{> motion-toggle}}
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><span></span></div>
+    </div>
+
+    <div class="beat beat--lines" aria-hidden="true">
+      <p class="line"><b>Split it up.<br>Pull it together.</b><span>Large files download over multiple connections and are reassembled byte-complete.</span></p>
+      <p class="line"><b>Pick up exactly<br>where you left off.</b><span>Pause, lose the network, shut down. Every task picks up again.</span></p>
+      <p class="line"><b>Links, magnets, cloud drives.<br>One place.</b><span>No more switching between five different tools.</span></p>
+    </div>
+
+    <div class="beat beat--land">
+      <div class="land wrap">
+        <p class="land__name">NexusDownload</p>
+        {{> app-en}}
+        <div class="land__actions">
+          <a class="btn btn--ink btn--lg" href="{{site.downloadUrl}}">{{> icon-download}}Download {{site.version}}</a>
+          <a class="btn btn--ghost btn--lg" href="{{site.github}}" target="_blank" rel="noopener">{{> icon-github}}GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" id="features">
+  <header class="sec__head reveal">
+    <h2 class="h2">Quietly gets it done.</h2>
+    <p class="lead">No noise, no gimmicks. Every download looked after, from the first byte to the last step.</p>
+  </header>
+
+  <div class="bento">
+    <article class="tile tile--wide reveal">
+      <div class="tile__text"><h3>Multi-connection</h3><p>Each file is split into segments that download in parallel, then reassembled.</p></div>
+      <div class="viz viz--segs" aria-hidden="true"><i style="--p:0.92"></i><i style="--p:0.74"></i><i style="--p:1"></i><i style="--p:0.61"></i><i style="--p:0.88"></i><i style="--p:0.7"></i><i style="--p:0.95"></i><i style="--p:0.66"></i><i style="--p:0.81"></i><i style="--p:1"></i><i style="--p:0.58"></i><i style="--p:0.77"></i><i style="--p:0.69"></i><i style="--p:0.9"></i><i style="--p:0.83"></i><i style="--p:0.72"></i></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--resume" aria-hidden="true">
+        <div class="ring"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="27"/><circle class="ring__p" cx="32" cy="32" r="27"/></svg><b>62%</b></div>
+        <div><p>Paused</p><span class="pill">Resume</span></div>
+      </div>
+      <div class="tile__text"><h3>Resumable</h3><p>Pause, disconnect, reboot. It continues from the last byte. Expired cloud links are renewed for you.</p></div>
+    </article>
+    <article class="tile reveal">
+      <ul class="viz viz--check" aria-hidden="true">
+        <li><span>File</span><b>Documentary_Ep01.mkv</b></li>
+        <li><span>Size</span><b>4.3 GB</b></li>
+        <li><span>Resume</span><b class="ok">Supported</b></li>
+        <li><span>Free space</span><b class="ok">Enough</b></li>
+      </ul>
+      <div class="tile__text"><h3>Checked before it starts</h3><p>Name, size, resume support and free space, known before you hit start.</p></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--plan" aria-hidden="true">
+        <div><time>23:00</time><span>Start queue</span></div>
+        <div><time>02:00</time><span>No speed limit</span></div>
+        <div><time>07:00</time><span>Shut down when done</span></div>
+      </div>
+      <div class="tile__text"><h3>Queues &amp; schedules</h3><p>Queue it, schedule it, limit by time of day, shut down when done.</p></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--flow" aria-hidden="true"><span>Verify</span><i></i><span>Extract</span><i></i><span>Scan</span><i></i><span>Sort</span></div>
+      <div class="tile__text"><h3>Finishes the job</h3><p>Verify checksums, extract, scan and sort into folders automatically.</p></div>
+    </article>
+    <article class="tile reveal">
+      <div class="viz viz--keys" aria-hidden="true"><div><kbd>Alt</kbd><span>+</span><kbd>D</kbd></div><p><em></em>Link from clipboard</p></div>
+      <div class="tile__text"><h3>Add from anywhere</h3><p>Press Alt + D in any app, or send links from the browser extension or your phone.</p></div>
+    </article>
+    <article class="tile tile--wide reveal">
+      <div class="tile__text"><h3>Duplicate detection</h3><p>Already downloaded it? You'll be told first, so you can open the one you have.</p></div>
+      <div class="viz viz--dup" aria-hidden="true">
+        <div class="dlg">
+          <p><b>You already have this file</b><span>Project_assets_backup.zip, 3.2 GB, downloaded yesterday</span></p>
+          <div><span class="pill pill--ink">Open file</span><span class="pill">Download anyway</span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="sec sec--band">
+  <div class="wrap split">
+    <header class="reveal">
+      <h2 class="h2">Sign in.<br>Download your files.</h2>
+      <p class="lead">Browse your own cloud drives and shared links, then download with the same multi-connection, resumable engine.</p>
+      <p class="fine">Only files you have access to. No bypassing memberships or permissions.</p>
+      <a class="more" href="/en/docs/cloud-drives/">How cloud accounts work {{> icon-arrow}}</a>
+    </header>
+    <div class="accounts reveal" aria-label="Supported cloud drives">
+      <div class="accounts__head"><b>Cloud accounts</b><span>6</span></div>
+      <div class="acct"><i><img src="/assets/img/logos/baidu.png" alt=""></i><p><b>Baidu Netdisk</b><span>Signed in</span></p><div class="cap"><em style="--w:0.62"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/quark.png" alt=""></i><p><b>Quark</b><span>Signed in</span></p><div class="cap"><em style="--w:0.38"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/uc.png" alt=""></i><p><b>UC Drive</b><span>Signed in</span></p><div class="cap"><em style="--w:0.21"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/aliyun.png" alt=""></i><p><b>Aliyun Drive</b><span>Needs your own app key</span></p><div class="cap"><em style="--w:0.12"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/115.png" alt=""></i><p><b>115</b><span>Signed in</span></p><div class="cap"><em style="--w:0.74"></em></div></div>
+      <div class="acct"><i><img src="/assets/img/logos/123.png" alt=""></i><p><b>123 Pan</b><span>Signed in</span></p><div class="cap"><em style="--w:0.45"></em></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <header class="sec__head reveal">
+    <h2 class="h2">Your data stays on your machine.</h2>
+  </header>
+  <div class="trio">
+    <div class="reveal">{{> icon-folder}}<h3>Portable</h3><p>No installer, no registry. Delete the folder to uninstall.</p></div>
+    <div class="reveal">{{> icon-lock}}<h3>Encrypted sign-ins</h3><p>Stored with Windows DPAPI on this device only.</p></div>
+    <div class="reveal">{{> icon-code}}<h3>Open source</h3><p>Every line of code is public on GitHub.</p></div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="final__sky" aria-hidden="true"></div>
+  <div class="wrap final__body reveal">
+    <h2 class="h2 h2--xl">Start now.</h2>
+    <p class="lead">Free, open source, ready in three minutes.</p>
+    <div class="final__actions">
+      <a class="btn btn--ink btn--lg" href="{{site.downloadUrl}}">{{> icon-download}}Download free</a>
+      <a class="btn btn--ghost btn--lg" href="/en/docs/">Read the docs</a>
+    </div>
+  </div>
+</section>

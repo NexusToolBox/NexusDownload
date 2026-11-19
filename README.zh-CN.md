@@ -8,7 +8,7 @@
 [![许可证](https://img.shields.io/badge/License-AGPL--3.0-blue)](LICENSE)
 [![版本](https://img.shields.io/github/v/release/NexusToolBox/NexusDownload)](https://github.com/NexusToolBox/NexusDownload/releases/latest)
 
-[English](README.md) · [下载][releases] · [反馈问题][issues]
+[官网](https://nexusdl.papicure.de/) · [English](README.md) · [下载][releases] · [反馈问题][issues]
 
 ![下载](screenshots/nexus-downloads.png)
 ![网盘](screenshots/nexus-cloud.png)

@@ -1,0 +1,51 @@
+{
+  "langName": "English",
+  "otherLangName": "简体中文",
+  "otherLangShort": "中",
+  "skip": "Skip to content",
+  "nav": {
+    "home": "Home",
+    "docs": "Docs",
+    "download": "Download",
+    "changelog": "Changelog",
+    "github": "GitHub",
+    "cta": "Download free",
+    "menu": "Menu",
+    "lang": "Switch language",
+    "search": "Search"
+  },
+  "footer": {
+    "tagline": "A download workbench for Windows. Open source, free, and your data stays on your machine.",
+    "product": "Product",
+    "resources": "Resources",
+    "community": "Community",
+    "issues": "Report an issue",
+    "releases": "All releases",
+    "license": "License",
+    "made": "Open source under AGPL-3.0",
+    "privacy": "Data & privacy",
+    "faq": "FAQ"
+  },
+  "docs": {
+    "prev": "Previous",
+    "next": "Next",
+    "onThisPage": "On this page",
+    "edit": "Spotted a mistake?",
+    "editLink": "Let us know",
+    "search": "Search docs",
+    "menu": "Docs menu",
+    "top": "Back to top"
+  },
+  "search": {
+    "placeholder": "Search docs, downloads, changelog…",
+    "empty": "No results",
+    "hint": "Try “proxy”, “resume” or “Baidu”",
+    "nav": "Navigate",
+    "open": "Open",
+    "close": "Close"
+  },
+  "motion": {
+    "on": "Full motion",
+    "off": "Reduce motion"
+  }
+}

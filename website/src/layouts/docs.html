@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{htmlLang}}">
+<head>
+{{> head}}
+<link rel="stylesheet" href="/assets/css/docs.css">
+</head>
+<body class="page page--docs">
+{{> nav}}
+<div class="docs">
+  <aside class="docs__side">
+    <button class="docs__find" type="button" data-search-open>{{> icon-search}}<span>{{t.docs.search}}</span><kbd>Ctrl K</kbd></button>
+    <button class="docs__side-toggle" type="button" aria-expanded="false">{{t.docs.menu}}</button>
+    <nav class="docs-nav" aria-label="{{t.nav.docs}}">{{docsNav}}</nav>
+    <div class="docs__side-foot">
+      <a href="{{root}}/download/">{{> icon-download}}{{t.nav.download}} {{site.version}}</a>
+      <a href="{{site.issuesUrl}}" target="_blank" rel="noopener">{{> icon-github}}{{t.footer.issues}}</a>
+    </div>
+  </aside>
+  <main id="main" class="docs__main">
+    {{docsCrumb}}
+    <article class="prose">
+{{content}}
+    </article>
+    {{docsPager}}
+    <p class="docs__edit">{{t.docs.edit}} <a href="{{site.issuesUrl}}" target="_blank" rel="noopener">{{t.docs.editLink}}</a></p>
+  </main>
+  <aside class="docs__toc" aria-label="{{t.docs.onThisPage}}">
+    <p class="docs__toc-title">{{t.docs.onThisPage}}</p>
+    <ol data-toc></ol>
+    <a class="docs__top" href="#main">{{t.docs.top}} ↑</a>
+  </aside>
+</div>
+{{> footer}}
+</body>
+</html>

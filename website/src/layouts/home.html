@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="{{htmlLang}}">
+<head>
+{{> head}}
+<link rel="stylesheet" href="/assets/fonts/serif-sc.css">
+<link rel="stylesheet" href="/assets/css/home.css">
+<link rel="preload" href="/assets/img/hero.jpg" as="image" media="(min-aspect-ratio: 4/5)">
+<link rel="preload" href="/assets/img/hero-m.jpg" as="image" media="(max-aspect-ratio: 4/5)">
+<link rel="modulepreload" href="/assets/vendor/three.module.min.js">
+</head>
+<body class="page page--home is-dark">
+{{> nav}}
+<main id="main">
+{{content}}
+</main>
+{{> footer}}
+<script type="module" src="/assets/js/home/main.js"></script>
+</body>
+</html>

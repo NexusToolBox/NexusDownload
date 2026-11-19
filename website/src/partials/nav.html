@@ -1,0 +1,18 @@
+<a class="skip" href="#main">{{t.skip}}</a>
+<header class="nav" data-nav>
+  <div class="nav__inner">
+    <a class="brand" href="{{root}}/" aria-label="NexusDownload">{{> logo}}<span>NexusDownload</span></a>
+    <nav class="nav__links" id="nav-links" aria-label="{{t.nav.menu}}">
+      <a href="{{root}}/docs/"{{active.docs}}>{{t.nav.docs}}</a>
+      <a href="{{root}}/download/"{{active.download}}>{{t.nav.download}}</a>
+      <a href="{{root}}/changelog/"{{active.changelog}}>{{t.nav.changelog}}</a>
+      <a href="{{site.github}}" target="_blank" rel="noopener">{{t.nav.github}}</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="nav__search" type="button" data-search-open aria-label="{{t.nav.search}}">{{> icon-search}}<span>{{t.nav.search}}</span><kbd>Ctrl K</kbd></button>
+      <a class="nav__icon nav__lang" href="{{altUrl}}" hreflang="{{altHtmlLang}}" lang="{{altHtmlLang}}" title="{{t.nav.lang}}">{{t.otherLangShort}}</a>
+      <a class="btn btn--ink btn--sm nav__cta" href="{{site.downloadUrl}}">{{t.nav.cta}}</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="{{t.nav.menu}}"><span></span><span></span></button>
+    </div>
+  </div>
+</header>

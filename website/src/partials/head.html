@@ -1,0 +1,25 @@
+<meta charset="utf-8">
+<script>
+/* 动效模式：用户手动选择 > 网址参数 > 系统“减少动态效果”设置。html 上加 rm = 减少动效 */
+(function (d) {
+  var m = ''; try { m = localStorage.getItem('nx-motion') || ''; } catch (e) {}
+  var q = location.search.match(/motion=(full|reduce)/); if (q) m = q[1];
+  var rm = m ? m === 'reduce' : matchMedia('(prefers-reduced-motion: reduce)').matches;
+  d.className += ' js' + (rm ? ' rm' : '');
+})(document.documentElement);
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{page.title}}</title>
+<meta name="description" content="{{page.description}}">
+<link rel="canonical" href="{{canonical}}">
+<link rel="alternate" hreflang="{{htmlLang}}" href="{{page.url}}">
+<link rel="alternate" hreflang="{{altHtmlLang}}" href="{{altUrl}}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="{{page.title}}">
+<meta property="og:description" content="{{page.description}}">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F3F1ED">
+<link rel="preload" href="/assets/fonts/inter/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/inter.css">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/app.css">

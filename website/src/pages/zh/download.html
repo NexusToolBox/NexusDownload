@@ -1,0 +1,40 @@
+<!--
+title: 下载 - NexusDownload
+description: 下载 NexusDownload 最新版本。免费、开源、解压即用。
+layout: page
+nav: download
+-->
+<section class="wrap dl">
+  <div>
+    <h1 class="display">下载 NexusDownload</h1>
+    <p class="lead">免费、开源，解压即用。适用于 Windows 10 和 11。</p>
+    <div class="dl__card card">
+      <div class="dl__row">
+        {{> logo}}
+        <div>
+          <p class="dl__name">NexusDownload {{site.version}}</p>
+          <p class="dl__meta">便携版，{{site.releaseDate}} 发布</p>
+        </div>
+        <a class="btn btn--ink btn--lg" href="{{site.downloadUrl}}" target="_blank" rel="noopener">{{> icon-download}}下载</a>
+      </div>
+      <div class="dl__sub">
+        <a href="{{site.releasesUrl}}" target="_blank" rel="noopener">全部版本</a>
+        <a href="{{site.releasesUrl}}/latest" target="_blank" rel="noopener">校验值与发布说明</a>
+        <a href="{{site.github}}" target="_blank" rel="noopener">{{> icon-github}}源代码</a>
+      </div>
+    </div>
+  </div>
+  <div class="dl__visual" aria-hidden="true">{{> app-zh}}</div>
+</section>
+
+<section class="wrap">
+  <div class="dl-facts">
+    <div class="reveal">{{> icon-monitor}}<h2>系统要求</h2><p>Windows 10 或 11，64 位。不需要另装运行环境。</p></div>
+    <div class="reveal">{{> icon-folder}}<h2>安装与卸载</h2><p>解压到任意文件夹，双击运行。删除文件夹就是卸载。</p></div>
+    <div class="reveal">{{> icon-refresh}}<h2>更新</h2><p>有新版本时软件会提示，点一下完成更新，记录和账号都保留。</p></div>
+  </div>
+  <div class="dl-note reveal">
+    <div class="note note--warn"><strong>第一次打开时看到“Windows 已保护你的电脑”</strong>点“更多信息”，再点“仍要运行”。这是因为软件没有购买代码签名证书，源代码完全公开，可以在 <a href="{{site.github}}" target="_blank" rel="noopener">GitHub</a> 检查。</div>
+    <p class="lead" style="font-size:15px">刚上手？看看 <a class="link" href="/docs/">快速开始</a>，三分钟就够。</p>
+  </div>
+</section>

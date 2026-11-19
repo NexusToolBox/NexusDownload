@@ -8,7 +8,7 @@ A portable Windows download manager based on Motrix Turbo 2.4.1, with cloud-driv
 [![License](https://img.shields.io/badge/License-AGPL--3.0-blue)](LICENSE)
 [![Version](https://img.shields.io/github/v/release/NexusToolBox/NexusDownload)](https://github.com/NexusToolBox/NexusDownload/releases/latest)
 
-[简体中文](README.zh-CN.md) · [Download][releases] · [Issues][issues]
+[Website](https://nexusdl.papicure.de/en/) · [简体中文](README.zh-CN.md) · [Download][releases] · [Issues][issues]
 
 ![Downloads](screenshots/nexus-downloads.png)
 ![Cloud drives](screenshots/nexus-cloud.png)

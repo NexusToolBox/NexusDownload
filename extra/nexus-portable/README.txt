@@ -1,4 +1,4 @@
-NexusDownload 1.5.2 · Windows 10 / 11 x64 便携版
+NexusDownload 1.5.3 · Windows 10 / 11 x64 便携版
 
 将 ZIP 解压到可写文件夹，双击 NexusDownload.exe。保留旁边的 data 文件夹，下载、设置、任务与断点保存在便携目录中。关闭窗口后仍在托盘运行，从托盘退出会暂停任务。
 

@@ -82,8 +82,7 @@ button { font: inherit; color: inherit; }
 .nav.is-scrolled { border-bottom-color: color-mix(in srgb, var(--line) 80%, transparent); }
 .nav__inner { height: 100%; width: min(100% - var(--gutter) * 2, 1320px); margin: auto; display: flex; align-items: center; gap: 28px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -.025em; font-size: 16px; }
-.logo { flex-shrink: 0; }
-.brand .logo { width: 26px; height: 26px; }
+.brand .logo { width: 26px; height: 26px; flex-shrink: 0; }
 .nav__links { display: flex; gap: 2px; margin-right: auto; }
 .nav__links a { padding: 6px 12px; border-radius: 8px; font-size: 14.5px; color: var(--ink-2); transition: color .2s, background-color .2s; }
 .nav__links a:hover { color: var(--ink); background: rgba(34,38,46,.05); }
@@ -294,7 +293,7 @@ html:not(.js) .motion-toggle { display: none; }
 .dl .eyebrow { margin-bottom: 16px; }
 .dl__card { margin-top: 36px; padding: 8px; }
 .dl__row { display: flex; align-items: center; gap: 16px; padding: 14px 14px 14px 16px; }
-.dl__row .logo { width: 46px; height: 46px; }
+.dl__badge { width: 46px; height: 46px; color: var(--ink); }
 .dl__name { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: -.02em; }
 .dl__meta { margin: 0; font-size: 13.5px; color: var(--muted); }
 .dl__row .btn { margin-left: auto; }

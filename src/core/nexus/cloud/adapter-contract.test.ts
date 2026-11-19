@@ -112,6 +112,20 @@ for (const platform of ['quark', 'uc', 'baidu'] as const) {
             platform === 'baidu'
               ? { errno: 8888 }
               : { status: 400, code: 500, message: '风控安全验证' }
+        else if (url.pathname === '/api/loginStatus')
+          data = {
+            errno: 0,
+            login_info: {
+              username: 'Fixture',
+              photo_url: 'http://himg.bdimg.com/sample',
+            },
+          }
+        else if (url.pathname === '/account/info')
+          data = {
+            success: true,
+            code: 'OK',
+            data: { nickname: 'Fixture', avatarUri: '//image.uc.cn/sample' },
+          }
         else if (url.pathname.includes('gettemplatevariable'))
           data = { errno: 0, result: { bdstoken: secret } }
         else if (url.pathname.endsWith('/token'))
@@ -199,6 +213,29 @@ for (const platform of ['quark', 'uc', 'baidu'] as const) {
         },
       }
     }
+    it('selects the official account avatar field and sends the expected site context', async () => {
+      const { adapter, calls } = setup()
+      expect(await adapter.fetchProfile()).toMatchObject({
+        nickname: 'Fixture',
+        avatar:
+          platform === 'baidu'
+            ? 'https://himg.bdimg.com/sample'
+            : 'https://image.uc.cn/sample',
+        avatarField:
+          platform === 'baidu' ? 'login_info.photo_url' : 'data.avatarUri',
+      })
+      expect(calls).toHaveLength(1)
+      const expected = {
+        baidu: [
+          'https://pan.baidu.com/api/loginStatus',
+          'https://pan.baidu.com/disk/main',
+        ],
+        quark: ['https://pan.quark.cn/account/info', 'https://pan.quark.cn/'],
+        uc: ['https://drive.uc.cn/account/info', 'https://drive.uc.cn/'],
+      }[platform]
+      expect(calls[0].url.href).toBe(expected[0])
+      expect(calls[0].headers.get('Referer')).toBe(expected[1])
+    })
     it('lists original metadata including files larger than 4 GiB, resolves and renews with matching identity', async () => {
       const { adapter, calls } = setup()
       const files = await adapter.listFiles('0')

@@ -1,11 +1,17 @@
 import { mkdir, readFile, rm } from 'node:fs/promises'
+import { isIP } from 'node:net'
 import path from 'node:path'
 import writeFileAtomic from 'write-file-atomic'
 
 export interface FetchedProfile {
   nickname: string
   avatar: string
+  avatarField?: string
   fields: string[]
+}
+export interface ProfileAvatar {
+  address: string
+  field: string
 }
 const record = (value: unknown): Record<string, unknown> =>
   value && typeof value === 'object' && !Array.isArray(value)
@@ -13,12 +19,33 @@ const record = (value: unknown): Record<string, unknown> =>
     : {}
 const at = (value: unknown, key: string): unknown =>
   key.split('.').reduce<unknown>((v, part) => record(v)[part], value)
+function safeImageUrl(url: URL) {
+  const host = url.hostname.replace(/\.$/u, '')
+  return (
+    url.protocol === 'https:' &&
+    !url.username &&
+    !url.password &&
+    !url.port &&
+    host.includes('.') &&
+    !isIP(host) &&
+    !/\.(?:localhost|local)$/u.test(host)
+  )
+}
+
 function imageAddress(value: unknown): string {
   if (typeof value === 'string') {
+    const address = value.trim()
+    if (!address || address.length > 8192) return ''
     try {
-      const url = new URL(value.startsWith('//') ? `https:${value}` : value)
-      if (url.protocol === 'https:' && !url.username && !url.password)
+      const url = new URL(
+        address.startsWith('//') ? `https:${address}` : address
+      )
+      // Some legacy account responses still advertise HTTP. Never request it over HTTP.
+      if (url.protocol === 'http:' && !url.port) url.protocol = 'https:'
+      if (safeImageUrl(url)) {
+        url.hash = ''
         return url.href
+      }
     } catch {
       /* Missing or malformed image field. */
     }
@@ -51,16 +78,38 @@ export function parseProfile(
   const nickname = responses
     .flatMap((r) => names.map((key) => at(r, key)))
     .find((v) => typeof v === 'string' && v.trim())
-  const avatar =
-    responses
-      .flatMap((r) => avatars.map((key) => imageAddress(at(r, key))))
-      .find(Boolean) ?? ''
+  const avatar = responses
+    .flatMap((r) =>
+      avatars.map((field) => ({ field, address: imageAddress(at(r, field)) }))
+    )
+    .find(({ address }) => address)
   return {
     nickname: typeof nickname === 'string' ? nickname.trim().slice(0, 256) : '',
-    avatar,
+    avatar: avatar?.address ?? '',
+    avatarField: avatar?.field,
     fields: [...fields],
   }
 }
+
+// The Baidu disk page publishes this profile field in its own bootstrap data.
+export function baiduWindowAvatar(value: unknown): ProfileAvatar | undefined {
+  if (typeof value !== 'string') return undefined
+  const address = imageAddress(value)
+  if (!address) return undefined
+  const host = new URL(address).hostname
+  if (
+    ![
+      'bdimg.com',
+      'baidu.com',
+      'baidupcs.com',
+      'bcebos.com',
+      'bdstatic.com',
+    ].some((domain) => host === domain || host.endsWith(`.${domain}`))
+  )
+    return undefined
+  return { address, field: 'window.locals.userInfo.photo_url' }
+}
+
 function imageType(bytes: Buffer): string | undefined {
   if (
     bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
@@ -79,15 +128,39 @@ export async function cacheAvatar(
   directory: string,
   id: string,
   address: string,
-  request = fetch
+  request = fetch,
+  context: { referer?: string; userAgent?: string } = {}
 ) {
   if (!/^account-[a-zA-Z0-9-]+$/.test(id)) throw new Error('Invalid account id')
-  if (!imageAddress(address)) return undefined
-  const response = await request(address, {
-    signal: AbortSignal.timeout(15000),
-    credentials: 'omit',
-  })
-  if (!response.ok) return undefined
+  const initial = imageAddress(address)
+  if (!initial) return undefined
+  let url = new URL(initial)
+  const signal = AbortSignal.timeout(15000)
+  const headers = new Headers({ Accept: 'image/*' })
+  if (context.referer) headers.set('Referer', context.referer)
+  if (context.userAgent) headers.set('User-Agent', context.userAgent)
+  let response: Response | undefined
+  for (let hop = 0; hop <= 4; hop++) {
+    const candidate = await request(url.href, {
+      signal,
+      headers: new Headers(headers),
+      credentials: 'omit',
+      redirect: 'manual',
+    })
+    if (candidate.ok) {
+      response = candidate
+      break
+    }
+    await candidate.body?.cancel()
+    const location = candidate.headers.get('location')
+    if (![301, 302, 303, 307, 308].includes(candidate.status) || !location)
+      return undefined
+    const next = URL.parse(location, url)
+    if (!next || !safeImageUrl(next)) return undefined
+    if (next.origin !== url.origin) headers.delete('Referer')
+    url = next
+  }
+  if (!response) return undefined
   const reader = response.body?.getReader()
   if (!reader) return undefined
   const parts: Buffer[] = []

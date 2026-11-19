@@ -12,6 +12,7 @@ const state = vi.hoisted(() => ({
   clear: vi.fn(async () => undefined),
   url: 'https://pan.quark.cn/',
   stored: null as string | null,
+  photo: undefined as string | undefined,
 }))
 vi.mock('electron', async () => {
   const { EventEmitter } = await import('node:events')
@@ -21,7 +22,11 @@ vi.mock('electron', async () => {
       getURL: () => state.url,
       isLoading: () => false,
       executeJavaScript: vi.fn(async (script: string) =>
-        script.includes('localStorage') ? state.stored : undefined
+        script.includes('localStorage')
+          ? state.stored
+          : script.includes('photo_url')
+            ? state.photo
+            : undefined
       ),
     })
     constructor(options: Record<string, unknown>) {
@@ -70,6 +75,7 @@ afterEach(() => {
   state.clear.mockClear()
   state.url = 'https://pan.quark.cn/'
   state.stored = null
+  state.photo = undefined
 })
 describe('isolated official login host', () => {
   it('intercepts only the exact OAuth callback with matching state', async () => {
@@ -167,6 +173,48 @@ describe('isolated official login host', () => {
     expect(typeof (await result)).toBe('string')
     expect(validate).toHaveBeenCalledTimes(2)
   })
+  it.each([
+    ['https://pan.baidu.com/disk/main', 'https://himg.bdimg.com/fixture', true],
+    [
+      'https://pan.baidu.com/disk/main',
+      'https://unrelated.invalid/fixture',
+      false,
+    ],
+    ['https://pan.baidu.com/s/shared', 'https://himg.bdimg.com/fixture', false],
+  ] as const)(
+    'only accepts Baidu avatar from its validated profile page (%s)',
+    async (page, photo, accepted) => {
+      vi.useFakeTimers()
+      state.url = page
+      state.photo = photo
+      const value = randomBytes(24).toString('hex')
+      state.cookies = [
+        { name: 'BDUSS', value },
+        { name: 'STOKEN', value },
+      ]
+      const validate = vi.fn(async (credential: string) => credential)
+      const onAvatar = vi.fn(() => {
+        expect(validate).toHaveBeenCalledOnce()
+        expect(state.clear).not.toHaveBeenCalled()
+      })
+      const result = loginCloud(
+        'baidu',
+        validate,
+        undefined,
+        undefined,
+        onAvatar
+      )
+      await vi.advanceTimersByTimeAsync(2500)
+      await result
+      if (accepted)
+        expect(onAvatar).toHaveBeenCalledExactlyOnceWith({
+          address: photo,
+          field: 'window.locals.userInfo.photo_url',
+        })
+      else expect(onAvatar).not.toHaveBeenCalled()
+      expect(state.clear).toHaveBeenCalledOnce()
+    }
+  )
   it('reads 123 authorToken in the main process and validates before closing', async () => {
     vi.useFakeTimers()
     state.url = 'https://www.123pan.com/'

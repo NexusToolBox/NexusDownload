@@ -110,11 +110,14 @@ export class QuarkUcAdapter implements CloudAdapter {
     )
   }
   async fetchProfile() {
-    const { json } = await this.call(`${this.origin}/account/info`)
+    const { json } = await this.call(`${this.origin}/account/info`, undefined, {
+      Referer: `${this.origin}/`,
+      Accept: 'application/json, text/plain, */*',
+    })
     return parseProfile(
       [json],
       ['data.nickname'],
-      ['data.avatarUri', 'data.avatar_url', 'data.avatar']
+      ['data.avatarUri', 'data.avatarUrl', 'data.avatar_url', 'data.avatar']
     )
   }
   async checkLogin() {

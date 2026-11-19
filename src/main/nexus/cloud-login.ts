@@ -1,5 +1,9 @@
 import { randomUUID } from 'node:crypto'
 import path from 'node:path'
+import {
+  baiduWindowAvatar,
+  type ProfileAvatar,
+} from '@core/nexus/cloud/account-profile'
 import type { CredentialCipher } from '@core/nexus/cloud/credential-broker'
 import {
   CLOUD_LOGIN_ROOTS,
@@ -45,12 +49,25 @@ function fitLoginPage(win: BrowserWindow) {
   win.webContents.on('did-finish-load', () => void resizePage())
   win.on('resize', () => void resizePage())
 }
-/** Remote login pages receive no preload or application IPC. Only validated credentials leave the host. */
+const baiduProfilePage = (address: string) => {
+  try {
+    const { origin, pathname } = new URL(address)
+    return (
+      origin === 'https://pan.baidu.com' &&
+      ['/', '/disk/main', '/disk/home'].includes(pathname)
+    )
+  } catch {
+    return false
+  }
+}
+
+/** Remote login pages receive no preload or application IPC. */
 export async function loginCloud(
   platform: CloudPlatform,
   validate: (credential: string) => Promise<string>,
   diagnostic?: (step: LoginStep, reason: string) => void,
-  proxy: Electron.ProxyConfig = { mode: 'direct' }
+  proxy: Electron.ProxyConfig = { mode: 'direct' },
+  onAvatar?: (avatar: ProfileAvatar) => void
 ): Promise<string> {
   if (platform === 'aliyun') throw new Error('cloud.login')
   const isolated = session.fromPartition(
@@ -220,6 +237,33 @@ export async function loginCloud(
         }
         step = 'validate'
         const credential = await validate(candidate)
+        if (win.isDestroyed() || finished) return
+        if (
+          platform === 'baidu' &&
+          onAvatar &&
+          baiduProfilePage(win.webContents.getURL())
+        ) {
+          try {
+            // Read the same signed-in profile field consumed by Baidu's own disk page.
+            const photo: unknown =
+              await win.webContents.executeJavaScript(`(() => {
+              if (location.origin !== 'https://pan.baidu.com' || !['/', '/disk/main', '/disk/home'].includes(location.pathname)) return;
+              const account = window.locals;
+              if (account?.isLogin !== true && account?.isLogin !== 1) return;
+              const photo = account.userInfo?.photo_url;
+              return typeof photo === 'string' && photo.length <= 8192 ? photo : undefined;
+            })()`)
+            if (
+              !win.isDestroyed() &&
+              baiduProfilePage(win.webContents.getURL())
+            ) {
+              const avatar = baiduWindowAvatar(photo)
+              if (avatar) onAvatar(avatar)
+            }
+          } catch {
+            // Profile lookup must not roll back a validated login.
+          }
+        }
         if (win.isDestroyed() || finished) return
         finished = true
         resolve(credential)

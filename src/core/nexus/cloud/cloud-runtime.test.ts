@@ -10,7 +10,7 @@ import type { CloudPlatform } from '@shared/schemas/nexus-cloud'
 import { TaskStatus } from '@shared/types/task'
 import { makeDownloadTask } from '@test-utils/task'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { FetchedProfile } from './account-profile'
+import type { FetchedProfile, ProfileAvatar } from './account-profile'
 import type { CloudAdapter } from './cloud-adapter'
 import { CloudError } from './cloud-adapter'
 import type { CloudHttp } from './cloud-http'
@@ -27,7 +27,8 @@ describe('cloud runtime safety boundaries', () => {
     shareOnly = false,
     webValidation = false,
     fetchProfile?: () => Promise<FetchedProfile>,
-    health?: CloudAdapter['health']
+    health?: CloudAdapter['health'],
+    windowAvatar?: ProfileAvatar
   ) {
     const root = await mkdtemp(path.join(os.tmpdir(), 'nexus-runtime-'))
     cleanups.push(() => rm(root, { recursive: true, force: true }))
@@ -89,22 +90,28 @@ describe('cloud runtime safety boundaries', () => {
       }),
     } as unknown as CloudAdapter
     let httpClient: CloudHttp | undefined
+    const diagnostic = vi.fn()
     const runtime = new CloudRuntime({
       broker,
       engine,
       tasks,
       persistTask: async () => undefined,
       changed: () => undefined,
-      login: async (_platform, validate) =>
-        webValidation ? validate(secret) : secret,
+      login: async (_platform, validate, onAvatar) => {
+        if (!webValidation) return secret
+        const credential = await validate(secret)
+        if (windowAvatar) onAvatar?.(windowAvatar)
+        return credential
+      },
       diagnosticsEnabled: () => true,
+      diagnostic,
       mutate: async (_ids, fn) => fn(),
       adapterFactory: (_platform, http) => {
         httpClient = http
         return adapter
       },
     })
-    if (platform !== 'quark') {
+    if (platform !== 'quark' && !webValidation) {
       await broker.load()
       await broker.update('account-test', () =>
         platform === 'aliyun'
@@ -130,7 +137,7 @@ describe('cloud runtime safety boundaries', () => {
     }
     await runtime.start()
     cleanups.push(() => runtime.stop())
-    if (platform === 'quark') await runtime.login('quark')
+    if (platform === 'quark' || webValidation) await runtime.login(platform)
     const account = runtime.snapshot().accounts[0]
     let count = 0
     runtime.setCreate(async (req) => {
@@ -168,6 +175,7 @@ describe('cloud runtime safety boundaries', () => {
       root,
       secret,
       selection,
+      diagnostic,
       getHttp: () => httpClient,
       setUrl: (value: string) => {
         url = value
@@ -196,6 +204,89 @@ describe('cloud runtime safety boundaries', () => {
       expect(f.runtime.snapshot().accounts).toHaveLength(0)
       const { access } = await import('node:fs/promises')
       await expect(access(avatar)).rejects.toThrow()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+  it('retries a missing avatar on demand and logs only the selected field name', async () => {
+    const address = 'https://avatar.example/fixture?test=private-image-value'
+    const request = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+      .mockResolvedValueOnce(new Response(Buffer.from([255, 216, 255, 0])))
+    vi.stubGlobal('fetch', request)
+    try {
+      const f = await fixture('quark', false, true, async () => ({
+        nickname: 'Private Profile Name',
+        avatar: address,
+        avatarField: 'data.avatarUri',
+        fields: ['data.nickname', 'data.avatarUri'],
+      }))
+      expect(f.runtime.snapshot().accounts[0].avatarData).toBeUndefined()
+      await f.runtime.checkHealth(f.account.id)
+      expect(f.runtime.snapshot().accounts[0].avatarData).toMatch(
+        /^data:image\/jpeg;base64,/u
+      )
+      expect(request).toHaveBeenCalledTimes(2)
+      expect(f.diagnostic).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          path: '/account/profile',
+          profile: {
+            nickname: '已取到',
+            avatar: '已取到',
+            avatarField: 'data.avatarUri',
+          },
+        })
+      )
+      const logs = JSON.stringify(f.diagnostic.mock.calls)
+      expect(
+        logs.includes('private-image-value') ||
+          logs.includes('Private Profile Name')
+      ).toBe(false)
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+  it('caches the verified Baidu login-page avatar when the API image cannot be fetched', async () => {
+    const request = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+      .mockResolvedValueOnce(new Response(Buffer.from([255, 216, 255, 0])))
+    vi.stubGlobal('fetch', request)
+    try {
+      const windowAvatar = {
+        address: 'https://himg.bdimg.com/from-page',
+        field: 'window.locals.userInfo.photo_url',
+      }
+      const f = await fixture(
+        'baidu',
+        false,
+        true,
+        async () => ({
+          nickname: 'Fixture',
+          avatar: 'https://himg.bdimg.com/from-api',
+          avatarField: 'login_info.photo_url',
+          fields: ['login_info.photo_url'],
+        }),
+        undefined,
+        windowAvatar
+      )
+      expect(f.runtime.snapshot().accounts[0].avatarData).toMatch(
+        /^data:image\/jpeg;base64,/u
+      )
+      expect(request.mock.calls.map(([url]) => url)).toEqual([
+        'https://himg.bdimg.com/from-api',
+        windowAvatar.address,
+      ])
+      expect(f.diagnostic).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          profile: {
+            nickname: '已取到',
+            avatar: '已取到',
+            avatarField: windowAvatar.field,
+          },
+        })
+      )
     } finally {
       vi.unstubAllGlobals()
     }

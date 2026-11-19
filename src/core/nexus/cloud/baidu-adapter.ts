@@ -72,17 +72,19 @@ export class BaiduAdapter implements CloudAdapter {
     return this.bdstoken
   }
   async fetchProfile() {
+    const profile = await this.call(`${base}/api/loginStatus`, undefined, {
+      Referer: `${base}/disk/main`,
+      Accept: 'application/json, text/plain, */*',
+      'X-Requested-With': 'XMLHttpRequest',
+    }).catch(() => ({}))
+    const names = ['login_info.username', 'result.username']
+    const avatars = ['login_info.photo_url']
+    const result = parseProfile([profile], names, avatars)
+    if (result.nickname) return result
     const nickname = await this.call(
       `${base}/api/gettemplatevariable?clienttype=0&app_id=250528&web=1&fields=${encode('["username"]')}`
     ).catch(() => ({}))
-    const avatar = await this.call(
-      `${base}/api/loginStatus?clienttype=0&web=1`
-    ).catch(() => ({}))
-    return parseProfile(
-      [nickname, avatar],
-      ['result.username'],
-      ['login_info.photo_url']
-    )
+    return parseProfile([profile, nickname], names, avatars)
   }
   async checkLogin() {
     await this.token(true)

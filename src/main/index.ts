@@ -3607,7 +3607,7 @@ async function initializeMainProcess(): Promise<void> {
       eventBus.emit(Events.NexusWorkspaceChanged)
       publishTaskUpdate()
     },
-    login: (platform, validate) =>
+    login: (platform, validate, onAvatar) =>
       loginCloud(
         platform,
         validate,
@@ -3620,7 +3620,8 @@ async function initializeMainProcess(): Promise<void> {
             },
           })
         },
-        routing.sessionConfig(true)
+        routing.sessionConfig(true),
+        onAvatar
       ),
     diagnosticsEnabled: () =>
       nexusWorkspace.getPreferences().diagnosticsEnabled,

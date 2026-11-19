@@ -35,10 +35,15 @@ import { getNexusDiskSpace } from '../disk-space'
 import { duplicateTask } from '../duplicate-download'
 import { AccountGovernor } from './account-governor'
 import { inspectAccountHealth, readAccountDetails } from './account-health'
-import { cacheAvatar, readAvatar, removeAvatar } from './account-profile'
+import {
+  cacheAvatar,
+  type ProfileAvatar,
+  readAvatar,
+  removeAvatar,
+} from './account-profile'
 import { chooseCloudAccount } from './account-selector'
 import { AliyunAdapter, exchangeAliyunCode } from './aliyun-adapter'
-import { BaiduAdapter } from './baidu-adapter'
+import { BAIDU_WEB_UA, BaiduAdapter } from './baidu-adapter'
 import {
   type AdapterFile,
   type CloudAdapter,
@@ -57,9 +62,17 @@ import { resolveKouling } from './kouling'
 import { Pan115Adapter } from './pan115-adapter'
 import { Pan123Adapter } from './pan123-adapter'
 import { pan123PasswordLogin } from './pan123-auth'
-import { QuarkUcAdapter } from './quark-uc-adapter'
+import { QUARK_UA, QuarkUcAdapter, UC_UA } from './quark-uc-adapter'
 import { renewDownload } from './renewal'
 import { diagnosticPath, requestPlatform } from './request-diagnostics'
+
+const avatarRequestContext: Partial<
+  Record<CloudPlatform, { referer: string; userAgent: string }>
+> = {
+  baidu: { referer: 'https://pan.baidu.com/', userAgent: BAIDU_WEB_UA },
+  quark: { referer: 'https://pan.quark.cn/', userAgent: QUARK_UA },
+  uc: { referer: 'https://drive.uc.cn/', userAgent: UC_UA },
+}
 
 const sessionSchema = z.object({
   input: z.string().optional(),
@@ -173,7 +186,12 @@ export class CloudRuntime {
   private avatarData = new Map<string, string>()
   private profileDiagnostics = new Map<
     string,
-    { nickname: boolean; avatar: boolean; fields: string[] }
+    {
+      nickname: boolean
+      avatar: boolean
+      avatarField?: string
+      fields: string[]
+    }
   >()
   private get avatarDirectory() {
     return path.join(this.options.broker.directory, 'avatars')
@@ -208,7 +226,8 @@ export class CloudRuntime {
       changed: () => void
       login: (
         platform: CloudPlatform,
-        validate: (credential: string) => Promise<string>
+        validate: (credential: string) => Promise<string>,
+        onAvatar?: (avatar: ProfileAvatar) => void
       ) => Promise<string>
       diagnosticsEnabled?: () => boolean
       diagnostic?: (
@@ -508,7 +527,8 @@ export class CloudRuntime {
       // A logout while a request was in flight cannot restore that account.
       if (!this.state.accounts.includes(account)) continue
       account.health = health
-      if (health.login === 'valid') await this.refreshProfile(account)
+      if (health.login === 'valid')
+        await this.refreshProfile(account, { retryMissing: force })
       if (
         health.login === 'expired' &&
         this.governor.snapshot(account.id, account.platform).reason !==
@@ -518,69 +538,102 @@ export class CloudRuntime {
       await this.persist()
     }
   }
-  private async refreshProfile(account: (typeof this.state.accounts)[number]) {
+  private async refreshProfile(
+    account: (typeof this.state.accounts)[number],
+    {
+      retryMissing = false,
+      relogin = false,
+      windowAvatar,
+    }: {
+      retryMissing?: boolean
+      relogin?: boolean
+      windowAvatar?: ProfileAvatar
+    } = {}
+  ) {
     const adapter = this.adapter(account.platform, account.id)
     if (!adapter.fetchProfile) return
-    try {
-      const result = await adapter.fetchProfile()
-      if (!this.state.accounts.includes(account) || this.stopping) return
-      const previous = account.profile
-      const now = Date.now()
+    const result = await adapter.fetchProfile().catch(() => undefined)
+    if (!this.state.accounts.includes(account) || this.stopping) return
+    const previous = account.profile
+    const now = Date.now()
+    let avatarField = result?.avatarField
+    const canUpdate = result || windowAvatar
+    if (canUpdate) {
       account.profile = {
         ...previous,
-        nickname: result.nickname || previous?.nickname || '',
+        nickname: result?.nickname || previous?.nickname || '',
         readAt: now,
       }
       if (
+        relogin ||
         !previous?.avatarCheckedAt ||
-        now - previous.avatarCheckedAt >= 86400000
+        now - previous.avatarCheckedAt >= 86400000 ||
+        (retryMissing && !this.avatarData.has(account.id))
       ) {
         account.profile.avatarCheckedAt = now
-        const file = result.avatar
-          ? await cacheAvatar(
-              this.avatarDirectory,
-              account.id,
-              result.avatar
-            ).catch(() => undefined)
+        const apiAvatar = result?.avatar
+          ? { address: result.avatar, field: result.avatarField }
           : undefined
-        if (!this.state.accounts.includes(account)) {
-          await removeAvatar(this.avatarDirectory, file)
-          return
-        }
-        if (file) {
-          if (previous?.avatarPath !== file)
-            await removeAvatar(this.avatarDirectory, previous?.avatarPath)
-          account.profile.avatarPath = file
+        for (const candidate of [apiAvatar, windowAvatar]) {
+          if (
+            !candidate ||
+            (candidate === windowAvatar &&
+              apiAvatar &&
+              apiAvatar.address === candidate.address)
+          )
+            continue
+          avatarField ??= candidate.field
+          const file = await cacheAvatar(
+            this.avatarDirectory,
+            account.id,
+            candidate.address,
+            this.options.fetch,
+            avatarRequestContext[account.platform]
+          ).catch(() => undefined)
+          if (!file) continue
+          if (!this.state.accounts.includes(account)) {
+            await removeAvatar(this.avatarDirectory, file).catch(
+              () => undefined
+            )
+            return
+          }
           const image = await readAvatar(this.avatarDirectory, file)
-          if (image) this.avatarData.set(account.id, image)
+          if (!this.state.accounts.includes(account)) return
+          if (image) {
+            account.profile.avatarPath = file
+            this.avatarData.set(account.id, image)
+            avatarField = candidate.field
+            if (previous?.avatarPath !== file)
+              await removeAvatar(
+                this.avatarDirectory,
+                previous?.avatarPath
+              ).catch(() => undefined)
+            break
+          }
         }
       }
-      this.profileDiagnostics.set(account.id, {
-        nickname: !!result.nickname,
-        avatar: !!this.avatarData.get(account.id),
-        fields: result.fields,
-      })
-      this.recordRequest({
-        at: now,
-        platform: account.platform,
-        path: '/account/profile',
-        status: 200,
-        fields:
-          !result.nickname || !this.avatarData.has(account.id)
-            ? result.fields
-            : [],
-        profile: {
-          nickname: result.nickname ? '已取到' : '未取到',
-          avatar: this.avatarData.has(account.id) ? '已取到' : '未取到',
-        },
-      })
-    } catch {
-      this.profileDiagnostics.set(account.id, {
-        nickname: false,
-        avatar: !!this.avatarData.get(account.id),
-        fields: [],
-      })
     }
+    if (!this.state.accounts.includes(account) || this.stopping) return
+    const diagnostic = {
+      nickname: !!result?.nickname,
+      avatar: this.avatarData.has(account.id),
+      avatarField,
+      fields: result?.fields ?? [],
+    }
+    this.profileDiagnostics.set(account.id, diagnostic)
+    this.recordRequest({
+      at: now,
+      platform: account.platform,
+      path: '/account/profile',
+      status: canUpdate ? 200 : 0,
+      fields:
+        !diagnostic.nickname || !diagnostic.avatar ? diagnostic.fields : [],
+      profile: {
+        nickname: diagnostic.nickname ? '已取到' : '未取到',
+        avatar: diagnostic.avatar ? '已取到' : '未取到',
+        avatarField,
+      },
+    })
   }
   async updateAccount(raw: unknown) {
     const req = cloudAccountUpdateSchema.parse(raw)
@@ -659,6 +712,7 @@ export class CloudRuntime {
     try {
       let cookie: string
       let webValidated = false
+      let windowAvatar: ProfileAvatar | undefined
       if (
         platform === '123' &&
         typeof req !== 'string' &&
@@ -714,31 +768,37 @@ export class CloudRuntime {
         }
         cookie = JSON.stringify(credential)
       } else
-        cookie = await this.options.login(platform, async (credential) => {
-          let candidate = credential
-          const http = new CloudHttp({
-            fetch: this.options.fetch,
-            platform,
-            cookie: () => candidate,
-            merge: async (cookies) => {
-              if (platform !== '123')
-                candidate = mergeCookies(candidate, cookies)
-            },
-            diagnostic: (record) => this.recordRequest(record),
-          })
-          const adapter =
-            this.options.adapterFactory?.(platform, http) ??
-            (platform === '123'
-              ? new Pan123Adapter(http)
-              : platform === '115'
-                ? new Pan115Adapter(http)
-                : platform === 'baidu'
-                  ? new BaiduAdapter(http)
-                  : new QuarkUcAdapter(platform as 'quark' | 'uc', http))
-          await adapter.checkLogin()
-          webValidated = true
-          return candidate
-        })
+        cookie = await this.options.login(
+          platform,
+          async (credential) => {
+            let candidate = credential
+            const http = new CloudHttp({
+              fetch: this.options.fetch,
+              platform,
+              cookie: () => candidate,
+              merge: async (cookies) => {
+                if (platform !== '123')
+                  candidate = mergeCookies(candidate, cookies)
+              },
+              diagnostic: (record) => this.recordRequest(record),
+            })
+            const adapter =
+              this.options.adapterFactory?.(platform, http) ??
+              (platform === '123'
+                ? new Pan123Adapter(http)
+                : platform === '115'
+                  ? new Pan115Adapter(http)
+                  : platform === 'baidu'
+                    ? new BaiduAdapter(http)
+                    : new QuarkUcAdapter(platform as 'quark' | 'uc', http))
+            await adapter.checkLogin()
+            webValidated = true
+            return candidate
+          },
+          (avatar) => {
+            windowAvatar = avatar
+          }
+        )
       await this.options.broker.update(id, () => cookie)
       this.adapters.delete(id)
       if (previousState?.state === 'paused') await this.governor.resume(id)
@@ -787,7 +847,7 @@ export class CloudRuntime {
         )
         if (this.state.accounts.includes(loggedIn)) {
           loggedIn.health = health
-          await this.refreshProfile(loggedIn)
+          await this.refreshProfile(loggedIn, { relogin: true, windowAvatar })
         }
       } else await this.checkHealth(id)
       this.needsLocalLogin.delete(id)
@@ -1848,6 +1908,7 @@ export class CloudRuntime {
           platform: account.platform,
           nickname: result?.nickname ?? !!account.profile?.nickname,
           avatar: result?.avatar ?? !!this.avatarData.get(account.id),
+          avatarField: result?.avatarField,
           fields:
             result && (!result.nickname || !result.avatar) ? result.fields : [],
         }

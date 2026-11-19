@@ -15,6 +15,11 @@ export const cloudRequestRecordSchema = z
       .object({
         nickname: z.enum(['已取到', '未取到']),
         avatar: z.enum(['已取到', '未取到']),
+        avatarField: z
+          .string()
+          .max(256)
+          .regex(/^[A-Za-z][\w.]*$/u)
+          .optional(),
       })
       .optional(),
   })
@@ -48,7 +53,7 @@ export function isLoginPage(url: URL) {
 
 // Only public endpoint names survive. Dynamic IDs, filenames and signed path parts do not.
 const segments = new Set(
-  'api b v1 v2 v1.0 1 2 0 rest xpan clouddrive account info user gettemplatevariable list quota file files download locatedownload filemetas share sharepage token detail save transfer delete mkdir create rename sort task status member space config get sign_in device session authorize oauth access_token refresh_token me users personal_info index_info snap downurl down web android app openfile userinfo user_info get_info getAccountInfo vip right getdownloadurl get_download_url download_url new getDriveInfo getUserInfo adrive getSpaceInfo get_share_token get_share_by_anonymous get_download_url_by_share_token get_share_link_download_url get_download_url get_file getDownloadUrl get user_space_info user_info index.php share.php downurl.php getid.php 3.0 2.0 list/new share_token'.split(
+  'api b v1 v2 v1.0 1 2 0 rest xpan clouddrive account info user loginStatus gettemplatevariable list quota file files download locatedownload filemetas share sharepage token detail save transfer delete mkdir create rename sort task status member space config get sign_in device session authorize oauth access_token refresh_token me users personal_info index_info snap downurl down web android app openfile userinfo user_info get_info getAccountInfo vip right getdownloadurl get_download_url download_url new getDriveInfo getUserInfo adrive getSpaceInfo get_share_token get_share_by_anonymous get_download_url_by_share_token get_share_link_download_url get_download_url get_file getDownloadUrl get user_space_info user_info index.php share.php downurl.php getid.php 3.0 2.0 list/new share_token'.split(
     ' '
   )
 )

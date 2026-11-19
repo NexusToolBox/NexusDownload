@@ -6,12 +6,17 @@
       <a href="{{root}}/docs/"{{active.docs}}>{{t.nav.docs}}</a>
       <a href="{{root}}/download/"{{active.download}}>{{t.nav.download}}</a>
       <a href="{{root}}/changelog/"{{active.changelog}}>{{t.nav.changelog}}</a>
-      <a href="{{site.github}}" target="_blank" rel="noopener">{{t.nav.github}}</a>
     </nav>
     <div class="nav__actions">
       <button class="nav__search" type="button" data-search-open aria-label="{{t.nav.search}}">{{> icon-search}}<span>{{t.nav.search}}</span><kbd>Ctrl K</kbd></button>
-      <a class="nav__icon nav__lang" href="{{altUrl}}" hreflang="{{altHtmlLang}}" lang="{{altHtmlLang}}" title="{{t.nav.lang}}">{{t.otherLangShort}}</a>
-      <a class="btn btn--ink btn--sm nav__cta" href="{{site.downloadUrl}}">{{t.nav.cta}}</a>
+      <details class="nav__lang" data-lang-menu>
+        <summary class="nav__icon" aria-label="{{t.nav.lang}}" title="{{t.nav.lang}}">{{> icon-language}}</summary>
+        <ul class="nav__lang-list">
+          <li><a href="{{language.zh.url}}" hreflang="zh-CN" lang="zh-CN"{{language.zh.current}}>简体中文</a></li>
+          <li><a href="{{language.en.url}}" hreflang="en" lang="en"{{language.en.current}}>English</a></li>
+        </ul>
+      </details>
+      <a class="nav__icon" href="{{site.github}}" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">{{> icon-github}}</a>
       <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="{{t.nav.menu}}"><span></span><span></span></button>
     </div>
   </div>

@@ -200,6 +200,10 @@ export async function build() {
       root: LANGS[p.lang].prefix,
       altUrl,
       altHtmlLang: LANGS[other].htmlLang,
+      language: Object.fromEntries(Object.keys(LANGS).map((lang) => [lang, {
+        url: lang === p.lang ? p.url : altUrl,
+        current: lang === p.lang ? ' aria-current="page"' : '',
+      }])),
       year: new Date().getFullYear(),
       canonical: site.domain.replace(/\/$/, '') + p.url,
       docsNav: docsNav(docs, icons, p.lang, p.url),

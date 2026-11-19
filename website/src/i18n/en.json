@@ -1,15 +1,10 @@
 {
-  "langName": "English",
-  "otherLangName": "简体中文",
-  "otherLangShort": "中",
   "skip": "Skip to content",
   "nav": {
     "home": "Home",
     "docs": "Docs",
     "download": "Download",
     "changelog": "Changelog",
-    "github": "GitHub",
-    "cta": "Download free",
     "menu": "Menu",
     "lang": "Switch language",
     "search": "Search"
@@ -22,7 +17,6 @@
     "issues": "Report an issue",
     "releases": "All releases",
     "license": "License",
-    "made": "Open source under AGPL-3.0",
     "privacy": "Data & privacy",
     "faq": "FAQ"
   },

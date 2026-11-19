@@ -6,10 +6,21 @@
   // ---------- 导航：手机菜单 + 滚动后加阴影
   const nav = $('[data-nav]');
   const toggle = nav?.querySelector('.nav__toggle');
-  toggle?.addEventListener('click', () => {
-    const open = nav.classList.toggle('is-open');
+  const language = nav?.querySelector('[data-lang-menu]');
+  function setNavOpen(open) {
+    nav.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
-  });
+  }
+  toggle?.addEventListener('click', () => setNavOpen(!nav.classList.contains('is-open')));
+  if (language) {
+    language.addEventListener('toggle', () => { if (language.open) setNavOpen(false); });
+    language.addEventListener('focusout', (e) => {
+      if (e.relatedTarget && !language.contains(e.relatedTarget)) language.open = false;
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (language.open && !language.contains(e.target)) language.open = false;
+    });
+  }
   const onScroll = () => nav?.classList.toggle('is-scrolled', scrollY > 8);
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
@@ -85,6 +96,7 @@
   }
   function openSearch() {
     if (!tpl) return;
+    if (language?.open) language.open = false;
     if (!box) {
       box = tpl.content.firstElementChild.cloneNode(true);
       document.body.appendChild(box);
@@ -116,7 +128,8 @@
     else if (e.key === '/' && !typing) { e.preventDefault(); openSearch(); }
     else if (e.key === 'Escape') {
       if (box?.classList.contains('is-open')) closeSearch();
-      else if (nav?.classList.contains('is-open')) { nav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', 'false'); }
+      else if (language?.open) { language.open = false; $('summary', language).focus(); }
+      else if (nav?.classList.contains('is-open')) { setNavOpen(false); toggle.focus(); }
     }
   });
   if (/Mac|iPhone|iPad/.test(navigator.platform)) $$('kbd').forEach((k) => { if (k.textContent === 'Ctrl K') k.textContent = '⌘K'; });

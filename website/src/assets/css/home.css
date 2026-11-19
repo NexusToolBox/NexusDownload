@@ -9,10 +9,18 @@
 .page--home.is-dark .brand .logo { color: #F3F1ED; --logo-fg: #1E2530; }
 .page--home.is-dark .nav__links a { color: rgba(243,241,237,.74); }
 .page--home.is-dark .nav__links a:hover { color: #fff; background: rgba(255,255,255,.08); }
-.page--home.is-dark .nav__icon { color: rgba(243,241,237,.82); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
-.page--home.is-dark .nav__icon:hover { background: rgba(255,255,255,.08); }
-.page--home.is-dark .nav__cta { background: rgba(243,241,237,.95); color: var(--ink); }
-.page--home.is-dark .nav.is-open { color: var(--ink); }
+.page--home.is-dark .nav__icon { color: rgba(243,241,237,.94); background: rgba(255,255,255,.09); }
+.page--home.is-dark .nav__icon:hover,
+.page--home.is-dark .nav__lang[open] > .nav__icon { background: rgba(255,255,255,.18); }
+.page--home.is-dark .nav__lang-list {
+  background: #22262E; color: #F3F1ED; border-color: rgba(255,255,255,.13); box-shadow: 0 12px 28px rgba(0,0,0,.24);
+}
+.page--home.is-dark .nav__lang-list a:hover,
+.page--home.is-dark .nav__lang-list a:focus-visible { background: rgba(255,255,255,.09); }
+@media (max-width: 820px) {
+  .page--home.is-dark .nav__links { background: #22262E; border-bottom-color: rgba(255,255,255,.13); }
+  .page--home.is-dark .nav__links a { border-color: rgba(255,255,255,.13); }
+}
 
 /* ---------- 电影段骨架 ---------- */
 .cinema { position: relative; height: 460vh; background: #10151C; }
@@ -56,11 +64,6 @@
   background: linear-gradient(90deg, rgba(14,19,27,.42) 0%, rgba(14,19,27,.18) 38%, transparent 62%);
 }
 .hero { height: 100%; display: flex; flex-direction: column; justify-content: center; padding-top: var(--nav-h); padding-bottom: 8vh; }
-.hero__kicker {
-  margin: 0 0 26px; display: inline-flex; align-items: center; gap: 10px;
-  font-size: 14px; font-weight: 550; letter-spacing: 0; color: rgba(243,241,237,.72);
-}
-.hero__kicker span { padding: 2px 8px; border-radius: 999px; letter-spacing: .02em; color: rgba(243,241,237,.85); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); }
 .hero__title {
   margin: 0; color: #F5F2EB; font-family: var(--font-serif); font-weight: 600;
   font-size: clamp(48px, 7.4vw, 120px); line-height: 1.06; letter-spacing: .015em;
@@ -70,8 +73,7 @@
 .hero__line > span { display: inline-block; transform: translateY(108%); transition: transform 1.8s cubic-bezier(.16,.84,.24,1) .35s; }
 .hero__line:nth-child(2) > span { transition-delay: .55s; }
 .is-ready .hero__line > span { transform: none; }
-.hero__kicker, .hero__sub, .hero__actions, .hero__foot { opacity: 0; transform: translateY(12px); transition: opacity 1.4s ease, transform 1.4s var(--ease); }
-.is-ready .hero__kicker { opacity: 1; transform: none; transition-delay: .2s; }
+.hero__sub, .hero__actions, .hero__foot { opacity: 0; transform: translateY(12px); transition: opacity 1.4s ease, transform 1.4s var(--ease); }
 .is-ready .hero__sub { opacity: 1; transform: none; transition-delay: 1.2s; }
 .is-ready .hero__actions { opacity: 1; transform: none; transition-delay: 1.4s; }
 .is-ready .hero__foot { opacity: 1; transform: none; transition-delay: 1.8s; }
@@ -247,7 +249,7 @@
 .rm .hero__line > span { transform: none; opacity: 0; transition: opacity 1.6s ease .3s; }
 .rm .hero__line:nth-child(2) > span { transition-delay: .6s; }
 .rm.js .is-ready .hero__line > span, .rm .is-ready .hero__line > span { opacity: 1; }
-.rm .hero__kicker, .rm .hero__sub, .rm .hero__actions, .rm .hero__foot { transform: none; }
+.rm .hero__sub, .rm .hero__actions, .rm .hero__foot { transform: none; }
 .rm .hero__scroll span { animation: none; transform: translateY(0); opacity: .5; }
 .rm .line { transform: none; filter: none; }
 .rm .land__name, .rm .land__actions, .rm .land .app { transform: none; }
@@ -265,4 +267,4 @@ html:not(.js) .beat--hero { position: absolute; inset: 0 0 auto; height: 100svh;
 html:not(.js) .beat--lines { display: grid; gap: 72px; padding: 140px 0 40px; }
 html:not(.js) .line, html:not(.js) .beat--land { --o: 1; grid-area: auto; visibility: visible; }
 html:not(.js) .beat--land { padding: 80px 0 0; }
-html:not(.js) .hero__line > span, html:not(.js) .hero__kicker, html:not(.js) .hero__sub, html:not(.js) .hero__actions, html:not(.js) .hero__foot { transform: none; opacity: 1; }
+html:not(.js) .hero__line > span, html:not(.js) .hero__sub, html:not(.js) .hero__actions, html:not(.js) .hero__foot { transform: none; opacity: 1; }

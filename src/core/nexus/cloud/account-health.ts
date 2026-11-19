@@ -1,11 +1,34 @@
 import type { CloudAccount } from '@shared/schemas/nexus-cloud'
 import { type CloudAdapter, CloudError } from './cloud-adapter'
 
+type AccountHealth = NonNullable<CloudAccount['health']>
+
+export async function readAccountDetails(
+  adapter: CloudAdapter,
+  health: AccountHealth
+) {
+  const details = await adapter.health?.()
+  if (details) {
+    health.member = details.member
+    health.platformUsedBytes = details.platformUsedBytes ?? null
+    health.expiresAt = details.expiresAt ?? null
+  }
+  const { total, used } = details?.quota ?? (await adapter.quota())
+  health.quota =
+    Number.isSafeInteger(total) &&
+    total > 0 &&
+    Number.isSafeInteger(used) &&
+    used >= 0
+      ? { total, used }
+      : null
+}
+
 export async function inspectAccountHealth(
   adapter: CloudAdapter,
-  now = Date.now()
-): Promise<NonNullable<CloudAccount['health']>> {
-  const result: NonNullable<CloudAccount['health']> = {
+  now = Date.now(),
+  { loginVerified = false } = {}
+): Promise<AccountHealth> {
+  const result: AccountHealth = {
     checkedAt: now,
     login: 'unknown',
     member: null,
@@ -14,20 +37,13 @@ export async function inspectAccountHealth(
     expiresAt: null,
   }
   try {
-    await adapter.checkLogin()
+    if (!loginVerified) await adapter.checkLogin()
     result.login = 'valid'
-    if (adapter.health) Object.assign(result, await adapter.health())
     try {
-      const quota = await adapter.quota()
-      if (
-        Number.isSafeInteger(quota.total) &&
-        quota.total > 0 &&
-        Number.isSafeInteger(quota.used) &&
-        quota.used >= 0
-      )
-        result.quota = quota
+      await readAccountDetails(adapter, result)
     } catch (error) {
       if (
+        !loginVerified &&
         error instanceof CloudError &&
         ['login', 'login-elsewhere', 'risk', 'rate', 'captcha'].includes(
           error.kind

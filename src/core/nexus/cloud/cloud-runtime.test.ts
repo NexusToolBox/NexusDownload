@@ -26,7 +26,8 @@ describe('cloud runtime safety boundaries', () => {
     platform: CloudPlatform = 'quark',
     shareOnly = false,
     webValidation = false,
-    fetchProfile?: () => Promise<FetchedProfile>
+    fetchProfile?: () => Promise<FetchedProfile>,
+    health?: CloudAdapter['health']
   ) {
     const root = await mkdtemp(path.join(os.tmpdir(), 'nexus-runtime-'))
     cleanups.push(() => rm(root, { recursive: true, force: true }))
@@ -76,6 +77,7 @@ describe('cloud runtime safety boundaries', () => {
       },
       checkLogin: vi.fn(async () => undefined),
       fetchProfile,
+      health,
       listFiles: vi.fn(async () => files),
       getDownloadLink: async (file: (typeof files)[number]) => ({
         fileId: file.id,
@@ -199,9 +201,18 @@ describe('cloud runtime safety boundaries', () => {
     }
   })
   it('saves a web session after one successful probe without a second request that could roll it back', async () => {
-    const test = await fixture('quark', false, true)
+    const health = vi.fn(async () => ({
+      member: true,
+      quota: { total: 100, used: 10 },
+    }))
+    const test = await fixture('quark', false, true, undefined, health)
     expect(test.adapter.checkLogin).toHaveBeenCalledOnce()
-    expect(test.runtime.snapshot().accounts[0].health?.login).toBe('valid')
+    expect(health).toHaveBeenCalledOnce()
+    expect(test.runtime.snapshot().accounts[0].health).toMatchObject({
+      login: 'valid',
+      member: true,
+      quota: { total: 100, used: 10 },
+    })
     vi.mocked(test.adapter.checkLogin).mockRejectedValueOnce(
       new CloudError('network')
     )

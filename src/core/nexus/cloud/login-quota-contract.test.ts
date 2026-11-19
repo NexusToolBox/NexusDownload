@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto'
 import { expect, it } from 'vitest'
+import { inspectAccountHealth } from './account-health'
 import { CloudHttp } from './cloud-http'
 import {
   QUARK_UA,
@@ -43,3 +44,49 @@ it.each(['quark', 'uc'] as const)(
     )
   }
 )
+
+for (const platform of ['quark', 'uc'] as const) {
+  it.each([
+    ['VIP', true],
+    ['SUPER_VIP', true],
+    ['EXP_VIP', true],
+    ['EXP_SVIP', true],
+    ['NORMAL', false],
+    ['UNRECOGNIZED', null],
+    [undefined, null],
+  ] as const)(
+    '%s: reads membership tier with one quota probe',
+    async (tier, member) => {
+      const paths: string[] = []
+      const adapter = new QuarkUcAdapter(
+        platform,
+        new CloudHttp({
+          cookie: () => '',
+          merge: async () => {},
+          fetch: async (input) => {
+            const url = new URL(String(input))
+            paths.push(url.pathname)
+            return Response.json(
+              url.pathname === '/account/info'
+                ? { code: 'OK', success: true, data: { nickname: 'Fixture' } }
+                : {
+                    status: 200,
+                    data: {
+                      member_type: tier,
+                      total_capacity: 200,
+                      use_capacity: 30,
+                    },
+                  }
+            )
+          },
+        })
+      )
+      expect(await inspectAccountHealth(adapter)).toMatchObject({
+        login: 'valid',
+        member,
+        quota: { total: 200, used: 30 },
+      })
+      expect(paths).toEqual(['/account/info', '/1/clouddrive/member'])
+    }
+  )
+}

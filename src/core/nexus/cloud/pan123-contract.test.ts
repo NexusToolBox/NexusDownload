@@ -7,7 +7,7 @@ import { Pan123Adapter } from './pan123-adapter'
 import { pan123PasswordLogin, pan123Sign } from './pan123-auth'
 
 describe('123 shared CloudAdapter contract', () => {
-  function fixture() {
+  function fixture(vip?: 0 | 1) {
     const token = randomBytes(24).toString('hex')
     const device = randomBytes(16).toString('hex')
     let code = 0
@@ -34,6 +34,7 @@ describe('123 shared CloudAdapter contract', () => {
             code: 0,
             data: {
               Nickname: 'user',
+              Vip: vip,
               SpacePermanent: 100,
               SpaceTemp: 5,
               SpaceUsed: 20,
@@ -79,6 +80,13 @@ describe('123 shared CloudAdapter contract', () => {
       },
     }
   }
+  it.each([
+    [1, true],
+    [0, false],
+    [undefined, null],
+  ] as const)('reads membership from data.Vip=%s', async (flag, member) => {
+    expect(await fixture(flag).adapter.health()).toEqual({ member })
+  })
   it('matches the upstream CRC32/time offset signing vector', () => {
     expect(
       pan123Sign('/b/api/share/download/info', 1700000000, 123456)

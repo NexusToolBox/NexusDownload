@@ -34,7 +34,7 @@ import { z } from 'zod'
 import { getNexusDiskSpace } from '../disk-space'
 import { duplicateTask } from '../duplicate-download'
 import { AccountGovernor } from './account-governor'
-import { inspectAccountHealth } from './account-health'
+import { inspectAccountHealth, readAccountDetails } from './account-health'
 import { cacheAvatar, readAvatar, removeAvatar } from './account-profile'
 import { chooseCloudAccount } from './account-selector'
 import { AliyunAdapter, exchangeAliyunCode } from './aliyun-adapter'
@@ -776,28 +776,20 @@ export class CloudRuntime {
           transfers: initial.transfers,
           recentRiskAt: initial.recentRiskAt ?? undefined,
         }
-      if (webValidated && loggedIn)
-        loggedIn.health = {
-          checkedAt: Date.now(),
-          login: 'valid',
-          member: null,
-          quota: null,
-          platformUsedBytes: null,
-          expiresAt: null,
-        }
       this.authenticating.delete(id)
-      if (webValidated && loggedIn?.health) {
-        try {
-          const adapter = this.adapter(platform, id)
-          const quota = await adapter.quota()
-          if (quota.total > 0) loggedIn.health.quota = quota
-          if (adapter.health)
-            Object.assign(loggedIn.health, await adapter.health())
-        } catch {
-          /* A capacity endpoint cannot invalidate a verified login. */
+      if (webValidated && loggedIn) {
+        const health = await inspectAccountHealth(
+          this.adapter(platform, id),
+          Date.now(),
+          {
+            loginVerified: true,
+          }
+        )
+        if (this.state.accounts.includes(loggedIn)) {
+          loggedIn.health = health
+          await this.refreshProfile(loggedIn)
         }
       } else await this.checkHealth(id)
-      if (webValidated && loggedIn) await this.refreshProfile(loggedIn)
       this.needsLocalLogin.delete(id)
       await this.persist()
       return this.snapshot()
@@ -1735,16 +1727,9 @@ export class CloudRuntime {
           expiresAt: account.health?.expiresAt ?? null,
         }
         steps.push({ step, status: 'pass' })
-        // The account action refreshes capacity as well as the login state.
+        // The account action refreshes capacity and membership as well as login.
         try {
-          const quota = await adapter.quota()
-          if (
-            Number.isSafeInteger(quota.total) &&
-            quota.total > 0 &&
-            Number.isSafeInteger(quota.used) &&
-            quota.used >= 0
-          )
-            account.health.quota = quota
+          await readAccountDetails(adapter, account.health)
           steps.push({
             step: 'quota',
             status: account.health.quota ? 'pass' : 'fail',

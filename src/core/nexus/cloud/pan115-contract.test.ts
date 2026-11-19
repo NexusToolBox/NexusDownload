@@ -13,7 +13,7 @@ import { Pan115Adapter } from './pan115-adapter'
 import { Pan115Crypto } from './pan115-crypto'
 
 describe('115 shared CloudAdapter contract', () => {
-  function fixture() {
+  function fixture(vip?: 0 | 1) {
     const secret = randomBytes(24).toString('hex')
     let error = 0
     const calls: { url: URL; headers: Headers; body: URLSearchParams }[] = []
@@ -85,6 +85,8 @@ describe('115 shared CloudAdapter contract', () => {
             },
             { headers: { 'Set-Cookie': `${secret}=${secret}; path=/object/` } }
           )
+        if (url.pathname === '/user/info')
+          return Response.json({ state: true, data: { is_vip: vip } })
         return Response.json({ state: true, data: 'valid' })
       },
     })
@@ -109,6 +111,13 @@ describe('115 shared CloudAdapter contract', () => {
       secret,
     }
   }
+  it.each([
+    [1, true],
+    [0, false],
+    [undefined, null],
+  ] as const)('reads membership from data.is_vip=%s', async (flag, member) => {
+    expect(await fixture(flag).adapter.health()).toEqual({ member })
+  })
   it('lists own/share files, preserves hashes, renews identity and binds CDN cookies/UA', async () => {
     const { adapter, calls, secret } = fixture()
     await adapter.checkLogin()

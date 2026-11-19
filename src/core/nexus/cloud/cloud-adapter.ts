@@ -50,6 +50,7 @@ export interface CloudAdapter {
   checkLogin(): Promise<void>
   health?(): Promise<{
     member: boolean | null
+    quota?: { total: number; used: number }
     platformUsedBytes?: number | null
     expiresAt?: number | null
   }>

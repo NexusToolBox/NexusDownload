@@ -190,7 +190,7 @@ export class QuarkUcAdapter implements CloudAdapter {
     }
     throw new CloudError('unsupported')
   }
-  async quota() {
+  private async membershipDetails() {
     const { json } = await this.call(
       `${this.endpoint('member')}&fetch_subscribe=true&_ch=home`,
       undefined,
@@ -203,10 +203,30 @@ export class QuarkUcAdapter implements CloudAdapter {
         : { Origin: this.origin, Referer: `${this.origin}/` }
     )
     const data = object(json.data)
+    const tier = data.member_type
+    // Both official web clients use these tiers, independently of renewal and capacity.
+    const member =
+      tier === 'NORMAL'
+        ? false
+        : tier === 'VIP' ||
+            tier === 'SUPER_VIP' ||
+            tier === 'EXP_VIP' ||
+            tier === 'EXP_SVIP'
+          ? true
+          : null
     return {
-      total: bytes(data.total_capacity) ?? 0,
-      used: bytes(data.use_capacity) ?? 0,
+      member,
+      quota: {
+        total: bytes(data.total_capacity) ?? 0,
+        used: bytes(data.use_capacity) ?? 0,
+      },
     }
+  }
+  async health() {
+    return this.membershipDetails()
+  }
+  async quota() {
+    return (await this.membershipDetails()).quota
   }
   async ensureTempDir(name: string) {
     const { json } = await this.call(this.endpoint('file'), {

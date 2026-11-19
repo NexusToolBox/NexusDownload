@@ -104,18 +104,25 @@ button { font: inherit; color: inherit; }
 .nav__lang > summary { list-style: none; }
 .nav__lang > summary::-webkit-details-marker { display: none; }
 .nav__lang-list {
-  position: absolute; inset: calc(100% + 6px) 0 auto auto; min-width: 140px;
-  margin: 0; padding: 5px; list-style: none; border: 1px solid var(--line); border-radius: 14px;
-  background: var(--surface); color: var(--ink); box-shadow: var(--shadow);
+  --lang-hover: color-mix(in srgb, var(--mist) 55%, transparent);
+  --lang-current: var(--mist);
+  --lang-mark: var(--blue-deep);
+  position: absolute; top: calc(100% + 8px); left: 50%; translate: -50% 0; min-width: 152px;
+  display: grid; gap: 2px; margin: 0; padding: 5px; list-style: none;
+  border: 1px solid var(--line); border-radius: 12px; color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: 0 10px 24px -12px rgba(34,38,46,.28);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
 }
 .nav__lang-list a {
-  display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 34px;
-  padding: 4px 9px; border-radius: 8px; font-size: 14px; white-space: nowrap;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 36px;
+  padding: 4px 10px; border-radius: 8px; font-size: 14px; line-height: 1.4; white-space: nowrap;
 }
-.nav__lang-list a:hover, .nav__lang-list a:focus-visible { background: rgba(34,38,46,.06); }
-.nav__lang-list a[aria-current]::after {
+.nav__lang-list a:hover { background: var(--lang-hover); }
+.nav__lang-list a:focus-visible { outline-offset: -2px; }
+.nav__lang-list a[aria-current="page"] { background: var(--lang-current); font-weight: 600; }
+.nav__lang-list a[aria-current="page"]::after {
   content: ''; width: 10px; height: 5px; margin: -3px 2px 0 0;
-  border: solid currentColor; border-width: 0 0 1.5px 1.5px; transform: rotate(-45deg);
+  border: solid var(--lang-mark); border-width: 0 0 1.5px 1.5px; transform: rotate(-45deg);
 }
 .page--home.is-dark .nav__search { background: rgba(255,255,255,.09); color: rgba(243,241,237,.75); }
 .page--home.is-dark .nav__search kbd { background: rgba(255,255,255,.1); color: rgba(243,241,237,.6); box-shadow: none; }
